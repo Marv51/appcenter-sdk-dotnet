@@ -1,13 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.0;net461</TargetFrameworks>
+    <TargetFrameworks>net5.0-windows10.0.19041.0</TargetFrameworks>
     <RootNamespace>Microsoft.AppCenter.Crashes</RootNamespace>
-    <Version>4.1.0-SNAPSHOT</Version>
+    <Version>4.1.1-SNAPSHOT</Version>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <FileVersion>4.1.0.0</FileVersion>
     <AssemblyName>Microsoft.AppCenter.Crashes</AssemblyName>
     <DocumentationFile>bin\Microsoft.AppCenter.Crashes.xml</DocumentationFile>
+    <RepositoryUrl>https://github.com/telani-app/appcenter-sdk-dotnet</RepositoryUrl>
   </PropertyGroup>
   <Import Project="..\Microsoft.AppCenter.Crashes.Shared\Microsoft.AppCenter.Crashes.Shared.projitems" Label="Shared" />
   <Import Project="..\Microsoft.AppCenter.Crashes.Windows.Shared\Microsoft.AppCenter.Crashes.Windows.Shared.projitems" Label="Shared" />

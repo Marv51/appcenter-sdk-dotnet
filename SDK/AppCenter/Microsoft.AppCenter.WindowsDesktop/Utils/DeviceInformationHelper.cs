@@ -4,10 +4,10 @@
 using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Management;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Windows.ApplicationModel;
 
 #if NET461
 using System.Deployment.Application;
@@ -140,6 +140,8 @@ namespace Microsoft.AppCenter.Utils
 
         protected override string GetAppVersion()
         {
+            var packageVersion = Package.Current.Id.Version;
+            return $"{packageVersion.Major}.{packageVersion.Minor}.{packageVersion.Build}.{packageVersion.Revision}";
             /*
              * Application.ProductVersion returns the value from AssemblyInformationalVersion.
              * If the AssemblyInformationalVersion is not applied to an assembly,

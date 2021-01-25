@@ -3,6 +3,7 @@
 
 using System;
 using System.IO;
+using Windows.Storage;
 
 namespace Microsoft.AppCenter.Utils
 {
@@ -21,9 +22,8 @@ namespace Microsoft.AppCenter.Utils
             {
                 if (AppCenterFilesDirectoryPathBacking == null)
                 {
-                    // This shouldn't block in reality.
-                    var installId = AppCenter.GetInstallIdAsync().Result.ToString();
-                    AppCenterFilesDirectoryPathBacking = Path.Combine(LocalAppData, "Microsoft", "AppCenter", installId);
+                    var localFolder = ApplicationData.Current.LocalFolder;
+                    AppCenterFilesDirectoryPathBacking = Path.Combine(localFolder.Path, "AppCenter");
                 }
                 return AppCenterFilesDirectoryPathBacking;
             }
