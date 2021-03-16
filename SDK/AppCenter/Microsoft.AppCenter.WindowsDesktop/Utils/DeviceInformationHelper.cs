@@ -48,20 +48,7 @@ namespace Microsoft.AppCenter.Utils
 
         protected override string GetDeviceModel()
         {
-            try
-            {
-                var managementClass = _managmentClassFactory.GetComputerSystemClass();
-                foreach (var managementObject in managementClass.GetInstances())
-                {
-                    var model = (string)managementObject["Model"];
-                    return string.IsNullOrEmpty(model) || DefaultSystemProductName == model ? null : model;
-                }
-            }
-            catch (UnauthorizedAccessException exception)
-            {
-                AppCenterLog.Warn(AppCenterLog.LogTag, "Failed to get device model with error: ", exception);
-                return string.Empty;
-            }
+            // For privacy reasons we do not use the device model
             return string.Empty;
         }
 
@@ -72,20 +59,7 @@ namespace Microsoft.AppCenter.Utils
 
         protected override string GetDeviceOemName()
         {
-            try
-            {
-                var managementClass = _managmentClassFactory.GetComputerSystemClass();
-                foreach (var managementObject in managementClass.GetInstances())
-                {
-                    var manufacturer = (string)managementObject["Manufacturer"];
-                    return string.IsNullOrEmpty(manufacturer) || DefaultSystemManufacturer == manufacturer ? null : manufacturer;
-                }
-            } 
-            catch (UnauthorizedAccessException exception)
-            {
-                AppCenterLog.Warn(AppCenterLog.LogTag, "Failed to get device OEM name with error: ", exception);
-                return string.Empty;
-            }
+            // For privacy reasons we do not use the OEM Name
             return string.Empty;
         }
 

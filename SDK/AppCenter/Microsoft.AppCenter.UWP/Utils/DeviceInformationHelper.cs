@@ -54,16 +54,7 @@ namespace Microsoft.AppCenter.Utils
 
         protected override string GetDeviceModel()
         {
-            var deviceInfo = new EasClientDeviceInformation();
-            var systemSku = string.IsNullOrEmpty(deviceInfo.SystemSku)
-                || DefaultSystemSku == deviceInfo.SystemSku
-                ? null
-                : deviceInfo.SystemSku;
-            var systemProductName = string.IsNullOrEmpty(deviceInfo.SystemProductName)
-                || DefaultSystemProductName == deviceInfo.SystemProductName
-                ? null
-                : deviceInfo.SystemProductName;
-            return systemProductName ?? systemSku;
+            return string.Empty;
         }
 
         protected override string GetAppNamespace()
@@ -73,12 +64,8 @@ namespace Microsoft.AppCenter.Utils
 
         protected override string GetDeviceOemName()
         {
-            var deviceInfo = new EasClientDeviceInformation();
-            var systemManufacturer = string.IsNullOrEmpty(deviceInfo.SystemManufacturer) 
-                || DefaultSystemManufacturer == deviceInfo.SystemManufacturer 
-                ? null 
-                : deviceInfo.SystemManufacturer;
-            return systemManufacturer;
+            // For privacy reasons we do not use the device name
+            return string.Empty;
         }
 
         protected override string GetOsName()
