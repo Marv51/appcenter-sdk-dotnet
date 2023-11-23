@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
@@ -259,13 +260,19 @@ public partial class AppCenter
         }
     }
 
-    static void PlatformStart(params Type[] services)
+    static void PlatformStart(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+        Type service1 = null,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+        Type service2 = null,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+        Type service3 = null)
     {
         lock (AppCenterLock)
         {
             try
             {
-                Instance.StartInstance(services);
+                Instance.StartInstance(service1, service2, service3);
             }
             catch (AppCenterException ex)
             {
@@ -274,7 +281,13 @@ public partial class AppCenter
         }
     }
 
-    static void PlatformStart(string appSecret, params Type[] services)
+    static void PlatformStart(string appSecret, 
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+        Type service1 = null,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+        Type service2 = null,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+        Type service3 = null)
     {
         lock (AppCenterLock)
         {
@@ -288,7 +301,7 @@ public partial class AppCenter
             }
             try
             {
-                Instance.StartInstance(services);
+                Instance.StartInstance(service1, service2, service3);
             }
             catch (AppCenterException ex)
             {
@@ -437,39 +450,33 @@ public partial class AppCenter
         AppCenterLog.Info(AppCenterLog.LogTag, "App Center SDK configured successfully.");
     }
 
-    internal void StartInstance(params Type[] services)
+    internal void StartInstance(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+        Type service1 = null,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+        Type service2 = null,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+        Type service3 = null)
     {
-        if (services == null)
-        {
-            throw new AppCenterException("Services array is null.");
-        }
         if (!_instanceConfigured)
         {
             throw new AppCenterException("App Center has not been configured.");
         }
 
         var serviceNames = new List<string>();
-        foreach (var serviceType in services)
+
+
+        if (service1 is not null)
         {
-            if (serviceType == null)
-            {
-                AppCenterLog.Warn(AppCenterLog.LogTag, "Skipping null service. Please check that you did not pass a null argument.");
-                continue;
-            }
-            try
-            {
-                var serviceInstance = serviceType.GetRuntimeProperty("Instance")?.GetValue(null) as IAppCenterService;
-                if (serviceInstance == null)
-                {
-                    throw new AppCenterException("Service type does not contain static 'Instance' property of type IAppCenterService. The service is either not an App Center service or it's unsupported on this platform or the SDK is used from a .NET standard library and the nuget was not also added to the UWP/WPF/WinForms project.");
-                }
-                StartService(serviceInstance);
-                serviceNames.Add(serviceInstance.ServiceName);
-            }
-            catch (AppCenterException e)
-            {
-                AppCenterLog.Error(AppCenterLog.LogTag, $"Failed to start service '{serviceType.Name}'; skipping it.", e);
-            }
+            StartService(service1, serviceNames);
+        }
+        if (service1 is not null)
+        {
+            StartService(service2, serviceNames);
+        }
+        if (service1 is not null)
+        {
+            StartService(service3, serviceNames);
         }
 
         // Enqueue a log indicating which services have been initialized
@@ -487,6 +494,24 @@ public partial class AppCenter
                 }
                 _startedServiceNames.AddRange(serviceNames);
             }
+        }
+    }
+
+    private void StartService([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] Type service1, List<string> serviceNames)
+    {
+        try
+        {
+            var serviceInstance = service1.GetRuntimeProperty("Instance")?.GetValue(null) as IAppCenterService;
+            if (serviceInstance == null)
+            {
+                throw new AppCenterException("Service type does not contain static 'Instance' property of type IAppCenterService. The service is either not an App Center service or it's unsupported on this platform or the SDK is used from a .NET standard library and the nuget was not also added to the UWP/WPF/WinForms project.");
+            }
+            StartService(serviceInstance);
+            serviceNames.Add(serviceInstance.ServiceName);
+        }
+        catch (AppCenterException e)
+        {
+            AppCenterLog.Error(AppCenterLog.LogTag, $"Failed to start service '{service1.Name}'; skipping it.", e);
         }
     }
 

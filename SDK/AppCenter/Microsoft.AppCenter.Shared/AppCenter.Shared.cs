@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -206,10 +207,18 @@ public partial class AppCenter
     ///     Start services.
     ///     This may be called only once per service per application process lifetime.
     /// </summary>
-    /// <param name="services">List of services to use.</param>
-    public static void Start(params Type[] services)
+    /// <param name="service1">First service to use.</param>
+    /// <param name="service2">Second service to use.</param>
+    /// <param name="service3">Third service to use.</param>
+    public static void Start(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+        Type service1 = null,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+        Type service2 = null,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+        Type service3 = null)
     {
-        PlatformStart(services);
+        PlatformStart(service1, service2, service3);
     }
 
     /// <summary>
@@ -217,10 +226,18 @@ public partial class AppCenter
     ///     This may be called only once per application process lifetime.
     /// </summary>
     /// <param name="appSecret">A unique and secret key used to identify the application.</param>
-    /// <param name="services">List of services to use.</param>
-    public static void Start(string appSecret, params Type[] services)
+    /// <param name="service1">First of service to use.</param>
+    /// <param name="service2">Second of service to use.</param>
+    /// <param name="service3">Third of service to use.</param>
+    public static void Start(string appSecret, 
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+        Type service1 = null,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+        Type service2 = null,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+        Type service3 = null)
     {
-        PlatformStart(appSecret, services);
+        PlatformStart(appSecret, service1, service2, service3);
     }
 
     /// <summary>

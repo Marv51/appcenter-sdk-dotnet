@@ -186,9 +186,8 @@ public class AppCenterTest
     [TestMethod]
     public void StartNullServices()
     {
-        Type[] services = null;
         // ReSharper disable once ExpressionIsAlwaysNull
-        AppCenter.Start("appsecret", services);
+        AppCenter.Start("appsecret");
 
         /* Reaching this point means the test passed! */
     }
