@@ -4,35 +4,34 @@
 using System;
 using System.IO;
 
-namespace Microsoft.AppCenter.Utils
+namespace Microsoft.AppCenter.Utils;
+
+/// <summary>
+/// Various constants used by the SDK.
+/// </summary>
+public static partial class Constants
 {
-    /// <summary>
-    /// Various constants used by the SDK.
-    /// </summary>
-    public static partial class Constants
+    // File Storage.
+    // These aren't exactly "Constants," per se, but probably not worth moving somewhere else.
+    private static string AppCenterFilesDirectoryPathBacking;
+
+    public static string AppCenterFilesDirectoryPath
     {
-        // File Storage.
-        // These aren't exactly "Constants," per se, but probably not worth moving somewhere else.
-        private static string AppCenterFilesDirectoryPathBacking;
-
-        public static string AppCenterFilesDirectoryPath
+        get
         {
-            get
+            if (AppCenterFilesDirectoryPathBacking == null)
             {
-                if (AppCenterFilesDirectoryPathBacking == null)
-                {
-                    // This shouldn't block in reality.
-                    var installId = AppCenter.GetInstallIdAsync().Result.ToString();
-                    AppCenterFilesDirectoryPathBacking = Path.Combine(LocalAppData, "Microsoft", "AppCenter", installId);
-                }
-                return AppCenterFilesDirectoryPathBacking;
+                // This shouldn't block in reality.
+                var installId = AppCenter.GetInstallIdAsync().Result.ToString();
+                AppCenterFilesDirectoryPathBacking = Path.Combine(LocalAppData, "Microsoft", "AppCenter", installId);
             }
+            return AppCenterFilesDirectoryPathBacking;
         }
-
-        public static string AppCenterDatabasePath = Path.Combine(AppCenterFilesDirectoryPath, "Logs.db");
-
-        public static string LocalAppData => Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-
-        public static string UserName { get; internal set; } = Environment.UserName;
     }
+
+    public static string AppCenterDatabasePath = Path.Combine(AppCenterFilesDirectoryPath, "Logs.db");
+
+    public static string LocalAppData => Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
+    public static string UserName { get; internal set; } = Environment.UserName;
 }

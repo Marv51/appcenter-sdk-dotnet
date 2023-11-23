@@ -4,77 +4,76 @@
 using System;
 using System.Diagnostics;
 
-namespace Microsoft.AppCenter.Crashes.Utils
+namespace Microsoft.AppCenter.Crashes.Utils;
+
+public class ProcessInformation : IProcessInformation
 {
-    public class ProcessInformation : IProcessInformation
+    public DateTime? ProcessStartTime
     {
-        public DateTime? ProcessStartTime
+        get
         {
-            get
+            try
             {
-                try
-                {
-                    return Process.GetCurrentProcess().StartTime;
-                }
-                catch (Exception e)
-                {
-                    AppCenterLog.Warn(Crashes.LogTag, "Unable to get process start time.", e);
-                    return null;
-                }
+                return Process.GetCurrentProcess().StartTime;
+            }
+            catch (Exception e)
+            {
+                AppCenterLog.Warn(Crashes.LogTag, "Unable to get process start time.", e);
+                return null;
             }
         }
+    }
 
-        public int? ProcessId
+    public int? ProcessId
+    {
+        get
         {
-            get
+            try
             {
-                try
-                {
-                    return Process.GetCurrentProcess().Id;
-                }
-                catch (Exception e)
-                {
-                    AppCenterLog.Warn(Crashes.LogTag, "Unable to get process ID.", e);
-                    return null;
-                }
+                return Process.GetCurrentProcess().Id;
+            }
+            catch (Exception e)
+            {
+                AppCenterLog.Warn(Crashes.LogTag, "Unable to get process ID.", e);
+                return null;
             }
         }
+    }
 
-        public string ProcessName
+    public string ProcessName
+    {
+        get
         {
-            get
+            try
             {
-                try
-                {
-                    return Process.GetCurrentProcess().ProcessName;
-                }
-                catch (Exception e)
-                {
-                    AppCenterLog.Warn(Crashes.LogTag, "Unable to get process name.", e);
-                    return null;
-                }
+                return Process.GetCurrentProcess().ProcessName;
+            }
+            catch (Exception e)
+            {
+                AppCenterLog.Warn(Crashes.LogTag, "Unable to get process name.", e);
+                return null;
             }
         }
+    }
 
-        // Parent process information is not (easily) available, and not necessary.
-        public int? ParentProcessId => null;
+    // Parent process information is not (easily) available, and not necessary.
+    public int? ParentProcessId => null;
 
-        // Parent process information is not (easily) available, and not necessary.
-        public string ParentProcessName => null;
+    // Parent process information is not (easily) available, and not necessary.
+    public string ParentProcessName => null;
 
-        public string ProcessArchitecture
+    public string ProcessArchitecture
+    {
+        get
         {
-            get
+            try
             {
-                try
-                {
-                    return Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
-                }
-                catch (Exception e)
-                {
-                    AppCenterLog.Warn(Crashes.LogTag, "Unable to get process architecture.", e);
-                    return null;
-                }
+                return Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
+            }
+            catch (Exception e)
+            {
+                AppCenterLog.Warn(Crashes.LogTag, "Unable to get process architecture.", e);
+                return null;
             }
         }
     }

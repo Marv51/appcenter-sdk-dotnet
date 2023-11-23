@@ -36,11 +36,13 @@
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.props" />
   <PropertyGroup>
     <ProjectGuid>345565c8-4971-4d1a-88cc-f7cbdae2c7c7</ProjectGuid>
-    <TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion>10.0.22621.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <AssetTargetFallback>net6.0-windows$(TargetPlatformVersion);$(AssetTargetFallback)</AssetTargetFallback>
     <DefaultLanguage>en-US</DefaultLanguage>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
+	<WinUISDKReferences>false</WinUISDKReferences>
     <EntryPointProjectUniqueName>..\Contoso.WinUI.Desktop.Puppet\Contoso.WinUI.Desktop.Puppet.csproj</EntryPointProjectUniqueName>
   </PropertyGroup>
   <ItemGroup>
@@ -64,12 +66,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.ProjectReunion" Version="[0.8.1]">
-      <IncludeAssets>build</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.ProjectReunion.WinUI" Version="[0.8.1]">
-      <IncludeAssets>build</IncludeAssets>
-    </PackageReference>
+	  <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231115000">
+		  <IncludeAssets>build</IncludeAssets>
+	  </PackageReference>
+	  <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.25936-preview">
+		  <IncludeAssets>build</IncludeAssets>
+	  </PackageReference>
   </ItemGroup>
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.targets" />
 </Project>

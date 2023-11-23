@@ -7,45 +7,44 @@ using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
+namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models;
+
+using Device = Microsoft.AppCenter.Ingestion.Models.Device;
+
+[TestClass]
+public class EventLogTest
 {
-    using Device = Microsoft.AppCenter.Ingestion.Models.Device;
+    private readonly DateTime? Timestamp = null;
+    private const string Name = "Name";
+    private readonly Guid Id = Guid.Empty;
 
-    [TestClass]
-    public class EventLogTest
+    /// <summary>
+    /// Verify that instance is constructed properly.
+    /// </summary>
+    [TestMethod]
+    public void TestInstanceConstruction()
     {
-        private readonly DateTime? Timestamp = null;
-        private const string Name = "Name";
-        private readonly Guid Id = Guid.Empty;
+        var mockDevice = new Mock<Device>();
 
-        /// <summary>
-        /// Verify that instance is constructed properly.
-        /// </summary>
-        [TestMethod]
-        public void TestInstanceConstruction()
-        {
-            var mockDevice = new Mock<Device>();
+        var emptyLog = new EventLog();
+        var log = new EventLog(mockDevice.Object, Id, Name, Timestamp);
 
-            var emptyLog = new EventLog();
-            var log = new EventLog(mockDevice.Object, Id, Name, Timestamp);
+        Assert.IsNotNull(emptyLog);
+        Assert.IsNotNull(log);
 
-            Assert.IsNotNull(emptyLog);
-            Assert.IsNotNull(log);
+        Assert.AreEqual(Id, log.Id);
+        Assert.AreEqual(Name, log.Name);
+    }
 
-            Assert.AreEqual(Id, log.Id);
-            Assert.AreEqual(Name, log.Name);
-        }
+    /// <summary>
+    /// Verify that Validate method throws ValidationException when Name == null.
+    /// </summary>
+    [TestMethod]
+    public void TestValidateThrowsExceptionWhenNameIsNull()
+    {
+        var mockDevice = new Mock<Device>();
 
-        /// <summary>
-        /// Verify that Validate method throws ValidationException when Name == null.
-        /// </summary>
-        [TestMethod]
-        public void TestValidateThrowsExceptionWhenNameIsNull()
-        {
-            var mockDevice = new Mock<Device>();
-
-            var log = new EventLog(mockDevice.Object, Id, null, Timestamp);
-            Assert.ThrowsException<ValidationException>(() => log.Validate());
-        }
+        var log = new EventLog(mockDevice.Object, Id, null, Timestamp);
+        Assert.ThrowsException<ValidationException>(() => log.Validate());
     }
 }

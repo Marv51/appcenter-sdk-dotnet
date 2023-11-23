@@ -4,48 +4,47 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Contoso.WinUI.Desktop.Demo
+namespace Contoso.WinUI.Desktop.Demo;
+
+class Property : INotifyPropertyChanged
 {
-    class Property : INotifyPropertyChanged
+    private string _key;
+    private string _value;
+    public string Key
     {
-        private string _key;
-        private string _value;
-        public string Key
+        get
         {
-            get
+            return _key;
+        }
+        set
+        {
+            if (_key != value)
             {
-                return _key;
-            }
-            set
-            {
-                if (_key != value)
-                {
-                    _key = value;
-                    NotifyPropertyChanged();
-                }
+                _key = value;
+                NotifyPropertyChanged();
             }
         }
-        public string Value
+    }
+    public string Value
+    {
+        get
         {
-            get
+            return _value;
+        }
+        set
+        {
+            if (_value != value)
             {
-                return _value;
-            }
-            set
-            {
-                if (_value != value)
-                {
-                    _value = value;
-                    NotifyPropertyChanged();
-                }
+                _value = value;
+                NotifyPropertyChanged();
             }
         }
+    }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
 
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+    private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

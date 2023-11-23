@@ -4,16 +4,14 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Microsoft.AppCenter.Crashes
+namespace Microsoft.AppCenter.Crashes;
+
+public partial class TestCrashException
 {
-    [Serializable]
-    public partial class TestCrashException
+    /// <summary>
+    /// Deserialization constructor. Not intended for public use.
+    /// </summary>
+    protected TestCrashException(SerializationInfo info, StreamingContext context)
     {
-        /// <summary>
-        /// Deserialization constructor. Not intended for public use.
-        /// </summary>
-        protected TestCrashException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }

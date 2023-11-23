@@ -7,46 +7,45 @@ using System.Threading.Tasks;
 using Microsoft.AppCenter.Utils;
 using Xunit;
 
-namespace Microsoft.AppCenter.Test.WindowsDesktop.Utils
-{
-    public partial class DeviceInformationHelperTest
-    {
-        /// <summary>
-        /// Verify sdk name in device information.
-        /// </summary>
-        [Fact]
-        public void VerifySdkName()
-        {
-            var device = Task.Run(() => new DeviceInformationHelper().GetDeviceInformationAsync()).Result;
-            Assert.Equal("appcenter.wpf.netcore", device.SdkName);
-        }
+namespace Microsoft.AppCenter.Test.WindowsDesktop.Utils;
 
-        /// <summary>
-        /// Verify that sdk is not crashed during getting device info when management class is not available.
-        /// </summary>
-        [Fact]
-        public void VerifyDeviceInfoWhenManagmentClassNotAvailable()
-        {
-            var deviceInformation = new DeviceInformationHelper();
-            var factory = new MockManagmentClassFactory();
-            deviceInformation.SetManagmentClassFactory(factory);
-            var device = Task.Run(() => deviceInformation.GetDeviceInformationAsync()).Result;
-        }
+public partial class DeviceInformationHelperTest
+{
+    /// <summary>
+    /// Verify sdk name in device information.
+    /// </summary>
+    [Fact]
+    public async Task VerifySdkName()
+    {
+        var device = await Task.Run(() => new DeviceInformationHelper().GetDeviceInformationAsync());
+        Assert.Equal("appcenter.winui", device.SdkName);
     }
 
     /// <summary>
-    /// Fake class for ManagmentClassFactory.
+    /// Verify that sdk is not crashed during getting device info when management class is not available.
     /// </summary>
-    class MockManagmentClassFactory : IManagmentClassFactory
+    [Fact]
+    public async Task VerifyDeviceInfoWhenManagementClassNotAvailable()
     {
-        public ManagementClass GetComputerSystemClass()
-        {
-            throw new UnauthorizedAccessException();
-        }
+        var deviceInformation = new DeviceInformationHelper();
+        var factory = new MockManagementClassFactory();
+        deviceInformation.SetManagementClassFactory(factory);
+        var device = await Task.Run(deviceInformation.GetDeviceInformationAsync);
+    }
+}
 
-        public ManagementClass GetOperatingSystemClass()
-        {
-            throw new UnauthorizedAccessException();
-        }
+/// <summary>
+/// Fake class for ManagementClassFactory.
+/// </summary>
+class MockManagementClassFactory : IManagmentClassFactory
+{
+    public ManagementClass GetComputerSystemClass()
+    {
+        throw new UnauthorizedAccessException();
+    }
+
+    public ManagementClass GetOperatingSystemClass()
+    {
+        throw new UnauthorizedAccessException();
     }
 }

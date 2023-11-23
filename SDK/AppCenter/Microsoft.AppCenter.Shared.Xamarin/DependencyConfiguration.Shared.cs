@@ -1,14 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-namespace Microsoft.AppCenter
+namespace Microsoft.AppCenter;
+
+internal static partial class DependencyConfiguration
 {
-    internal static partial class DependencyConfiguration
+    internal static IHttpNetworkAdapter HttpNetworkAdapter
     {
-        internal static IHttpNetworkAdapter HttpNetworkAdapter
-        {
-            get => PlatformHttpNetworkAdapter;
-            set => PlatformHttpNetworkAdapter = value;
-        }
+        get => PlatformHttpNetworkAdapter;
+        set => PlatformHttpNetworkAdapter = value;
     }
 }

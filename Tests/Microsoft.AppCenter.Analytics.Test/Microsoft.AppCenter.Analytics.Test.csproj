@@ -1,13 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
+	<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <UseWindowsForms>true</UseWindowsForms>
-
-    <!-- Signing. -->
-    <SignAssembly>true</SignAssembly>
-    <DelaySign>true</DelaySign>
-    <AssemblyOriginatorKeyFile>..\..\appcenter-public-key.snk</AssemblyOriginatorKeyFile>
+	<SignAssembly>False</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics.Shared\**\*.cs" />

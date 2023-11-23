@@ -4,91 +4,90 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Microsoft.AppCenter.Analytics
+namespace Microsoft.AppCenter.Analytics;
+
+/// <summary>
+///     Analytics feature.
+/// </summary>
+public class Analytics
 {
-    /// <summary>
-    ///     Analytics feature.
-    /// </summary>
-    public class Analytics
+    private Analytics()
     {
-        private Analytics()
-        {
-        }
+    }
 
-        /// <summary>
-        /// Check whether the Analytics service is enabled or not.
-        /// </summary>
-        /// <returns>A task with result being true if enabled, false if disabled.</returns>
-        public static Task<bool> IsEnabledAsync()
-        {
-            return Task.FromResult(false);
-        }
+    /// <summary>
+    /// Check whether the Analytics service is enabled or not.
+    /// </summary>
+    /// <returns>A task with result being true if enabled, false if disabled.</returns>
+    public static Task<bool> IsEnabledAsync()
+    {
+        return Task.FromResult(false);
+    }
 
-        /// <summary>
-        /// Enable or disable the Analytics service.
-        /// </summary>
-        /// <returns>A task to monitor the operation.</returns>
-        public static Task SetEnabledAsync(bool enabled)
-        {
-            return Task.FromResult(default(object));
-        }
+    /// <summary>
+    /// Enable or disable the Analytics service.
+    /// </summary>
+    /// <returns>A task to monitor the operation.</returns>
+    public static Task SetEnabledAsync(bool enabled)
+    {
+        return Task.FromResult(default(object));
+    }
 
-        /// <summary>
-        /// Pause the Analytics service.
-        /// </summary>
-        internal static void Pause()
-        {
-        }
+    /// <summary>
+    /// Pause the Analytics service.
+    /// </summary>
+    internal static void Pause()
+    {
+    }
 
-        /// <summary>
-        /// Resume the Analytics service.
-        /// </summary>
-        internal static void Resume()
-        {
-        }
+    /// <summary>
+    /// Resume the Analytics service.
+    /// </summary>
+    internal static void Resume()
+    {
+    }
 
-        ///// <summary>
-        ///// Enable or disable automatic page tracking.
-        ///// Set this to false to if you plan to call <see cref="TrackPage"/> manually.
-        ///// </summary>
-        //public static bool AutoPageTrackingEnabled { get; set; }
+    ///// <summary>
+    ///// Enable or disable automatic page tracking.
+    ///// Set this to false to if you plan to call <see cref="TrackPage"/> manually.
+    ///// </summary>
+    //public static bool AutoPageTrackingEnabled { get; set; }
 
-        /// <summary>
-        ///     Track a custom event.
-        /// </summary>
-        /// <param name="name">An event name.</param>
-        /// <param name="properties">Optional properties.</param>
-        public static void TrackEvent(string name, IDictionary<string, string> properties = null)
-        {
-        }
+    /// <summary>
+    ///     Track a custom event.
+    /// </summary>
+    /// <param name="name">An event name.</param>
+    /// <param name="properties">Optional properties.</param>
+    public static void TrackEvent(string name, IDictionary<string, string> properties = null)
+    {
+    }
 
-        /// <summary>
-        ///  Enable manual session tracker.
-        /// </summary>
-        public static void EnableManualSessionTracker()
-        {
-        }
+    /// <summary>
+    ///  Enable manual session tracker.
+    /// </summary>
+    public static void EnableManualSessionTracker()
+    {
+    }
 
-        /// <summary>
-        /// Start a new session if manual session tracker is enabled, otherwise do nothing.
-        /// </summary>
-        public static void StartSession()
-        {
-        }
+    /// <summary>
+    /// Start a new session if manual session tracker is enabled, otherwise do nothing.
+    /// </summary>
+    public static void StartSession()
+    {
+    }
 
-        ///// Track a custom page.
+    ///// Track a custom page.
 
-        ///// <summary>
-        ///// </summary>
-        ///// <param name="name">A page name.</param>
-        ///// <param name="properties">Optional properties.</param>
-        //public static void TrackPage(string name, [Optional] IDictionary<string, string> properties)
-        //{
-        //    throw new NotImplementedException();
-        //}
+    ///// <summary>
+    ///// </summary>
+    ///// <param name="name">A page name.</param>
+    ///// <param name="properties">Optional properties.</param>
+    //public static void TrackPage(string name, [Optional] IDictionary<string, string> properties)
+    //{
+    //    throw new NotImplementedException();
+    //}
 
-        internal static void UnsetInstance()
-        {
-        }
+    internal static void UnsetInstance()
+    {
     }
 }

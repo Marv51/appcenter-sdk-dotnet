@@ -1,14 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-namespace Microsoft.AppCenter.Analytics.Channel
+namespace Microsoft.AppCenter.Analytics.Channel;
+
+public interface ISessionTracker
 {
-    public interface ISessionTracker
-    {
-        void Resume();
-        void Pause();
-        void Stop();
-        void EnableManualSessionTracker();
-        void StartSession();
-    }
+    void Resume();
+    void Pause();
+    void Stop();
+    void EnableManualSessionTracker();
+    void StartSession();
 }

@@ -7,45 +7,44 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Microsoft.AppCenter.Crashes
+namespace Microsoft.AppCenter.Crashes;
+
+public partial class Crashes
 {
-    public partial class Crashes
+    private static Task<bool> PlatformIsEnabledAsync()
     {
-        private static Task<bool> PlatformIsEnabledAsync()
-        {
-            return Task.FromResult(false);
-        }
+        return Task.FromResult(false);
+    }
 
-        private static Task PlatformSetEnabledAsync(bool enabled)
-        {
-            return Task.FromResult(default(object));
-        }
+    private static Task PlatformSetEnabledAsync(bool enabled)
+    {
+        return Task.FromResult(default(object));
+    }
 
-        private static Task<bool> PlatformHasCrashedInLastSessionAsync()
-        {
-            return Task.FromResult(false);
-        }
+    private static Task<bool> PlatformHasCrashedInLastSessionAsync()
+    {
+        return Task.FromResult(false);
+    }
 
-        private static Task<ErrorReport> PlatformGetLastSessionCrashReportAsync()
-        {
-            return Task.FromResult((ErrorReport)null);
-        }
+    private static Task<ErrorReport> PlatformGetLastSessionCrashReportAsync()
+    {
+        return Task.FromResult((ErrorReport)null);
+    }
 
-        private static Task<bool> PlatformHasReceivedMemoryWarningInLastSessionAsync()
-        {
-            return Task.FromResult(false);
-        }
+    private static Task<bool> PlatformHasReceivedMemoryWarningInLastSessionAsync()
+    {
+        return Task.FromResult(false);
+    }
 
-        private static void PlatformNotifyUserConfirmation(UserConfirmation confirmation)
-        {
-        }
+    private static void PlatformNotifyUserConfirmation(UserConfirmation confirmation)
+    {
+    }
 
-        private static void PlatformTrackError(Exception exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
-        {
-        }
+    private static void PlatformTrackError(Exception exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
+    {
+    }
 
-        private static void PlatformUnsetInstance()
-        {
-        }
+    private static void PlatformUnsetInstance()
+    {
     }
 }

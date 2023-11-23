@@ -6,28 +6,27 @@ using Microsoft.AppCenter.Analytics.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
+namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models;
+
+using Device = Microsoft.AppCenter.Ingestion.Models.Device;
+
+[TestClass]
+public class StartSessionLogTest
 {
-    using Device = Microsoft.AppCenter.Ingestion.Models.Device;
+    private readonly DateTime? Timestamp = null;
 
-    [TestClass]
-    public class StartSessionLogTest
+    /// <summary>
+    /// Verify that instance is constructed properly.
+    /// </summary>
+    [TestMethod]
+    public void TestInstanceConstruction()
     {
-        private readonly DateTime? Timestamp = null;
+        var mockDevice = new Mock<Device>();
 
-        /// <summary>
-        /// Verify that instance is constructed properly.
-        /// </summary>
-        [TestMethod]
-        public void TestInstanceConstruction()
-        {
-            var mockDevice = new Mock<Device>();
+        StartSessionLog emptyLog = new StartSessionLog();
+        StartSessionLog log = new StartSessionLog(mockDevice.Object, Timestamp);
 
-            StartSessionLog emptyLog = new StartSessionLog();
-            StartSessionLog log = new StartSessionLog(mockDevice.Object, Timestamp);
-
-            Assert.IsNotNull(emptyLog);
-            Assert.IsNotNull(log);
-        }
+        Assert.IsNotNull(emptyLog);
+        Assert.IsNotNull(log);
     }
 }

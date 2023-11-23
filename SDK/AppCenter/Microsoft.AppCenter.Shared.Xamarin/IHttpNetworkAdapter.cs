@@ -6,10 +6,9 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Microsoft.AppCenter
+namespace Microsoft.AppCenter;
+
+internal interface IHttpNetworkAdapter : IDisposable
 {
-    internal interface IHttpNetworkAdapter : IDisposable
-    {
-        Task<HttpResponse> SendAsync(string uri, string method, IDictionary<string, string> headers, string jsonContent, CancellationToken cancellationToken);
-    }
+    Task<HttpResponse> SendAsync(string uri, string method, IDictionary<string, string> headers, string jsonContent, CancellationToken cancellationToken);
 }

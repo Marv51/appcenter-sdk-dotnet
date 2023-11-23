@@ -21,7 +21,4 @@
     <Compile Include="..\Microsoft.AppCenter.Crashes.Shared\**\*.cs" />
     <Compile Include="..\Microsoft.AppCenter.Crashes.Shared.Windows\**\*.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\AppCenter\Microsoft.AppCenter.UWP\Microsoft.AppCenter.UWP.csproj" />
-  </ItemGroup>
 </Project>

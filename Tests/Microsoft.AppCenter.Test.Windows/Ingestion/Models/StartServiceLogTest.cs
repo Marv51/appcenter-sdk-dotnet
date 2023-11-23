@@ -8,83 +8,82 @@ using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
+namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models;
+
+[TestClass]
+public class StartServiceLogTest
 {
-    [TestClass]
-    public class StartServiceLogTest
+    private const string StorageTestChannelName = "startServiceStorageTestChannelName";
+
+    [TestInitialize]
+    public void InitializeStartServiceTest()
     {
-        private const string StorageTestChannelName = "startServiceStorageTestChannelName";
+        LogSerializer.AddLogType(StartServiceLog.JsonIdentifier, typeof(StartServiceLog));
+    }
 
-        [TestInitialize]
-        public void InitializeStartServiceTest()
+    /// <summary>
+    /// Verify that default values are null (or 0 in offset case)
+    /// </summary>
+    [TestMethod]
+    public void CheckInitialValues()
+    {
+        var log = new StartServiceLog();
+        Assert.IsNull(log.Device);
+        Assert.AreEqual(0, log.Services.Count);
+        Assert.IsNull(log.Sid);
+        Assert.AreEqual(null, log.Timestamp);
+    }
+
+    /// <summary>
+    /// Validate that services names are coping
+    /// </summary>
+    [TestMethod]
+    public void CheckInitialValuesWithServices()
+    {
+        var servicesNames = new List<string> { "Service0", "Service1", "Service2" };
+        var log = new StartServiceLog();
+        log.Services = servicesNames;
+        Assert.IsNotNull(log.Services);
+        foreach (var serviceName in log.Services)
         {
-            LogSerializer.AddLogType(StartServiceLog.JsonIdentifier, typeof(StartServiceLog));
+            Assert.IsTrue(servicesNames.Contains(serviceName));
         }
+    }
 
-        /// <summary>
-        /// Verify that default values are null (or 0 in offset case)
-        /// </summary>
-        [TestMethod]
-        public void CheckInitialValues()
+    /// <summary>
+    /// Validate that name services can be correctly saved and restored
+    /// </summary>
+    [TestMethod]
+    public void SaveStartServiceLog()
+    {
+        Constants.AppCenterDatabasePath = "temp.db";
+        if (System.IO.File.Exists(Constants.AppCenterDatabasePath))
         {
-            var log = new StartServiceLog();
-            Assert.IsNull(log.Device);
-            Assert.AreEqual(0, log.Services.Count);
-            Assert.IsNull(log.Sid);
-            Assert.AreEqual(null, log.Timestamp);
-        }
-
-        /// <summary>
-        /// Validate that services names are coping
-        /// </summary>
-        [TestMethod]
-        public void CheckInitialValuesWithServices()
-        {
-            var servicesNames = new List<string> { "Service0", "Service1", "Service2" };
-            var log = new StartServiceLog();
-            log.Services = servicesNames;
-            Assert.IsNotNull(log.Services);
-            foreach (var serviceName in log.Services)
+            try
             {
-                Assert.IsTrue(servicesNames.Contains(serviceName));
+                System.IO.File.Delete(Constants.AppCenterDatabasePath);
+            }
+            catch
+            {
+                // ignored
             }
         }
-
-        /// <summary>
-        /// Validate that name services can be correctly saved and restored
-        /// </summary>
-        [TestMethod]
-        public void SaveStartServiceLog()
+        var addedLog = new StartServiceLog
         {
-            Constants.AppCenterDatabasePath = "temp.db";
-            if (System.IO.File.Exists(Constants.AppCenterDatabasePath))
-            {
-                try
-                {
-                    System.IO.File.Delete(Constants.AppCenterDatabasePath);
-                }
-                catch
-                {
-                    // ignored
-                }
-            }
-            var addedLog = new StartServiceLog
-            {
-                Device = new DeviceInformationHelper().GetDeviceInformationAsync().RunNotAsync(),
-                Timestamp = DateTime.Now,
-                Services = new List<string> { "Service0", "Service1", "Service2" },
-                Sid = Guid.NewGuid()
-            };
-            var storage = new Microsoft.AppCenter.Storage.Storage();
-            storage.DeleteLogs(StorageTestChannelName);
-            storage.PutLog(StorageTestChannelName, addedLog);
-            var retrievedLogs = new List<Log>();
-            storage.GetLogsAsync(StorageTestChannelName, 1, retrievedLogs).RunNotAsync();
-            var retrievedLog = retrievedLogs[0] as StartServiceLog;
-            foreach (var serviceName in addedLog.Services)
-            {
-                Assert.IsTrue(retrievedLog.Services.Contains(serviceName));
-            }
+            Device = new DeviceInformationHelper().GetDeviceInformationAsync().RunNotAsync(),
+            Timestamp = DateTime.Now,
+            Services = new List<string> { "Service0", "Service1", "Service2" },
+            Sid = Guid.NewGuid()
+        };
+        var storage = new Microsoft.AppCenter.Storage.Storage();
+        storage.DeleteLogs(StorageTestChannelName);
+        storage.PutLog(StorageTestChannelName, addedLog);
+        var retrievedLogs = new List<Log>();
+        storage.GetLogsAsync(StorageTestChannelName, 1, retrievedLogs).RunNotAsync();
+        var retrievedLog = retrievedLogs[0] as StartServiceLog;
+        foreach (var serviceName in addedLog.Services)
+        {
+            Assert.IsTrue(retrievedLog.Services.Contains(serviceName));
         }
     }
 }

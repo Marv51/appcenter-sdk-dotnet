@@ -4,13 +4,12 @@
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Contoso.UtilClassLibrary
+namespace Contoso.UtilClassLibrary;
+
+public static class CrashUtils
 {
-    public static class CrashUtils
+    public static Task BackgroundExceptionTask()
     {
-        public static Task BackgroundExceptionTask()
-        {
-            return Task.Run(() => throw new IOException("The answer is 42"));
-        }
+        return Task.Run(() => throw new IOException("The answer is 42"));
     }
 }

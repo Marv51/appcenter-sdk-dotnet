@@ -4,10 +4,9 @@
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Utils;
 
-namespace Microsoft.AppCenter.Analytics.Channel
+namespace Microsoft.AppCenter.Analytics.Channel;
+
+public interface ISessionTrackerFactory
 {
-    public interface ISessionTrackerFactory
-    {
-        ISessionTracker CreateSessionTracker(IChannelGroup channelGroup, IChannel channel, IApplicationSettings applicationSettings);
-    }
+    ISessionTracker CreateSessionTracker(IChannelGroup channelGroup, IChannel channel, IApplicationSettings applicationSettings);
 }

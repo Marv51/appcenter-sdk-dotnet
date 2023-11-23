@@ -4,20 +4,19 @@
 using Microsoft.AppCenter.Utils;
 using Moq;
 
-namespace Microsoft.AppCenter.Test.Utils
+namespace Microsoft.AppCenter.Test.Utils;
+
+public class MockApplicationSettingsFactory : IApplicationSettingsFactory
 {
-    public class MockApplicationSettingsFactory : IApplicationSettingsFactory
+    private readonly Mock<IApplicationSettings> _applicationSettingsMock;
+
+    public MockApplicationSettingsFactory(Mock<IApplicationSettings> applicationSettingsMock)
     {
-        private readonly Mock<IApplicationSettings> _applicationSettingsMock;
+        _applicationSettingsMock = applicationSettingsMock;
+    }
 
-        public MockApplicationSettingsFactory(Mock<IApplicationSettings> applicationSettingsMock)
-        {
-            _applicationSettingsMock = applicationSettingsMock;
-        }
-
-        public IApplicationSettings CreateApplicationSettings()
-        {
-            return _applicationSettingsMock.Object;
-        }
+    public IApplicationSettings CreateApplicationSettings()
+    {
+        return _applicationSettingsMock.Object;
     }
 }

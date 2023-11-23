@@ -3,15 +3,14 @@
 
 using System;
 
-namespace Microsoft.AppCenter
-{
-    internal class HttpException : Exception
-    {
-        internal HttpResponse HttpResponse { get; private set; }
+namespace Microsoft.AppCenter;
 
-        internal HttpException(HttpResponse httpResponse)
-        {
-            HttpResponse = httpResponse;
-        }
+internal class HttpException : Exception
+{
+    internal HttpResponse HttpResponse { get; private set; }
+
+    internal HttpException(HttpResponse httpResponse)
+    {
+        HttpResponse = httpResponse;
     }
 }

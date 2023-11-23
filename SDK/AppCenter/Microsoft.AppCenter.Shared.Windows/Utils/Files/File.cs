@@ -3,43 +3,42 @@
 
 using System.IO;
 
-namespace Microsoft.AppCenter.Utils.Files
+namespace Microsoft.AppCenter.Utils.Files;
+
+/// <summary>
+/// This class wraps System.IO.FileInfo for the unit tests.
+/// </summary>
+public class File
 {
+    private readonly FileInfo _underlyingFileInfo;
+
     /// <summary>
-    /// This class wraps System.IO.FileInfo for the unit tests.
+    /// Parameterless constructor needed for testing.
     /// </summary>
-    public class File
+    public File()
     {
-        private readonly FileInfo _underlyingFileInfo;
+    }
 
-        /// <summary>
-        /// Parameterless constructor needed for testing.
-        /// </summary>
-        public File()
-        {
-        }
+    public File(string filePath) : this(new FileInfo(filePath))
+    {
+    }
 
-        public File(string filePath) : this(new FileInfo(filePath))
-        {
-        }
+    internal File(FileInfo fileInfo)
+    {
+        _underlyingFileInfo = fileInfo;
+    }
 
-        internal File(FileInfo fileInfo)
-        {
-            _underlyingFileInfo = fileInfo;
-        }
+    public virtual string Name => _underlyingFileInfo.Name;
 
-        public virtual string Name => _underlyingFileInfo.Name;
+    public virtual string FullName => _underlyingFileInfo.FullName;
 
-        public virtual string FullName => _underlyingFileInfo.FullName;
+    public virtual void Delete()
+    {
+        _underlyingFileInfo.Delete();
+    }
 
-        public virtual void Delete()
-        {
-            _underlyingFileInfo.Delete();
-        }
-
-        public virtual string ReadAllText()
-        {
-            return System.IO.File.ReadAllText(FullName);
-        }
+    public virtual string ReadAllText()
+    {
+        return System.IO.File.ReadAllText(FullName);
     }
 }

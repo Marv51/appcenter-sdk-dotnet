@@ -4,25 +4,24 @@
 using System;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 
-namespace Microsoft.AppCenter.Crashes
+namespace Microsoft.AppCenter.Crashes;
+
+/// <summary>
+/// Error report containing information about a particular crash.
+/// </summary>
+public partial class ErrorReport
 {
     /// <summary>
-    /// Error report containing information about a particular crash.
+    /// Creates a new error report.
     /// </summary>
-    public partial class ErrorReport
+    /// <param name="log">The managed error log.</param>
+    /// <param name="stackTrace">The associated exception stack trace.</param>
+    public ErrorReport(ManagedErrorLog log, string stackTrace)
     {
-        /// <summary>
-        /// Creates a new error report.
-        /// </summary>
-        /// <param name="log">The managed error log.</param>
-        /// <param name="stackTrace">The associated exception stack trace.</param>
-        public ErrorReport(ManagedErrorLog log, string stackTrace)
-        {
-            Id = log.Id.ToString();
-            AppStartTime = new DateTimeOffset(log.AppLaunchTimestamp.Value);
-            AppErrorTime = new DateTimeOffset(log.Timestamp.Value);
-            Device = new Device(log.Device);
-            StackTrace = stackTrace;
-        }
+        Id = log.Id.ToString();
+        AppStartTime = new DateTimeOffset(log.AppLaunchTimestamp.Value);
+        AppErrorTime = new DateTimeOffset(log.Timestamp.Value);
+        Device = new Device(log.Device);
+        StackTrace = stackTrace;
     }
 }

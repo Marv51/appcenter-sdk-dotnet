@@ -3,20 +3,19 @@
 
 using System;
 
-namespace Microsoft.AppCenter.Utils
+namespace Microsoft.AppCenter.Utils;
+
+/// <summary>
+/// Utility for getting time information
+/// </summary>
+public static class TimeHelper
 {
     /// <summary>
-    /// Utility for getting time information
+    /// Gets the current time in milliseconds
     /// </summary>
-    public static class TimeHelper
+    /// <returns>The current time in milliseconds</returns>
+    public static long CurrentTimeInMilliseconds()
     {
-        /// <summary>
-        /// Gets the current time in milliseconds
-        /// </summary>
-        /// <returns>The current time in milliseconds</returns>
-        public static long CurrentTimeInMilliseconds()
-        {
-            return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-        }
+        return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
     }
 }

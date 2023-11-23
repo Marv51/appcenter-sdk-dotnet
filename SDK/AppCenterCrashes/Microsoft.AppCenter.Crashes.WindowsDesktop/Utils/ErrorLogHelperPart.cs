@@ -6,37 +6,36 @@ using System.Collections.Generic;
 using Microsoft.AppCenter.Crashes.Windows.Utils;
 using ModelException = Microsoft.AppCenter.Crashes.Ingestion.Models.Exception;
 
-namespace Microsoft.AppCenter.Crashes.Utils
+namespace Microsoft.AppCenter.Crashes.Utils;
+
+public partial class ErrorLogHelper
 {
-    public partial class ErrorLogHelper
+    internal static ErrorExceptionAndBinaries CreateModelExceptionAndBinaries(System.Exception exception)
     {
-        internal static ErrorExceptionAndBinaries CreateModelExceptionAndBinaries(System.Exception exception)
+        var modelException = new ModelException
         {
-            var modelException = new ModelException
+            Type = exception.GetType().ToString(),
+            Message = exception.Message,
+            StackTrace = exception.StackTrace
+        };
+        if (exception is AggregateException aggregateException)
+        {
+            if (aggregateException.InnerExceptions.Count != 0)
             {
-                Type = exception.GetType().ToString(),
-                Message = exception.Message,
-                StackTrace = exception.StackTrace
-            };
-            if (exception is AggregateException aggregateException)
-            {
-                if (aggregateException.InnerExceptions.Count != 0)
+                modelException.InnerExceptions = new List<ModelException>();
+                foreach (var innerException in aggregateException.InnerExceptions)
                 {
-                    modelException.InnerExceptions = new List<ModelException>();
-                    foreach (var innerException in aggregateException.InnerExceptions)
-                    {
-                        modelException.InnerExceptions.Add(CreateModelExceptionAndBinaries(innerException).Exception);
-                    }
+                    modelException.InnerExceptions.Add(CreateModelExceptionAndBinaries(innerException).Exception);
                 }
             }
-            else if (exception.InnerException != null)
-            {
-                modelException.InnerExceptions = modelException.InnerExceptions ?? new List<ModelException>();
-                modelException.InnerExceptions.Add(CreateModelExceptionAndBinaries(exception.InnerException).Exception);
-            }
-            
-            // Binary information is not required on this platform.
-            return new ErrorExceptionAndBinaries { Exception = modelException, Binaries = null };
         }
+        else if (exception.InnerException != null)
+        {
+            modelException.InnerExceptions = modelException.InnerExceptions ?? new List<ModelException>();
+            modelException.InnerExceptions.Add(CreateModelExceptionAndBinaries(exception.InnerException).Exception);
+        }
+        
+        // Binary information is not required on this platform.
+        return new ErrorExceptionAndBinaries { Exception = modelException, Binaries = null };
     }
 }
