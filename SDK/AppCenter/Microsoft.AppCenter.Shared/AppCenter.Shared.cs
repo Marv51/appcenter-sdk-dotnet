@@ -64,11 +64,11 @@ public partial class AppCenter
         var platformTargetToken = string.Empty;
         if (secretsDictionary.ContainsKey(platformIdentifier))
         {
-            secretsDictionary.TryGetValue(platformIdentifier, out platformSecret);
+            platformSecret = secretsDictionary[platformIdentifier];
         }
         if (secretsDictionary.ContainsKey(platformTargetIdentifier))
         {
-            secretsDictionary.TryGetValue(platformTargetIdentifier, out platformTargetToken);
+            platformTargetToken = secretsDictionary[platformTargetIdentifier];
         }
         if (string.IsNullOrEmpty(platformSecret) && string.IsNullOrEmpty(platformTargetToken))
         {
@@ -110,7 +110,7 @@ public partial class AppCenter
     /// Sets the two-letter ISO country code to send to the backend.
     /// </summary>
     /// <param name="countryCode">The two-letter ISO country code. See <see href="https://www.iso.org/obp/ui/#search"/> for more information.</param>
-    public static void SetCountryCode(string countryCode)
+    public static void SetCountryCode(string? countryCode)
     {
         PlatformSetCountryCode(countryCode);
     }
@@ -130,7 +130,7 @@ public partial class AppCenter
     /// Return the data residency region.
     /// </summary>
     /// <returns>Data residency region code if set, otherwise null.</returns>
-    public static string GetDataResidencyRegion()
+    public static string? GetDataResidencyRegion()
     {
         return PlatformGetDataResidencyRegion();
     }
@@ -212,11 +212,11 @@ public partial class AppCenter
     /// <param name="service3">Third service to use.</param>
     public static void Start(
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-        Type service1 = null,
+        Type? service1 = null,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-        Type service2 = null,
+        Type? service2 = null,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-        Type service3 = null)
+        Type? service3 = null)
     {
         PlatformStart(service1, service2, service3);
     }
@@ -231,11 +231,11 @@ public partial class AppCenter
     /// <param name="service3">Third of service to use.</param>
     public static void Start(string appSecret, 
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-        Type service1 = null,
+        Type? service1 = null,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-        Type service2 = null,
+        Type? service2 = null,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-        Type service3 = null)
+        Type? service3 = null)
     {
         PlatformStart(appSecret, service1, service2, service3);
     }

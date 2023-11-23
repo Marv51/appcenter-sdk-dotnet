@@ -15,6 +15,7 @@
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <!-- TODO: Fix XML documentation warnings. -->
     <NoWarn>1573;1591</NoWarn>
+	<Nullable>enable</Nullable>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 	<Authors>telani (Modified from Microsoft Open Source)</Authors>
 	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>

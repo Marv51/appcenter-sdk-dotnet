@@ -45,7 +45,7 @@ public partial class PageLog : LogWithProperties
     /// <param name="dataResidencyRegion">The data residency region code.</param>
     /// <param name="properties">Additional key/value pair parameters.
     /// </param>
-    public PageLog(Device device, string name, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string userId = default(string), string dataResidencyRegion = default(string), IDictionary<string, string> properties = default(IDictionary<string, string>))
+    public PageLog(Device device, string name, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string? userId = default(string), string? dataResidencyRegion = default(string), IDictionary<string, string>? properties = default(IDictionary<string, string>))
         : base(device, timestamp, sid, userId, dataResidencyRegion, properties)
     {
         Name = name;
@@ -62,7 +62,7 @@ public partial class PageLog : LogWithProperties
     ///
     /// </summary>
     [JsonProperty(PropertyName = "name")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     /// <summary>
     /// Validate the object.

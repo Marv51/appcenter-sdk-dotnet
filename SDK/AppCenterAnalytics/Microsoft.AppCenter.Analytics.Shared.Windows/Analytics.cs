@@ -26,14 +26,14 @@ public class Analytics : AppCenterService
 
     private static readonly object AnalyticsLock = new object();
 
-    private static volatile Analytics _instanceField;
+    private static volatile Analytics? _instanceField;
 
     // Stores the value of whether manual session tracker was enabled.
     private bool _isManualSessionTrackerEnabled = false;
 
     // Internal for testing purposes
-    private ISessionTracker _sessionTracker;
-    private readonly ISessionTrackerFactory _sessionTrackerFactory;
+    private ISessionTracker? _sessionTracker;
+    private readonly ISessionTrackerFactory? _sessionTrackerFactory;
 
     public static Analytics Instance
     {
@@ -93,7 +93,7 @@ public class Analytics : AppCenterService
     /// </remarks>
     /// <param name="name">An event name.</param>
     /// <param name="properties">Optional properties.</param>
-    public static void TrackEvent(string name, IDictionary<string, string> properties = null)
+    public static void TrackEvent(string name, IDictionary<string, string>? properties = null)
     {
         lock (AnalyticsLock)
         {
@@ -175,7 +175,7 @@ public class Analytics : AppCenterService
 
     public override string ServiceName => "Analytics";
 
-    private void InstanceTrackEvent(string name, IDictionary<string, string> properties = null)
+    private void InstanceTrackEvent(string name, IDictionary<string, string>? properties = null)
     {
         lock (_serviceLock)
         {
@@ -187,13 +187,14 @@ public class Analytics : AppCenterService
             if (ValidateName(ref name, type))
             {
                 properties = PropertyValidator.ValidateProperties(properties, $"{type} '{name}'");
-                var log = new EventLog(null, Guid.NewGuid(), name, null, null, null, AppCenter.PlatformGetDataResidencyRegion(), properties);
+                var log = new EventLog(device: null, Guid.NewGuid(), name, timestamp: null, sid: null, userId: null, AppCenter.PlatformGetDataResidencyRegion(), properties);
+                System.Diagnostics.Debug.Assert(Channel is not null);
                 Channel.EnqueueAsync(log);
             }
         }
     }
 
-    public override void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
+    public override void OnChannelGroupReady(IChannelGroup channelGroup, string? appSecret)
     {
         lock (_serviceLock)
         {
@@ -208,6 +209,7 @@ public class Analytics : AppCenterService
         {
             if (enabled && ChannelGroup != null && _sessionTracker == null)
             {
+                System.Diagnostics.Debug.Assert(Channel is not null);
                 _sessionTracker = CreateSessionTracker(ChannelGroup, Channel, ApplicationSettings);
                 if (_isManualSessionTrackerEnabled)
                 {
@@ -267,12 +269,12 @@ public class Analytics : AppCenterService
         ApplicationLifecycleHelper.Instance.ApplicationSuspended -= ApplicationSuspendedEventHandler;
     }
 
-    private void ApplicationResumingEventHandler(object sender, EventArgs e)
+    private void ApplicationResumingEventHandler(object? sender, EventArgs e)
     {
         _sessionTracker?.Resume();
     }
 
-    private void ApplicationSuspendedEventHandler(object sender, EventArgs e)
+    private void ApplicationSuspendedEventHandler(object? sender, EventArgs e)
     {
         _sessionTracker?.Pause();
     }

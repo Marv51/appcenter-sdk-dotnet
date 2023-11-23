@@ -34,7 +34,7 @@ public partial class Log
     /// </param>
     /// <param name="dataResidencyRegion">optional string used for specify data residency region.
     /// </param>
-    public Log(Device device, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string userId = default(string), string dataResidencyRegion = default(string))
+    public Log(Device? device, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string? userId = default(string), string? dataResidencyRegion = default(string))
     {
         Timestamp = timestamp;
         Sid = sid;
@@ -74,19 +74,19 @@ public partial class Log
     ///
     /// </summary>
     [JsonProperty(PropertyName = "userId")]
-    public string UserId { get; set; }
+    public string? UserId { get; set; }
 
     /// <summary>
     /// </summary>
     [JsonProperty(PropertyName = "device")]
-    public Device Device { get; set; }
+    public Device? Device { get; set; }
 
     /// <summary>
     /// Gets or sets optional string used for specify data residency region.
     ///
     /// </summary>
     [JsonProperty(PropertyName = "dataResidencyRegion")]
-    public string DataResidencyRegion { get; set; }
+    public string? DataResidencyRegion { get; set; }
 
     /// <summary>
     /// Validate the object.

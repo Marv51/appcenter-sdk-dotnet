@@ -19,9 +19,9 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows;
 [TestClass]
 public class CrashesErrorAttachmentTest
 {
-    private Mock<IChannelGroup> _mockChannelGroup;
-    private Mock<IChannelUnit> _mockChannel;
-    private Mock<IApplicationLifecycleHelper> _mockApplicationLifecycleHelper;
+    private Mock<IChannelGroup> _mockChannelGroup = null!;
+    private Mock<IChannelUnit> _mockChannel = null!;
+    private Mock<IApplicationLifecycleHelper> _mockApplicationLifecycleHelper = null!;
 
     [TestInitialize]
     public void InitializeCrashTest()
@@ -81,7 +81,7 @@ public class CrashesErrorAttachmentTest
         Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile1)).Returns(expectedException.ToString());
 
         // Implement attachments callback.
-        string actualException = null;
+        string? actualException = null;
         Crashes.GetErrorAttachments = errorReport =>
         {
             if (errorReport.Id == lastExpectedManagedErrorLog.Id.ToString())
@@ -94,7 +94,7 @@ public class CrashesErrorAttachmentTest
 
         Crashes.SetEnabledAsync(true).Wait();
         Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-        Crashes.Instance.ProcessPendingErrorsTask.Wait();
+        Crashes.Instance.ProcessPendingErrorsTask?.Wait();
 
         // Verify attachment log has been queued to the channel. (And only one attachment log).
         _mockChannel.Verify(channel => channel.EnqueueAsync(validErrorAttachment), Times.Once());
@@ -131,14 +131,14 @@ public class CrashesErrorAttachmentTest
         {
             if (errorReport.Id == expectedManagedErrorLog1.Id.ToString())
             {
-                return new List<ErrorAttachmentLog> { null };
+                return new List<ErrorAttachmentLog?> { null };
             }
             return null;
         };
 
         Crashes.SetEnabledAsync(true).Wait();
         Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-        Crashes.Instance.ProcessPendingErrorsTask.Wait();
+        Crashes.Instance.ProcessPendingErrorsTask?.Wait();
 
         // Verify nothing has been enqueued.
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<ErrorAttachmentLog>()), Times.Never());
@@ -201,7 +201,7 @@ public class CrashesErrorAttachmentTest
 
         Crashes.SetEnabledAsync(true).Wait();
         Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-        Crashes.Instance.ProcessPendingErrorsTask.Wait();
+        Crashes.Instance.ProcessPendingErrorsTask?.Wait();
 
         // Verify all valid attachment logs has been queued to the channel, but not invalid one.
         _mockChannel.Verify(channel => channel.EnqueueAsync(invalidErrorAttachment1), Times.Never());

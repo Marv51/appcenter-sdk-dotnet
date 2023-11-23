@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using SQLitePCL;
@@ -11,7 +12,7 @@ namespace Microsoft.AppCenter.Storage;
 
 internal class StorageAdapter : IStorageAdapter
 {
-    private sqlite3 _db;
+    private sqlite3? _db;
 
     static StorageAdapter()
     {
@@ -73,7 +74,7 @@ internal class StorageAdapter : IStorageAdapter
         }
     }
 
-    private void BindParameters(sqlite3_stmt stmt, IList<object> values)
+    private void BindParameters(sqlite3_stmt stmt, IList<object>? values)
     {
         for (var i = 0; i < values?.Count; i++)
         {
@@ -82,7 +83,7 @@ internal class StorageAdapter : IStorageAdapter
         }
     }
 
-    private object GetColumnValue(sqlite3_stmt stmt, int index)
+    private object? GetColumnValue(sqlite3_stmt stmt, int index)
     {
         var columnType = raw.sqlite3_column_type(stmt, index);
         switch (columnType)
@@ -96,7 +97,7 @@ internal class StorageAdapter : IStorageAdapter
         return null;
     }
 
-    private int ExecuteNonSelectionSqlQuery(string query, IList<object> args = null)
+    private int ExecuteNonSelectionSqlQuery(string query, IList<object>? args = null)
     {
         var db = _db ?? throw new StorageException("The database wasn't initialized.");
         var result = raw.sqlite3_prepare_v2(db, query, out var stmt);
@@ -124,7 +125,7 @@ internal class StorageAdapter : IStorageAdapter
         return result;
     }
 
-    private List<object[]> ExecuteSelectionSqlQuery(string query, IList<object> args = null)
+    private List<object[]> ExecuteSelectionSqlQuery(string query, IList<object>? args = null)
     {
         var db = _db ?? throw new StorageException("The database wasn't initialized.");
         var result = raw.sqlite3_prepare_v2(db, query, out var stmt);
@@ -139,7 +140,7 @@ internal class StorageAdapter : IStorageAdapter
             while (raw.sqlite3_step(stmt) == raw.SQLITE_ROW)
             {
                 var count = raw.sqlite3_column_count(stmt);
-                entries.Add(Enumerable.Range(0, count).Select(i => GetColumnValue(stmt, i)).ToArray());
+                entries.Add(Enumerable.Range(0, count).Select(i => GetColumnValue(stmt, i)).Where(i => i is not null).Cast<object>().ToArray());
             }
             return entries;
         }
@@ -250,7 +251,7 @@ internal class StorageAdapter : IStorageAdapter
         return (int)count;
     }
 
-    public IList<object[]> Select(string tableName, string columnName, object value, string excludeColumnName, object[] excludeValues, int? limit = null, string[] orderList = null)
+    public IList<object[]> Select(string tableName, string columnName, object value, string? excludeColumnName, object[]? excludeValues, int? limit = null, string[]? orderList = null)
     {
         var whereClause = $"{columnName} = ?";
         var args = new List<object> { value };

@@ -13,11 +13,11 @@ public abstract class AbstractDeviceInformationHelper : IDeviceInformationHelper
     public static string DefaultSystemManufacturer = "System manufacturer";
     public static string DefaultSystemProductName = "System Product Name";
     public static string DefaultSystemSku = "SKU";
-    public static event EventHandler InformationInvalidated;
-    private static string _country;
-    private static WrapperSdk _wrapperSdk;
+    public static event EventHandler? InformationInvalidated;
+    private static string? _country;
+    private static WrapperSdk? _wrapperSdk;
 
-    internal static void SetCountryCode(string countryCode)
+    internal static void SetCountryCode(string? countryCode)
     {
         _country = countryCode;
         InvalidateInformation(null, EventArgs.Empty);
@@ -25,7 +25,7 @@ public abstract class AbstractDeviceInformationHelper : IDeviceInformationHelper
 
     public virtual Task<Ingestion.Models.Device> GetDeviceInformationAsync()
     {
-        return Task.Run(() => GetDeviceInformation());
+        return Task.Run(GetDeviceInformation);
     }
 
     public virtual Ingestion.Models.Device GetDeviceInformation()
@@ -62,16 +62,16 @@ public abstract class AbstractDeviceInformationHelper : IDeviceInformationHelper
         _wrapperSdk = wrapperSdk;
     }
 
-    protected static void InvalidateInformation(object sender, EventArgs e)
+    protected static void InvalidateInformation(object? sender, EventArgs e)
     {
         InformationInvalidated?.Invoke(sender, e);
     }
 
     protected abstract string GetSdkName();
 
-    protected abstract string GetDeviceModel();
+    protected abstract string? GetDeviceModel();
 
-    protected abstract string GetDeviceOemName();
+    protected abstract string? GetDeviceOemName();
 
     protected abstract string GetOsName();
 
@@ -85,22 +85,22 @@ public abstract class AbstractDeviceInformationHelper : IDeviceInformationHelper
 
     protected abstract string GetScreenSize();
 
-    protected virtual string GetCarrierName()
+    protected virtual string? GetCarrierName()
     {
         return null;
     }
 
-    protected virtual string GetCarrierCountry()
+    protected virtual string? GetCarrierCountry()
     {
         return _country;
     }
 
-    protected virtual string GetAppNamespace()
+    protected virtual string? GetAppNamespace()
     {
         return null;
     }
 
-    protected virtual string GetLiveUpdateReleaseLabel()
+    protected virtual string? GetLiveUpdateReleaseLabel()
     {
         if (_wrapperSdk != null)
         {
@@ -109,7 +109,7 @@ public abstract class AbstractDeviceInformationHelper : IDeviceInformationHelper
         return null;
     }
 
-    protected virtual string GetLiveUpdateDevelopmentKey()
+    protected virtual string? GetLiveUpdateDevelopmentKey()
     {
         if (_wrapperSdk != null)
         {
@@ -118,7 +118,7 @@ public abstract class AbstractDeviceInformationHelper : IDeviceInformationHelper
         return null;
     }
 
-    protected virtual string GetLiveUpdatePackageHash()
+    protected virtual string? GetLiveUpdatePackageHash()
     {
         if (_wrapperSdk != null)
         {
@@ -127,9 +127,9 @@ public abstract class AbstractDeviceInformationHelper : IDeviceInformationHelper
         return null;
     }
 
-    private string GetSdkVersion()
+    private string? GetSdkVersion()
     {
-       return GetType().GetTypeInfo().Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+       return GetType().GetTypeInfo().Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
     }
 
     private string GetLocale()
@@ -142,7 +142,7 @@ public abstract class AbstractDeviceInformationHelper : IDeviceInformationHelper
         return (int)TimeZoneInfo.Local.BaseUtcOffset.TotalMinutes;
     }
 
-    private string GetWrapperSdkVersion()
+    private string? GetWrapperSdkVersion()
     {
         if (_wrapperSdk != null)
         {
@@ -150,7 +150,7 @@ public abstract class AbstractDeviceInformationHelper : IDeviceInformationHelper
         }
         return null;
     }
-    private string GetWrapperSdkName()
+    private string? GetWrapperSdkName()
     {
         if(_wrapperSdk != null)
         {
@@ -159,7 +159,7 @@ public abstract class AbstractDeviceInformationHelper : IDeviceInformationHelper
         return null;
     }
 
-    private string GetWrapperRuntimeVersion()
+    private string? GetWrapperRuntimeVersion()
     {
         if (_wrapperSdk != null)
         {

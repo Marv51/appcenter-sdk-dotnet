@@ -45,7 +45,7 @@ public interface IStorageAdapter : IDisposable
     /// <param name="limit">Maximum amount of items to select.</param>
     /// <param name="orderList">List of a column names to order selection result ascending.</param>
     /// <returns>Item list with array of objects. Array of objects is object[] representation of columns.</returns>
-    IList<object[]> Select(string tableName, string columnName, object value, string excludeColumnName, object[] excludeValues, int? limit = null, string[] orderList = null);
+    IList<object[]> Select(string tableName, string columnName, object value, string excludeColumnName, object[]? excludeValues, int? limit = null, string[]? orderList = null);
 
     /// <summary>
     /// Inserts data to table.

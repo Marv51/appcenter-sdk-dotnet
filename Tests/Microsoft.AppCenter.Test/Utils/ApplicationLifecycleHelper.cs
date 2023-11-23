@@ -7,7 +7,7 @@ namespace Microsoft.AppCenter.Utils;
 
 public class ApplicationLifecycleHelper : IApplicationLifecycleHelper
 {
-    private static IApplicationLifecycleHelper _instance;
+    private static IApplicationLifecycleHelper? _instance;
     public static IApplicationLifecycleHelper Instance
     {
         get { return _instance ?? (_instance = new ApplicationLifecycleHelper()); }
@@ -20,7 +20,7 @@ public class ApplicationLifecycleHelper : IApplicationLifecycleHelper
     internal void InvokeSuspended()
     {
         IsSuspended = true;
-        ApplicationSuspended?.Invoke(null, null);
+        ApplicationSuspended?.Invoke(null, new EventArgs());
     }
 
     // Internal for testing
@@ -30,7 +30,7 @@ public class ApplicationLifecycleHelper : IApplicationLifecycleHelper
         // it will automatically happen beforehand
         DeviceInformationHelper.RefreshDisplayCache();
         IsSuspended = false;
-        ApplicationResuming?.Invoke(null, null);
+        ApplicationResuming?.Invoke(null, new EventArgs());
     }
 
     // Internal for testing
@@ -39,7 +39,7 @@ public class ApplicationLifecycleHelper : IApplicationLifecycleHelper
         UnhandledExceptionOccurred?.Invoke(null, new UnhandledExceptionOccurredEventArgs(new Exception()));
     }
 
-    public event EventHandler ApplicationSuspended;
-    public event EventHandler ApplicationResuming;
-    public event EventHandler<UnhandledExceptionOccurredEventArgs> UnhandledExceptionOccurred;
+    public event EventHandler? ApplicationSuspended;
+    public event EventHandler? ApplicationResuming;
+    public event EventHandler<UnhandledExceptionOccurredEventArgs>? UnhandledExceptionOccurred;
 }

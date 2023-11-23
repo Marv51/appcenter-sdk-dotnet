@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -36,31 +37,32 @@ public partial class AppCenter
     // The lock is static. Instance methods are not necessarily thread safe, but static methods are
     private static readonly object AppCenterLock = new object();
 
-    private static IApplicationSettingsFactory _applicationSettingsFactory;
-    private static IChannelGroupFactory _channelGroupFactory;
+    private static IApplicationSettingsFactory? _applicationSettingsFactory;
+    private static IChannelGroupFactory? _channelGroupFactory;
 
     private readonly IApplicationSettings _applicationSettings;
-    private INetworkStateAdapter _networkStateAdapter;
-    private IChannelGroup _channelGroup;
-    private IChannelUnit _channel;
+    private INetworkStateAdapter? _networkStateAdapter;
+    private IChannelGroup? _channelGroup;
+    private IChannelUnit? _channel;
     private readonly HashSet<IAppCenterService> _services = new HashSet<IAppCenterService>();
-    private List<string> _startedServiceNames;
-    private string _logUrl;
+    private List<string>? _startedServiceNames;
+    private string? _logUrl;
     private bool _instanceConfigured;
-    private string _appSecret;
+    private string? _appSecret;
     private long _storageMaxSize;
-    private string _dataResidencyResion;
-    private TaskCompletionSource<bool> _storageTaskCompletionSource;
+    private string? _dataResidencyResion;
+    private TaskCompletionSource<bool>? _storageTaskCompletionSource;
 
     #region static
 
     // The shared instance of AppCenter
-    private static volatile AppCenter _instanceField;
+    private static volatile AppCenter? _instanceField;
 
     /// <summary>
     /// Gets or sets the shared instance of App Center. Should never return null.
     /// Setter is for testing.
     /// </summary>
+    [AllowNull]
     internal static AppCenter Instance
     {
         get
@@ -124,7 +126,7 @@ public partial class AppCenter
     /// Sets the two-letter ISO country code to send to the backend.
     /// </summary>
     /// <param name="countryCode">The two-letter ISO country code. See <see href="https://www.iso.org/obp/ui/#search"/> for more information.</param>
-    public static void PlatformSetCountryCode(string countryCode)
+    public static void PlatformSetCountryCode(string? countryCode)
     {
         if (countryCode != null && countryCode.Length != 2)
         {
@@ -151,7 +153,7 @@ public partial class AppCenter
     /// Get the data residency region.
     /// </summary>
     /// <returns>Data residency region code.</returns>
-    public static string PlatformGetDataResidencyRegion()
+    public static string? PlatformGetDataResidencyRegion()
     {
         return Instance._dataResidencyResion;
     }
@@ -190,7 +192,7 @@ public partial class AppCenter
         }
     }
 
-    static void PlatformSetUserId(string userId)
+    static void PlatformSetUserId(string? userId)
     {
         if (userId != null && !UserIdContext.CheckUserIdValidForAppCenter(userId))
         {
@@ -211,7 +213,15 @@ public partial class AppCenter
     {
         lock (AppCenterLock)
         {
-            var value = Instance._applicationSettings.GetValue<Guid?>(InstallIdKey);
+            Guid? value = null;
+            try
+            {
+                value = Instance._applicationSettings.GetValue<Guid?>(InstallIdKey);
+            }
+            catch (TargetInvocationException)
+            {
+
+            }
             if (value == null)
             {
                 value = Guid.NewGuid();
@@ -262,11 +272,11 @@ public partial class AppCenter
 
     static void PlatformStart(
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-        Type service1 = null,
+        Type? service1 = null,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-        Type service2 = null,
+        Type? service2 = null,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-        Type service3 = null)
+        Type? service3 = null)
     {
         lock (AppCenterLock)
         {
@@ -283,11 +293,11 @@ public partial class AppCenter
 
     static void PlatformStart(string appSecret, 
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-        Type service1 = null,
+        Type? service1 = null,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-        Type service2 = null,
+        Type? service2 = null,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-        Type service3 = null)
+        Type? service3 = null)
     {
         lock (AppCenterLock)
         {
@@ -343,7 +353,7 @@ public partial class AppCenter
     }
 
     internal IApplicationSettings ApplicationSettings => _applicationSettings;
-    internal INetworkStateAdapter NetworkStateAdapter => _networkStateAdapter;
+    internal INetworkStateAdapter? NetworkStateAdapter => _networkStateAdapter;
 
     private bool InstanceEnabled => _applicationSettings.GetValue(EnabledKey, true);
 
@@ -375,6 +385,7 @@ public partial class AppCenter
         {
             var startServiceLog = new StartServiceLog { Services = _startedServiceNames, DataResidencyRegion = PlatformGetDataResidencyRegion() };
             _startedServiceNames = null;
+            Debug.Assert(_channel is not null);
             return _channel.EnqueueAsync(startServiceLog);
         }
         return Task.FromResult(default(object));
@@ -412,7 +423,7 @@ public partial class AppCenter
         return _storageTaskCompletionSource.Task;
     }
 
-    private void OnUnhandledExceptionOccurred(object sender, UnhandledExceptionOccurredEventArgs args)
+    private void OnUnhandledExceptionOccurred(object? sender, UnhandledExceptionOccurredEventArgs args)
     {
         // Make sure that all storage operations are complete.
         _channelGroup?.WaitStorageOperationsAsync().GetAwaiter().GetResult();
@@ -452,11 +463,11 @@ public partial class AppCenter
 
     internal void StartInstance(
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-        Type service1 = null,
+        Type? service1 = null,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-        Type service2 = null,
+        Type? service2 = null,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-        Type service3 = null)
+        Type? service3 = null)
     {
         if (!_instanceConfigured)
         {
@@ -470,11 +481,11 @@ public partial class AppCenter
         {
             StartService(service1, serviceNames);
         }
-        if (service1 is not null)
+        if (service2 is not null)
         {
             StartService(service2, serviceNames);
         }
-        if (service1 is not null)
+        if (service3 is not null)
         {
             StartService(service3, serviceNames);
         }
@@ -484,6 +495,7 @@ public partial class AppCenter
         {
             if (InstanceEnabled)
             {
+                Debug.Assert(_channel is not null);
                 _channel.EnqueueAsync(new StartServiceLog { Services = serviceNames, DataResidencyRegion = PlatformGetDataResidencyRegion() }).ConfigureAwait(false);
             }
             else

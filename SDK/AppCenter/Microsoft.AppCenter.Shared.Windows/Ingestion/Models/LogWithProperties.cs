@@ -36,7 +36,7 @@ public partial class LogWithProperties : Log
     /// <param name="dataResidencyRegion">The data residency region code.</param>
     /// <param name="properties">Additional key/value pair parameters.
     /// </param>
-    public LogWithProperties(Device device, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string userId = default(string), string dataResidencyRegion = default(string), IDictionary<string, string> properties = default(IDictionary<string, string>))
+    public LogWithProperties(Device? device, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string? userId = default(string), string? dataResidencyRegion = default(string), IDictionary<string, string>? properties = default(IDictionary<string, string>))
         : base(device, timestamp, sid, userId, dataResidencyRegion)
     {
         Properties = properties;
@@ -53,7 +53,7 @@ public partial class LogWithProperties : Log
     ///
     /// </summary>
     [JsonProperty(PropertyName = "properties")]
-    public IDictionary<string, string> Properties { get; set; }
+    public IDictionary<string, string>? Properties { get; set; }
 
     /// <summary>
     /// Validate the object.

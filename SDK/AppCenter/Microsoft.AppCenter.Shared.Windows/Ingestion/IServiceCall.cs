@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.AppCenter.Ingestion;
 
@@ -20,17 +21,18 @@ public interface IServiceCall : IDisposable
     /// <summary>
     /// Check if the call is completed due to an unhandled exception.
     /// </summary>
+    [MemberNotNullWhen(true, nameof(Exception))]
     bool IsFaulted { get; }
 
     /// <summary>
     /// HTTP payload.
     /// </summary>
-    string Result { get; }
+    string? Result { get; }
 
     /// <summary>
     /// The exception thrown from the pipeline.
     /// </summary>
-    Exception Exception { get; }
+    Exception? Exception { get; }
 
     /// <summary>
     /// Handle call results.

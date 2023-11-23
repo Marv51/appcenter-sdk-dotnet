@@ -85,34 +85,34 @@ public class ErrorLogHelperTest
         var log = ErrorLogHelper.CreateErrorLog(exception);
 
         // Validate the result.
-        Assert.AreEqual(exception.StackTrace, log.Exception.StackTrace);
-        Assert.AreEqual(exception.Message, log.Exception.Message);
-        Assert.AreEqual(3, log.Exception.InnerExceptions.Count, 3);
-        Assert.AreEqual((exception as AggregateException).InnerExceptions[0].Message, log.Exception.InnerExceptions[0].Message);
-        Assert.AreEqual((exception as AggregateException).InnerExceptions[1].Message, log.Exception.InnerExceptions[1].Message);
-        Assert.AreEqual((exception as AggregateException).InnerExceptions[1].InnerException.Message, log.Exception.InnerExceptions[1].InnerExceptions[0].Message);
-        Assert.AreEqual(device.SdkName, log.Device.SdkName);
-        Assert.AreEqual(device.SdkVersion, log.Device.SdkVersion);
-        Assert.AreEqual(device.OsName, log.Device.OsName);
-        Assert.AreEqual(device.OsVersion, log.Device.OsVersion);
-        Assert.AreEqual(device.Locale, log.Device.Locale);
-        Assert.AreEqual(device.TimeZoneOffset, log.Device.TimeZoneOffset);
-        Assert.AreEqual(device.AppVersion, log.Device.AppVersion);
-        Assert.AreEqual(device.AppBuild, log.Device.AppBuild);
-        Assert.AreEqual(device.WrapperSdkVersion, log.Device.WrapperSdkVersion);
-        Assert.AreEqual(device.WrapperSdkName, log.Device.WrapperSdkName);
-        Assert.AreEqual(device.Model, log.Device.Model);
-        Assert.AreEqual(device.OemName, log.Device.OemName);
-        Assert.AreEqual(device.OsBuild, log.Device.OsBuild);
-        Assert.AreEqual(device.OsApiLevel, log.Device.OsApiLevel);
-        Assert.AreEqual(device.ScreenSize, log.Device.ScreenSize);
-        Assert.AreEqual(device.CarrierName, log.Device.CarrierName);
-        Assert.AreEqual(device.CarrierCountry, log.Device.CarrierCountry);
-        Assert.AreEqual(device.AppNamespace, log.Device.AppNamespace);
-        Assert.AreEqual(device.LiveUpdateDeploymentKey, log.Device.LiveUpdateDeploymentKey);
-        Assert.AreEqual(device.LiveUpdatePackageHash, log.Device.LiveUpdatePackageHash);
-        Assert.AreEqual(device.LiveUpdateReleaseLabel, log.Device.LiveUpdateReleaseLabel);
-        Assert.AreEqual(device.WrapperRuntimeVersion, log.Device.WrapperRuntimeVersion);
+        Assert.AreEqual(exception.StackTrace, log.Exception?.StackTrace);
+        Assert.AreEqual(exception.Message, log.Exception?.Message);
+        Assert.AreEqual(3, log.Exception?.InnerExceptions?.Count);
+        Assert.AreEqual((exception as AggregateException)?.InnerExceptions[0].Message, log.Exception?.InnerExceptions?[0].Message);
+        Assert.AreEqual((exception as AggregateException)?.InnerExceptions[1].Message, log.Exception?.InnerExceptions?[1].Message);
+        Assert.AreEqual((exception as AggregateException)?.InnerExceptions[1]?.InnerException?.Message, log.Exception?.InnerExceptions?[1]?.InnerExceptions?[0].Message);
+        Assert.AreEqual(device.SdkName, log.Device?.SdkName);
+        Assert.AreEqual(device.SdkVersion, log.Device?.SdkVersion);
+        Assert.AreEqual(device.OsName, log.Device?.OsName);
+        Assert.AreEqual(device.OsVersion, log.Device?.OsVersion);
+        Assert.AreEqual(device.Locale, log.Device?.Locale);
+        Assert.AreEqual(device.TimeZoneOffset, log.Device?.TimeZoneOffset);
+        Assert.AreEqual(device.AppVersion, log.Device?.AppVersion);
+        Assert.AreEqual(device.AppBuild, log.Device?.AppBuild);
+        Assert.AreEqual(device.WrapperSdkVersion, log.Device?.WrapperSdkVersion);
+        Assert.AreEqual(device.WrapperSdkName, log.Device?.WrapperSdkName);
+        Assert.AreEqual(device.Model, log.Device?.Model);
+        Assert.AreEqual(device.OemName, log.Device?.OemName);
+        Assert.AreEqual(device.OsBuild, log.Device?.OsBuild);
+        Assert.AreEqual(device.OsApiLevel, log.Device?.OsApiLevel);
+        Assert.AreEqual(device.ScreenSize, log.Device?.ScreenSize);
+        Assert.AreEqual(device.CarrierName, log.Device?.CarrierName);
+        Assert.AreEqual(device.CarrierCountry, log.Device?.CarrierCountry);
+        Assert.AreEqual(device.AppNamespace, log.Device?.AppNamespace);
+        Assert.AreEqual(device.LiveUpdateDeploymentKey, log.Device?.LiveUpdateDeploymentKey);
+        Assert.AreEqual(device.LiveUpdatePackageHash, log.Device?.LiveUpdatePackageHash);
+        Assert.AreEqual(device.LiveUpdateReleaseLabel, log.Device?.LiveUpdateReleaseLabel);
+        Assert.AreEqual(device.WrapperRuntimeVersion, log.Device?.WrapperRuntimeVersion);
         Assert.AreEqual(parentProcessId, log.ParentProcessId);
         Assert.AreEqual(parentProcessName, log.ParentProcessName);
         Assert.AreEqual(processArchitecture, log.Architecture);
@@ -147,7 +147,7 @@ public class ErrorLogHelperTest
     public void GetSingleErrorLogFileDoesNotThrow(Type exceptionType)
     {
         // Use reflection to create an exception of the given C# type.
-        var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
+        var exception = exceptionType.GetConstructor(Type.EmptyTypes)?.Invoke(null) as System.Exception;
         var mockDirectory = Mock.Of<Directory>();
         ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
         Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles(It.IsAny<string>())).Throws(exception);
@@ -203,7 +203,7 @@ public class ErrorLogHelperTest
     public void GetErrorLogFilesDoesNotThrow(Type exceptionType)
     {
         // Use reflection to create an exception of the given C# type.
-        var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
+        var exception = exceptionType.GetConstructor(Type.EmptyTypes)?.Invoke(null) as System.Exception;
         var mockDirectory = Mock.Of<Directory>();
         ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
         Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles(It.IsAny<string>())).Throws(exception);
@@ -225,8 +225,8 @@ public class ErrorLogHelperTest
         var mockFile = Mock.Of<File>();
         Mock.Get(mockFile).Setup(file => file.ReadAllText()).Returns(serializedErrorLog);
         var actualContents = ErrorLogHelper.ReadErrorLogFile(mockFile);
-        Assert.AreEqual(errorLog.Id, actualContents.Id);
-        Assert.AreEqual(errorLog.ProcessId, actualContents.ProcessId);
+        Assert.AreEqual(errorLog.Id, actualContents?.Id);
+        Assert.AreEqual(errorLog.ProcessId, actualContents?.ProcessId);
     }
 
     [TestMethod]
@@ -300,9 +300,11 @@ public class ErrorLogHelperTest
         ErrorLogHelper.SaveErrorLogFiles(expectedException, errorLog);
 
         // Verify obfuscated data.
-        var fileExceptionContent = ErrorLogHelper.GetStoredExceptionFile(errorLog.Id).ReadAllText();
-        var fileErrorContant = ErrorLogHelper.GetStoredErrorLogFile(errorLog.Id).ReadAllText();
-        Assert.IsFalse(fileErrorContant.Contains(Constants.UserName));
+        var fileExceptionContent = ErrorLogHelper.GetStoredExceptionFile(errorLog.Id)?.ReadAllText();
+        var fileErrorContent = ErrorLogHelper.GetStoredErrorLogFile(errorLog.Id)?.ReadAllText();
+        Assert.IsNotNull(fileErrorContent);
+        Assert.IsNotNull(fileExceptionContent);
+        Assert.IsFalse(fileErrorContent.Contains(Constants.UserName));
         Assert.IsFalse(fileExceptionContent.Contains(Constants.UserName));
     }
 
@@ -327,7 +329,7 @@ public class ErrorLogHelperTest
         var mockDirectory = Mock.Of<Directory>();
         ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
         Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles(It.IsAny<string>())).Throws(exception);
-        ErrorLogHelper.SaveErrorLogFiles(null, errorLog);
+        ErrorLogHelper.SaveErrorLogFiles(null!, errorLog);
 
         // No exception should be thrown.
     }
@@ -356,6 +358,7 @@ public class ErrorLogHelperTest
         // Given we succeed saving log file but fail saving exception file.
         ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
 
+        Assert.IsNotNull(exception);
         // When we save files.
         ErrorLogHelper.SaveErrorLogFiles(exception, errorLog);
 
@@ -384,7 +387,7 @@ public class ErrorLogHelperTest
     public void RemoveStoredErrorLogFileDoesNotThrow(Type exceptionType)
     {
         // Use reflection to create an exception of the given C# type.
-        var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
+        var exception = exceptionType.GetConstructor(Type.EmptyTypes)?.Invoke(null) as System.Exception;
         var file = Mock.Of<File>();
         Mock.Get(file).Setup(f => f.Delete()).Throws(exception);
         var expectedFiles = new List<File> { file };
@@ -416,7 +419,7 @@ public class ErrorLogHelperTest
     public void RemoveAllStoredErrorLogFilesDoesNotThrow(Type exceptionType)
     {
         // Use reflection to create an exception of the given C# type.
-        var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
+        var exception = exceptionType.GetConstructor(Type.EmptyTypes)?.Invoke(null) as System.Exception;
         var mockDirectory = Mock.Of<Directory>();
         ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
         Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles(It.IsAny<string>())).Throws(exception);
@@ -460,7 +463,7 @@ public class ErrorLogHelperTest
     {
         // Check obfuscation a username when the path is empty.
         string path = "";
-        string obfuscateResult = ErrorLogHelper.ObfuscateUserName(path);
+        string? obfuscateResult = ErrorLogHelper.ObfuscateUserName(path);
         Assert.AreEqual(obfuscateResult, path);
 
         // Check obfuscation a username when the path is null.
@@ -472,7 +475,7 @@ public class ErrorLogHelperTest
     public void ObfuscateUserNameWhenUserNameNullOrEmpty()
     {
         // Check obfuscation a username when the username is null.
-        Constants.UserName = null;
+        Constants.UserName = null!;
         string path = $"C:\\{Constants.UserName}\\some\\path";
         string obfuscateResult = ErrorLogHelper.ObfuscateUserName(path);
         Assert.AreEqual(obfuscateResult, path);
@@ -510,7 +513,7 @@ public class ErrorLogHelperTest
     public void RemoveExceptionFileDoesNotThrowWhenRetrievingFileToDelete(Type exceptionType)
     {
         // Use reflection to create an exception of the given C# type.
-        var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
+        var exception = exceptionType.GetConstructor(Type.EmptyTypes)?.Invoke(null) as System.Exception;
         var mockDirectory = Mock.Of<Directory>();
         ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
         Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles(It.IsAny<string>())).Throws(exception);
@@ -526,7 +529,7 @@ public class ErrorLogHelperTest
     public void RemoveExceptionFileDoesNotThrowWhenDeleteFails(Type exceptionType)
     {
         // Use reflection to create an exception of the given C# type.
-        var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
+        var exception = exceptionType.GetConstructor(Type.EmptyTypes)?.Invoke(null) as System.Exception;
         var file = Mock.Of<File>();
         Mock.Get(file).Setup(f => f.Delete()).Throws(exception);
         var expectedFiles = new List<File> { file };

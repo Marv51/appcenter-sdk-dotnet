@@ -13,9 +13,9 @@ namespace Microsoft.AppCenter.Test.Windows.Storage;
 [TestClass]
 public class StorageAdapterTest
 {
-    private StorageAdapter _adapter;
+    private StorageAdapter _adapter = null!;
 
-    private StorageTestUtils _storageUtils;
+    private StorageTestUtils _storageUtils = null!;
 
     // Constants data mocks.
     private const string StorageTestChannelName = "storageTestChannelName";
@@ -47,7 +47,7 @@ public class StorageAdapterTest
         try
         {
             _adapter.Dispose();
-            _adapter = null;
+            _adapter = null!;
         }
         catch (Exception e)
         {
@@ -168,7 +168,7 @@ public class StorageAdapterTest
         Assert.AreEqual(1, count);
 
         // Verify.
-        var testEntries = _adapter.Select(TableName, ColumnChannelName, StorageTestChannelName, null, null).ToList();
+        var testEntries = _adapter.Select(TableName, ColumnChannelName, StorageTestChannelName, excludeColumnName: null, excludeValues: null).ToList();
         Assert.AreEqual(1, testEntries.Count);
         var entryId = 0L;
         testEntries.ForEach(entry =>

@@ -17,7 +17,7 @@ public delegate bool ShouldProcessErrorReportCallback(ErrorReport report);
 /// </summary>
 /// <returns>The error attachments to be associated with <c>report</c>.</returns>
 /// <param name="report">The error report for which error attachments are to be returned.</param>
-public delegate IEnumerable<ErrorAttachmentLog> GetErrorAttachmentsCallback(ErrorReport report);
+public delegate IEnumerable<ErrorAttachmentLog?>? GetErrorAttachmentsCallback(ErrorReport report);
 
 /// <summary>
 /// Determine whether user confirmation is required to process a report. <see cref="Crashes.NotifyUserConfirmation"/> must be called by yourself./> 
@@ -30,18 +30,18 @@ public delegate bool ShouldAwaitUserConfirmationCallback();
 /// </summary>
 /// <param name="sender">This parameter will be <c>null</c> when being sent from the <see cref="Crashes"/> class and should be ignored. </param>
 /// <param name="e">Event arguments. See <see cref="SendingErrorReportEventArgs"/> for more details.</param>
-public delegate void SendingErrorReportEventHandler(object sender, SendingErrorReportEventArgs e);
+public delegate void SendingErrorReportEventHandler(object? sender, SendingErrorReportEventArgs e);
 
 /// <summary>
 /// Handler type for event <see cref="Crashes.SentErrorReport"/>.
 /// </summary>
 /// <param name="sender">This parameter will be <c>null</c> when being sent from the <see cref="Crashes"/> class and should be ignored. </param>
 /// <param name="e">Event arguments. See <see cref="SentErrorReportEventArgs"/> for more details.</param>
-public delegate void SentErrorReportEventHandler(object sender, SentErrorReportEventArgs e);
+public delegate void SentErrorReportEventHandler(object? sender, SentErrorReportEventArgs e);
 
 /// <summary>
 /// Handler type for event <see cref="Crashes.FailedToSendErrorReport"/>.
 /// </summary>
 /// <param name="sender">This parameter will be <c>null</c> when being sent from the <see cref="Crashes"/> class and should be ignored. </param>
 /// <param name="e">Event arguments. See <see cref="FailedToSendErrorReportEventArgs"/> for more details.</param>
-public delegate void FailedToSendErrorReportEventHandler(object sender, FailedToSendErrorReportEventArgs e);
+public delegate void FailedToSendErrorReportEventHandler(object? sender, FailedToSendErrorReportEventArgs e);

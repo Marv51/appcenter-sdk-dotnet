@@ -26,5 +26,5 @@ public class NetworkStateAdapter : INetworkStateAdapter
         }
     }
 
-    public event EventHandler NetworkStatusChanged;
+    public event EventHandler? NetworkStatusChanged;
 }

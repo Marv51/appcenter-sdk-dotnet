@@ -14,7 +14,7 @@ public class ErrorReportEventArgs : EventArgs
     /// <summary>
     /// The error report associated with the event.
     /// </summary>
-    public ErrorReport Report;
+    public ErrorReport? Report;
 }
 
 /// <summary>
@@ -35,5 +35,5 @@ public class FailedToSendErrorReportEventArgs : ErrorReportEventArgs
     /// <summary>
     /// The native exception associated with the failure.
     /// </summary>
-    public object Exception;
+    public object? Exception;
 }

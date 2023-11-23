@@ -3,6 +3,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,13 +26,13 @@ using Channel = Microsoft.AppCenter.Channel.Channel;
 [TestClass]
 public class ChannelTest
 {
-    private AggregateException _unobservedTaskException;
+    private AggregateException? _unobservedTaskException;
 
-    private Mock<IIngestion> _mockIngestion;
+    private Mock<IIngestion> _mockIngestion = null!;
 
-    private Channel _channel;
+    private Channel _channel = null!;
 
-    private IStorage _storage;
+    private IStorage? _storage = null!;
 
     private const string ChannelName = "test";
 
@@ -38,7 +40,7 @@ public class ChannelTest
 
     private const int MaxParallelBatches = 3;
 
-    // Event semaphores for invokation verification
+    // Event semaphores for invocation verification
     private const int SendingLogSemaphoreIdx = 0;
 
     private const int SentLogSemaphoreIdx = 1;
@@ -49,7 +51,7 @@ public class ChannelTest
 
     private const int FilteringLogSemaphoreIdx = 4;
 
-    private List<SemaphoreSlim> _eventSemaphores;
+    private List<SemaphoreSlim>? _eventSemaphores;
 
     public ChannelTest()
     {
@@ -84,7 +86,7 @@ public class ChannelTest
         }
     }
 
-    private void OnUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+    private void OnUnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
     {
         _unobservedTaskException = e.Exception;
     }
@@ -295,6 +297,7 @@ public class ChannelTest
         mockHttpClient.Verify(setup => setup.SendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()), Times.AtMost(MaxLogsPerBatch));
 
         // Verify that FailedToSendLog wasn't called.
+        Debug.Assert(_eventSemaphores is not null);
         Assert.AreNotEqual(MaxLogsPerBatch, EventWithSemaphoreOccurred(_eventSemaphores[FailedToSendLogSemaphoreIdx]),
            $"Failed on verify {nameof(Channel.FailedToSendLog)} event call times");
     }
@@ -430,7 +433,7 @@ public class ChannelTest
         storage.Setup(s => s.DeleteLogs(It.IsAny<string>(), It.IsAny<string>())).Throws(storageException);
         storage.Setup(s => s.GetLogsAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<List<Log>>()))
             .Callback((string channelName, int limit, List<Log> logs) => logs.Add(log))
-            .Returns(() => Task.FromResult("test-batch-id"));
+            .Returns(() => Task.FromResult((string?)"test-batch-id"));
 
         var appSecret = Guid.NewGuid().ToString();
         _channel = new Channel(ChannelName, 1, TimeSpan.FromSeconds(1), 1, appSecret, _mockIngestion.Object, storage.Object);
@@ -614,7 +617,7 @@ public class ChannelTest
             storage.Setup(s => s.DeleteLogs(It.IsAny<string>())).Throws(storageException);
             storage.Setup(s => s.GetLogsAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<List<Log>>()))
                 .Callback((string channelName, int limit, List<Log> logs) => logs.Add(log))
-                .Returns(() => Task.FromResult("test-batch-id"));
+                .Returns(() => Task.FromResult((string?)"test-batch-id"));
 
             // Prepare data.
             var appSecret = Guid.NewGuid().ToString();
@@ -654,7 +657,7 @@ public class ChannelTest
             storage.Setup(s => s.DeleteLogs(It.IsAny<string>())).Throws(storageException);
             storage.Setup(s => s.GetLogsAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<List<Log>>()))
                 .Callback((string channelName, int limit, List<Log> logs) => logs.Add(log))
-                .Returns(() => Task.FromResult("test-batch-id"));
+                .Returns(() => Task.FromResult((string?)"test-batch-id"));
 
             // Prepare data.
             var appSecret = Guid.NewGuid().ToString();
@@ -695,7 +698,7 @@ public class ChannelTest
             storage.Setup(s => s.DeleteLogs(It.IsAny<string>())).Throws(storageException);
             storage.Setup(s => s.GetLogsAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<List<Log>>()))
                 .Callback((string channelName, int limit, List<Log> logs) => logs.Add(log))
-                .Returns(() => Task.FromResult("test-batch-id"));
+                .Returns(() => Task.FromResult((string?)"test-batch-id"));
 
             // Prepare data.
             var appSecret = Guid.NewGuid().ToString();
@@ -766,6 +769,7 @@ public class ChannelTest
             });
     }
 
+    [MemberNotNull(nameof(_eventSemaphores))]
     private void SetupEventCallbacks()
     {
         _eventSemaphores = new List<SemaphoreSlim>
@@ -779,25 +783,41 @@ public class ChannelTest
         _channel.FilteringLog += (sender, args) => { _eventSemaphores[FilteringLogSemaphoreIdx].Release(); };
     }
 
-    private void VerifySendingLog(int expectedTimes) =>
+    private void VerifySendingLog(int expectedTimes)
+    {
+        Debug.Assert(_eventSemaphores is not null);
         Assert.AreEqual(expectedTimes, EventWithSemaphoreOccurred(_eventSemaphores[SendingLogSemaphoreIdx]),
             $"Failed on verify {nameof(Channel.SendingLog)} event call times");
+    }
 
-    private void VerifySentLog(int expectedTimes) =>
+
+    private void VerifySentLog(int expectedTimes)
+    {
+        Debug.Assert(_eventSemaphores is not null);
         Assert.AreEqual(expectedTimes, EventWithSemaphoreOccurred(_eventSemaphores[SentLogSemaphoreIdx]),
             $"Failed on verify {nameof(Channel.SentLog)} event call times");
+    }
 
-    private void VerifyFailedToSendLog(int expectedTimes) =>
+    private void VerifyFailedToSendLog(int expectedTimes)
+    {
+        Debug.Assert(_eventSemaphores is not null);
         Assert.AreEqual(expectedTimes, EventWithSemaphoreOccurred(_eventSemaphores[FailedToSendLogSemaphoreIdx]),
             $"Failed on verify {nameof(Channel.FailedToSendLog)} event call times");
+    }
 
-    private void VerifyEnqueuingLog(int expectedTimes) =>
+    private void VerifyEnqueuingLog(int expectedTimes)
+    {
+        Debug.Assert(_eventSemaphores is not null);
         Assert.AreEqual(expectedTimes, EventWithSemaphoreOccurred(_eventSemaphores[EnqueuingLogSemaphoreIdx]),
             $"Failed on verify {nameof(Channel.EnqueuingLog)} event call times");
+    }
 
-    private void VerifyFilteringLog(int expectedTimes) =>
+    private void VerifyFilteringLog(int expectedTimes)
+    {
+        Debug.Assert(_eventSemaphores is not null);
         Assert.AreEqual(expectedTimes, EventWithSemaphoreOccurred(_eventSemaphores[FilteringLogSemaphoreIdx]),
             $"Failed on verify {nameof(Channel.FilteringLog)} event call times");
+    }
 
     private void VerifyChannelDisable(TimeSpan timeout)
     {

@@ -20,7 +20,7 @@ public class UserIdContextTest
     [TestMethod]
     public void InstanceIsNotNull()
     {
-        UserIdContext.Instance = null;
+        UserIdContext.Instance = null!;
         Assert.IsNotNull(UserIdContext.Instance);
     }
 

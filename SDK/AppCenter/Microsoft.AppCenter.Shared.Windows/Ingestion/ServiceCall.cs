@@ -13,7 +13,7 @@ internal class ServiceCall : IServiceCall
 {
     private readonly CancellationTokenSource _tokenSource = new CancellationTokenSource();
 
-    private Action<IServiceCall> _continuationAction;
+    private Action<IServiceCall>? _continuationAction;
 
     private readonly object _lock = new object();
 
@@ -25,18 +25,22 @@ internal class ServiceCall : IServiceCall
 
     public bool IsFaulted => Exception != null;
 
-    public string Result { get; private set; }
+    public string? Result { get; private set; }
 
-    public Exception Exception { get; private set; }
+    public Exception? Exception { get; private set; }
 
     public CancellationToken CancellationToken => _tokenSource.Token;
 
-    public string AppSecret { get; }
+    public string AppSecret { get; } = null!;
 
     public Guid InstallId { get; }
 
-    public IList<Log> Logs { get; }
+    public IList<Log> Logs { get; } = null!;
     
+    /// <summary>
+    /// Only for testing!
+    /// Warning: This constructor does not initialize necessary fields.
+    /// </summary>
     public ServiceCall()
     {
     }
@@ -86,13 +90,13 @@ internal class ServiceCall : IServiceCall
         SetResult(source.Result);
     }
 
-    public void SetResult(string result)
+    public void SetResult(string? result)
     {
         if (_disposed)
         {
             throw new ObjectDisposedException(nameof(ServiceCall));
         }
-        Action<IServiceCall> continuationAction;
+        Action<IServiceCall>? continuationAction;
         lock (_lock)
         {
             if (IsCompleted || IsCanceled)
@@ -109,13 +113,13 @@ internal class ServiceCall : IServiceCall
         continuationAction?.Invoke(this);
     }
 
-    public void SetException(Exception exception)
+    public void SetException(Exception? exception)
     {
         if (_disposed)
         {
             throw new ObjectDisposedException(nameof(ServiceCall));
         }
-        Action<IServiceCall> continuationAction;
+        Action<IServiceCall>? continuationAction;
         lock (_lock)
         {
             if (IsCompleted || IsCanceled)
@@ -138,7 +142,7 @@ internal class ServiceCall : IServiceCall
         {
             throw new ObjectDisposedException(nameof(ServiceCall));
         }
-        Action<IServiceCall> continuationAction;
+        Action<IServiceCall>? continuationAction;
         lock (_lock)
         {
             if (IsCompleted || IsCanceled)

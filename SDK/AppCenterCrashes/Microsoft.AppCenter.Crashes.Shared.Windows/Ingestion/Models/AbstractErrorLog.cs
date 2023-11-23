@@ -51,7 +51,7 @@ public class AbstractErrorLog : Log
     /// launched, example: '2017-03-13T18:05:42Z'.
     /// </param>
     /// <param name="architecture">CPU architecture.</param>
-    public AbstractErrorLog(Microsoft.AppCenter.Ingestion.Models.Device device, System.Guid id, int processId, string processName, bool fatal, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string userId = default(string), string dataResidencyRegion = default(string), int? parentProcessId = default(int?), string parentProcessName = default(string), long? errorThreadId = default(long?), string errorThreadName = default(string), System.DateTime? appLaunchTimestamp = default(System.DateTime?), string architecture = default(string))
+    public AbstractErrorLog(Microsoft.AppCenter.Ingestion.Models.Device device, System.Guid id, int processId, string processName, bool fatal, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string? userId = default(string), string? dataResidencyRegion = default(string), int? parentProcessId = default(int?), string? parentProcessName = default(string), long? errorThreadId = default(long?), string? errorThreadName = default(string), System.DateTime? appLaunchTimestamp = default(System.DateTime?), string? architecture = default(string))
         : base(device, timestamp, sid, userId, dataResidencyRegion)
     {
         Id = id;
@@ -82,7 +82,7 @@ public class AbstractErrorLog : Log
     /// Gets or sets process name.
     /// </summary>
     [JsonProperty(PropertyName = "processName")]
-    public string ProcessName { get; set; }
+    public string? ProcessName { get; set; }
 
     /// <summary>
     /// Gets or sets parent's process identifier.
@@ -94,7 +94,7 @@ public class AbstractErrorLog : Log
     /// Gets or sets parent's process name.
     /// </summary>
     [JsonProperty(PropertyName = "parentProcessName")]
-    public string ParentProcessName { get; set; }
+    public string? ParentProcessName { get; set; }
 
     /// <summary>
     /// Gets or sets error thread identifier.
@@ -106,7 +106,7 @@ public class AbstractErrorLog : Log
     /// Gets or sets error thread name.
     /// </summary>
     [JsonProperty(PropertyName = "errorThreadName")]
-    public string ErrorThreadName { get; set; }
+    public string? ErrorThreadName { get; set; }
 
     /// <summary>
     /// Gets or sets if true, this error report is an application crash.
@@ -128,7 +128,7 @@ public class AbstractErrorLog : Log
     /// Gets or sets CPU architecture.
     /// </summary>
     [JsonProperty(PropertyName = "architecture")]
-    public string Architecture { get; set; }
+    public string? Architecture { get; set; }
 
     /// <summary>
     /// Validate the object.

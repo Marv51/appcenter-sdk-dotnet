@@ -52,8 +52,8 @@ public class LogTest
     [TestMethod]
     public void TestValidateThrowsExceptionWhenDeviceIsNull()
     {
-        const Device nullDevice = null;
-        Log log = new TestLog(Timestamp, nullDevice);
+        const Device? nullDevice = null;
+        Log log = new TestLog(Timestamp, nullDevice!);
         Assert.ThrowsException<ValidationException>(() => log.Validate());
     }
 

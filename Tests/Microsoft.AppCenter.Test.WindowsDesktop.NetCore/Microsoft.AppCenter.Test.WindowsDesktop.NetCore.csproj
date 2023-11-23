@@ -6,6 +6,7 @@
     <RootNamespace>Microsoft.AppCenter.Test.WindowsDesktop</RootNamespace>
 	<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <SignAssembly>false</SignAssembly>
+	<Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

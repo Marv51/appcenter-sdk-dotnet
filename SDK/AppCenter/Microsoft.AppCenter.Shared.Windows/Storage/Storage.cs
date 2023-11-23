@@ -25,13 +25,13 @@ internal sealed class Storage : IStorage
 {
     internal class LogEntry
     {
-        public long Id { get; set; }
+        public required long Id { get; set; }
 
         // The name of the channel that emitted the log
-        public string Channel { get; set; }
+        public required string Channel { get; set; }
 
         // The serialized json text of the log
-        public string Log { get; set; }
+        public required string Log { get; set; }
     }
 
     // Const for storage data.
@@ -110,7 +110,7 @@ internal sealed class Storage : IStorage
                 }
                 catch (StorageFullException)
                 {
-                    var oldestLog = _storageAdapter.Select(TableName, ColumnChannelName, channelName, string.Empty, null, 1, new string[] { ColumnIdName });
+                    var oldestLog = _storageAdapter.Select(TableName, ColumnChannelName, channelName, excludeColumnName: string.Empty, excludeValues: null, 1, new string[] { ColumnIdName });
                     if (oldestLog != null && oldestLog.Count > 0 && oldestLog[0].Length > 0)
                     {
                         _storageAdapter.Delete(TableName, ColumnIdName, oldestLog[0][0]);
@@ -233,7 +233,7 @@ internal sealed class Storage : IStorage
     /// <param name="logs">A list to which the retrieved logs will be added</param>
     /// <returns>A batch ID for the set of returned logs; null if no logs are found</returns>
     /// <exception cref="StorageException"/>
-    public Task<string> GetLogsAsync(string channelName, int limit, List<Log> logs)
+    public Task<string?> GetLogsAsync(string channelName, int limit, List<Log> logs)
     {
         return AddTaskToQueue(() =>
         {
@@ -257,8 +257,11 @@ internal sealed class Storage : IStorage
                 try
                 {
                     var log = LogSerializer.DeserializeLog(entry.Log);
-                    retrievedLogs.Add(log);
-                    idPairs.Add(Tuple.Create(log.Sid, Convert.ToInt64(entry.Id)));
+                    if (log is not null)
+                    {
+                        retrievedLogs.Add(log);
+                        idPairs.Add(Tuple.Create(log.Sid, Convert.ToInt64(entry.Id)));
+                    }
                 }
                 catch (JsonException e)
                 {

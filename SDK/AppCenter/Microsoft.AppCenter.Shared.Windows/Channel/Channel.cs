@@ -10,6 +10,7 @@ using Microsoft.AppCenter.Ingestion;
 using Microsoft.AppCenter.Storage;
 using Microsoft.AppCenter.Utils;
 using Microsoft.AppCenter.Utils.Synchronization;
+using System.Diagnostics;
 
 namespace Microsoft.AppCenter.Channel;
 
@@ -20,7 +21,7 @@ public sealed class Channel : IChannelUnit
 {
     private const int ClearBatchSize = 100;
 
-    private Ingestion.Models.Device _device;
+    private Ingestion.Models.Device? _device;
 
     private readonly string _appSecret;
 
@@ -92,27 +93,27 @@ public sealed class Channel : IChannelUnit
     /// <summary>
     /// Invoked when a log will be enqueued.
     /// </summary>
-    public event EventHandler<EnqueuingLogEventArgs> EnqueuingLog;
+    public event EventHandler<EnqueuingLogEventArgs>? EnqueuingLog;
 
     /// <summary>
     /// Invoked when a log is about to filtered out or not.
     /// </summary>
-    public event EventHandler<FilteringLogEventArgs> FilteringLog;
+    public event EventHandler<FilteringLogEventArgs>? FilteringLog;
 
     /// <summary>
     /// Invoke when a log is about to be sent.
     /// </summary>
-    public event EventHandler<SendingLogEventArgs> SendingLog;
+    public event EventHandler<SendingLogEventArgs>? SendingLog;
 
     /// <summary>
     /// Invoked when a log successfully sent.
     /// </summary>
-    public event EventHandler<SentLogEventArgs> SentLog;
+    public event EventHandler<SentLogEventArgs>? SentLog;
 
     /// <summary>
     /// Invoked when a log failed to send properly.
     /// </summary>
-    public event EventHandler<FailedToSendLogEventArgs> FailedToSendLog;
+    public event EventHandler<FailedToSendLogEventArgs>? FailedToSendLog;
 
     #endregion
 
@@ -311,8 +312,8 @@ public sealed class Channel : IChannelUnit
         AppCenterLog.Debug(AppCenterLog.LogTag, $"Suspend channel: '{Name}'");
         try
         {
-            IList<string> sendingBatches = null;
-            IList<Log> unsentLogs = null;
+            IList<string>? sendingBatches = null;
+            IList<Log>? unsentLogs = null;
             using (_mutex.GetLock(state))
             {
                 if (needDisableChannel)
@@ -346,6 +347,7 @@ public sealed class Channel : IChannelUnit
                     calls = _calls.ToList();
                     _calls.Clear();
                     _pendingLogCount = 0;
+                    Debug.Assert(sendingBatches is not null);
                     TriggerDeleteLogsOnSuspending(sendingBatches);
                 }
                 foreach (var call in calls)
@@ -396,7 +398,7 @@ public sealed class Channel : IChannelUnit
             do
             {
                 var batchId = await _storage.GetLogsAsync(Name, ClearBatchSize, logs).ConfigureAwait(false);
-                if (sendingBatches.Contains(batchId))
+                if (batchId is null || sendingBatches.Contains(batchId))
                 {
                     continue;
                 }
@@ -508,8 +510,10 @@ public sealed class Channel : IChannelUnit
                 }
                 else
                 {
+                    Debug.Assert(call.Exception is not null);
                     HandleSendingFailure(state, batchId, call.Exception);
                 }
+                Debug.Assert(call.Exception is not null);
                 await Suspend(state, !isRecoverable, call.Exception).ConfigureAwait(false);
             }
             else

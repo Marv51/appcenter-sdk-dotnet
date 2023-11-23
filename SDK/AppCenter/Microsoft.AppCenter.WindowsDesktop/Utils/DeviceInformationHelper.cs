@@ -42,7 +42,7 @@ public class DeviceInformationHelper : AbstractDeviceInformationHelper
         return sdkName;
     }
 
-    protected override string GetDeviceModel()
+    protected override string? GetDeviceModel()
     {
         try
         {
@@ -71,12 +71,12 @@ public class DeviceInformationHelper : AbstractDeviceInformationHelper
         return string.Empty;
     }
 
-    protected override string GetAppNamespace()
+    protected override string? GetAppNamespace()
     {
-        return Assembly.GetEntryAssembly()?.EntryPoint.DeclaringType?.Namespace;
+        return Assembly.GetEntryAssembly()?.EntryPoint?.DeclaringType?.Namespace;
     }
 
-    protected override string GetDeviceOemName()
+    protected override string? GetDeviceOemName()
     {
         try
         {
@@ -116,20 +116,20 @@ public class DeviceInformationHelper : AbstractDeviceInformationHelper
         using (var subKey = hklmKey.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion"))
         {
             // CurrentMajorVersionNumber present in registry starting with Windows 10
-            var majorVersion = subKey.GetValue("CurrentMajorVersionNumber");
+            var majorVersion = subKey?.GetValue("CurrentMajorVersionNumber");
             if (majorVersion != null)
             {
-                var minorVersion = subKey.GetValue("CurrentMinorVersionNumber", "0");
-                var buildNumber = subKey.GetValue("CurrentBuildNumber", "0");
-                var revisionNumber = subKey.GetValue("UBR", "0");
+                var minorVersion = subKey?.GetValue("CurrentMinorVersionNumber", "0");
+                var buildNumber = subKey?.GetValue("CurrentBuildNumber", "0");
+                var revisionNumber = subKey?.GetValue("UBR", "0");
                 return $"{majorVersion}.{minorVersion}.{buildNumber}.{revisionNumber}";
             }
             else
             {
                 // If CurrentMajorVersionNumber not present in registry then use CurrentVersion
-                var version = subKey.GetValue("CurrentVersion", "0.0");
-                var buildNumber = subKey.GetValue("CurrentBuild", "0");
-                var buildLabEx = subKey.GetValue("BuildLabEx")?.ToString().Split('.');
+                var version = subKey?.GetValue("CurrentVersion", "0.0");
+                var buildNumber = subKey?.GetValue("CurrentBuild", "0");
+                var buildLabEx = subKey?.GetValue("BuildLabEx")?.ToString()?.Split('.');
                 var revisionNumber = buildLabEx?.Length >= 2 ? buildLabEx[1] : "0";
                 return $"{version}.{buildNumber}.{revisionNumber}";
             }
@@ -180,7 +180,7 @@ public class DeviceInformationHelper : AbstractDeviceInformationHelper
         return $"{width}x{height}";
     }
 
-    private static string ProductVersion
+    private static string? ProductVersion
     {
         get
         {
@@ -189,7 +189,7 @@ public class DeviceInformationHelper : AbstractDeviceInformationHelper
         }
     }
 
-    private static string DeploymentVersion
+    private static string? DeploymentVersion
     {
         get
         {
@@ -211,7 +211,7 @@ public class DeviceInformationHelper : AbstractDeviceInformationHelper
         }
     }
 
-    private static FileVersionInfo AssemblyVersion
+    private static FileVersionInfo? AssemblyVersion
     {
         get
         {

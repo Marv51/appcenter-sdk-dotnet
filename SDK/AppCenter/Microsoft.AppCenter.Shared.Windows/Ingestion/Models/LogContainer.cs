@@ -30,7 +30,7 @@ public class LogContainer
     /// Gets or sets the list of logs
     /// </summary>
     [JsonProperty(PropertyName = "logs")]
-    public IList<Log> Logs { get; set; }
+    public IList<Log>? Logs { get; set; }
 
     /// <summary>
     /// Validate the object.

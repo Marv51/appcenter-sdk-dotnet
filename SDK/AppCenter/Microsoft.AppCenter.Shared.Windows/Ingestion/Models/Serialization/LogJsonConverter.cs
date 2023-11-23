@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -42,7 +43,7 @@ public class LogJsonConverter : JsonConverter
         return typeof(Log).IsAssignableFrom(objectType);
     }
 
-    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+    public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
     {
         Type logType;
         var jsonObject = JObject.Load(reader);
@@ -59,16 +60,17 @@ public class LogJsonConverter : JsonConverter
         return jsonObject.ToObject(logType);
     }
 
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
     {
-        var info = value.GetType().GetTypeInfo();
-        var attribute = info.GetCustomAttribute(typeof(JsonObjectAttribute)) as JsonObjectAttribute;
+        var info = value?.GetType().GetTypeInfo();
+        var attribute = info?.GetCustomAttribute(typeof(JsonObjectAttribute)) as JsonObjectAttribute;
         if (attribute == null)
         {
             throw new JsonWriterException("Cannot serialize log; Log type is missing JsonObjectAttribute");
         }
         var jsonText = JsonConvert.SerializeObject(value, SerializationSettings);
         var jsonObject = JObject.Parse(jsonText);
+        Debug.Assert(attribute.Id is not null);
         jsonObject.Add(TypeIdKey, JToken.FromObject(attribute.Id));
         writer.WriteRawValue(jsonObject.ToString());
     }

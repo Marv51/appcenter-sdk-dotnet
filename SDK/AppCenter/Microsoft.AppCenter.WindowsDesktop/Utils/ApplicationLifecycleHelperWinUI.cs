@@ -59,7 +59,7 @@ public class ApplicationLifecycleHelperWinUI: ApplicationLifecycleHelper
         };
     }
 
-    internal void InvokeUnhandledExceptionOccurred(object sender, Exception exception)
+    internal void InvokeUnhandledExceptionOccurred(object? sender, Exception exception)
     {
         base.InvokeUnhandledExceptionOccurred(sender, new UnhandledExceptionOccurredEventArgs(exception));
     }

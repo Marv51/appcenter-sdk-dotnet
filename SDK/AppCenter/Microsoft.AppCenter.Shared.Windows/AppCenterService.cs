@@ -22,17 +22,17 @@ public abstract class AppCenterService : IAppCenterService
     /// </summary>
     protected virtual IApplicationSettings ApplicationSettings => AppCenter.Instance.ApplicationSettings;
 
-    protected virtual INetworkStateAdapter NetworkStateAdapter => AppCenter.Instance.NetworkStateAdapter;
+    protected virtual INetworkStateAdapter? NetworkStateAdapter => AppCenter.Instance.NetworkStateAdapter;
 
     /// <summary>
     /// Channel associated with this service. Should be disposed only by ChannelGroup.
     /// </summary>
-    protected IChannelUnit Channel { get; private set; }
+    protected IChannelUnit? Channel { get; private set; }
 
     /// <summary>
     /// ChannelGroup that contains the service's ChannelUnit.
     /// </summary>
-    protected IChannelGroup ChannelGroup { get; private set; }
+    protected IChannelGroup? ChannelGroup { get; private set; }
 
     /// <summary>
     /// Name of this service's Channel.
@@ -104,7 +104,7 @@ public abstract class AppCenterService : IAppCenterService
     /// </summary>
     /// <param name="channelGroup">The channel group to which the channel should be added</param>
     /// <param name="appSecret">The app secret of the current application</param>
-    public virtual void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
+    public virtual void OnChannelGroupReady(IChannelGroup channelGroup, string? appSecret)
     {
         if (channelGroup == null)
         {

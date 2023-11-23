@@ -12,7 +12,7 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion;
 [TestClass]
 public class ServiceCallTest
 {
-    private ServiceCall _serviceCall;
+    private ServiceCall _serviceCall = null!;
 
     [TestInitialize]
     public void InitializeServiceCallTest()

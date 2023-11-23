@@ -5,6 +5,7 @@
     <UseWindowsForms>true</UseWindowsForms>
 	<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 	<SignAssembly>False</SignAssembly>
+	<Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

@@ -40,7 +40,7 @@ public class StartServiceLog : Log
     /// <param name="services">The list of services of the MobileCenter
     /// Start API call.</param>
     /// <param name="dataResidencyRegion">The data residency region code.</param>
-    public StartServiceLog(Device device, DateTime? timestamp = default(DateTime?), Guid? sid = default(Guid?), IList<string> services = default(IList<string>), string dataResidencyRegion = default(string))
+    public StartServiceLog(Device device, DateTime? timestamp = default(DateTime?), Guid? sid = default(Guid?), IList<string>? services = default(IList<string>), string? dataResidencyRegion = default(string))
         : base(device, timestamp, sid, null, dataResidencyRegion)
     {
         Services = services;
@@ -51,7 +51,7 @@ public class StartServiceLog : Log
     /// call.
     /// </summary>
     [JsonProperty(PropertyName = "services")]
-    public IList<string> Services { get; set; }
+    public IList<string>? Services { get; set; }
 
     /// <summary>
     /// Validate the object.

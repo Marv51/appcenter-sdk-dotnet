@@ -40,7 +40,7 @@ public class ProcessInformation : IProcessInformation
         }
     }
 
-    public string ProcessName
+    public string? ProcessName
     {
         get
         {
@@ -60,9 +60,9 @@ public class ProcessInformation : IProcessInformation
     public int? ParentProcessId => null;
 
     // Parent process information is not (easily) available, and not necessary.
-    public string ParentProcessName => null;
+    public string? ParentProcessName => null;
 
-    public string ProcessArchitecture
+    public string? ProcessArchitecture
     {
         get
         {

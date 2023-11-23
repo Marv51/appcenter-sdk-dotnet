@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Microsoft.AppCenter.Ingestion.Models;
 using Newtonsoft.Json;
@@ -17,7 +18,7 @@ public partial class ErrorAttachmentLog : Log
 
     private const string ContentTypePlainText = "text/plain";
 
-    static ErrorAttachmentLog PlatformAttachmentWithText(string text, string fileName)
+    static ErrorAttachmentLog? PlatformAttachmentWithText(string text, string fileName)
     {
         if (text == null)
         {
@@ -27,7 +28,7 @@ public partial class ErrorAttachmentLog : Log
         return PlatformAttachmentWithBinary(data, fileName, ContentTypePlainText);
     }
 
-    static ErrorAttachmentLog PlatformAttachmentWithBinary(byte[] data, string fileName, string contentType)
+    static ErrorAttachmentLog? PlatformAttachmentWithBinary(byte[] data, string fileName, string contentType)
     {
         if (data == null)
         {
@@ -57,19 +58,19 @@ public partial class ErrorAttachmentLog : Log
     /// Gets or sets content type (text/plain for text).
     /// </summary>
     [JsonProperty(PropertyName = "contentType")]
-    public string ContentType { get; set; }
+    public string? ContentType { get; set; }
 
     /// <summary>
     /// Gets or sets file name.
     /// </summary>
     [JsonProperty(PropertyName = "fileName")]
-    public string FileName { get; set; }
+    public string? FileName { get; set; }
 
     /// <summary>
     /// Gets or sets data encoded as base 64.
     /// </summary>
     [JsonProperty(PropertyName = "data")]
-    public byte[] Data { get; set; }
+    public byte[]? Data { get; set; }
 
     /// <summary>
     /// Validate the object.
@@ -94,6 +95,7 @@ public partial class ErrorAttachmentLog : Log
     /// Check all required fields are present.
     /// </summary>
     /// <returns>True if all required fields are present.</returns>
+    [MemberNotNullWhen(true, nameof(Data), nameof(ContentType))]
     public bool ValidatePropertiesForAttachment()
     {
         var isErrorIdValid = ErrorId != System.Guid.Empty;

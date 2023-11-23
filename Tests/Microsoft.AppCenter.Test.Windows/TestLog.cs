@@ -39,7 +39,7 @@ public class TestLog : LogWithProperties
         Properties = properties;
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         var that = obj as TestLog;
         if (that == null)

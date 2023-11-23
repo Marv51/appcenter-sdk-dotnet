@@ -25,7 +25,7 @@ public partial class ErrorReport
     /// <summary>
     /// Gets the app error time.
     /// </summary>
-    /// <value>Date and time the error occured</value>
+    /// <value>Date and time the error occurred</value>
     public DateTimeOffset AppErrorTime { get; }
 
     /// <summary>
@@ -39,23 +39,23 @@ public partial class ErrorReport
     /// </summary>
     /// <value>The exception.</value>
     [ObsoleteAttribute("This property is no longer set due to a security issue, use StackTrace as an alternative.")]
-    public Exception Exception { get; }
+    public Exception? Exception { get; }
 
     /// <summary>
     /// Gets the C# exception stack trace captured at crash time.
     /// </summary>
     /// <value>The exception.</value>
-    public string StackTrace { get; }
+    public string? StackTrace { get; }
 
     /// <summary>
     /// Gets details specific to Android.
     /// </summary>
     /// <value>Android error report details. <c>null</c> if the OS is not Android.</value>
-    public AndroidErrorDetails AndroidDetails { get; }
+    public AndroidErrorDetails? AndroidDetails { get; }
 
     /// <summary>
     /// Gets details specific to Apple devices.
     /// </summary>
     /// <value>Apple error report details. <c>null</c> if the OS is not iOS/macOS.</value>
-    public AppleErrorDetails AppleDetails { get; }
+    public AppleErrorDetails? AppleDetails { get; }
 }

@@ -20,9 +20,9 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows;
 [TestClass]
 public class CrashesTest
 {
-    private Mock<IChannelGroup> _mockChannelGroup;
-    private Mock<IChannelUnit> _mockChannel;
-    private Mock<IApplicationLifecycleHelper> _mockApplicationLifecycleHelper;
+    private Mock<IChannelGroup> _mockChannelGroup = null!;
+    private Mock<IChannelUnit> _mockChannel = null!;
+    private Mock<IApplicationLifecycleHelper> _mockApplicationLifecycleHelper = null!;
 
     private const int ExpectedProcessId = 123;
 
@@ -145,7 +145,7 @@ public class CrashesTest
 
         Crashes.SetEnabledAsync(true).Wait();
         Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-        Crashes.Instance.ProcessPendingErrorsTask.Wait();
+        Crashes.Instance.ProcessPendingErrorsTask?.Wait();
 
         // Verify crashes logs have been queued to the channel.
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog1.Id && log.ProcessId == ExpectedProcessId)), Times.Once());
@@ -181,7 +181,7 @@ public class CrashesTest
         // Start Crashes.
         Crashes.SetEnabledAsync(true).Wait();
         Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-        Crashes.Instance.ProcessPendingErrorsTask.Wait();
+        Crashes.Instance.ProcessPendingErrorsTask?.Wait();
 
         // Verify only the should processed logs have been queued to the channel.
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog1.Id && log.ProcessId == ExpectedProcessId)), Times.Never());
@@ -213,7 +213,7 @@ public class CrashesTest
         Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
         if (enabled)
         {
-            Crashes.Instance.ProcessPendingErrorsTask.Wait();
+            Crashes.Instance.ProcessPendingErrorsTask?.Wait();
         }
 
         // Verify no crashes logs have been queued to the channel.
@@ -245,7 +245,7 @@ public class CrashesTest
         // Start Crashes.
         Crashes.SetEnabledAsync(true).Wait();
         Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-        Crashes.Instance.ProcessPendingErrorsTask.Wait();
+        Crashes.Instance.ProcessPendingErrorsTask?.Wait();
 
         // Verify the corrupted file got ignored and deleted, even if deletion fails.
         Mock.Get(mockErrorLogCorruptedFile1).Verify(file => file.Delete(), Times.Once());
@@ -276,7 +276,7 @@ public class CrashesTest
         // Start Crashes.
         Crashes.SetEnabledAsync(true).Wait();
         Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-        Crashes.Instance.ProcessPendingErrorsTask.Wait();
+        Crashes.Instance.ProcessPendingErrorsTask?.Wait();
 
         // Verify crashes logs have not been queued to the channel and we deleted files.
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<ManagedErrorLog>()), Times.Never());
@@ -290,14 +290,14 @@ public class CrashesTest
         ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
 
         // Subscribe to callbacks.
-        ErrorReport actualSendingReport = null;
+        ErrorReport? actualSendingReport = null;
         var sendingReportCallCount = 0;
         Crashes.SendingErrorReport += (_, e) =>
         {
             actualSendingReport = e.Report;
             sendingReportCallCount++;
         };
-        ErrorReport actualSentReport = null;
+        ErrorReport? actualSentReport = null;
         var sentReportCallCount = 0;
         Crashes.SentErrorReport += (_, e) =>
         {
@@ -308,7 +308,7 @@ public class CrashesTest
         // Start Crashes.
         Crashes.SetEnabledAsync(true).Wait();
         Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-        Crashes.Instance.ProcessPendingErrorsTask.Wait();
+        Crashes.Instance.ProcessPendingErrorsTask?.Wait();
 
         // Verify crashes logs have been queued to the channel on start.
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == _expectedManagedErrorLog.Id)), Times.Once());
@@ -319,6 +319,8 @@ public class CrashesTest
         Assert.AreEqual(_expectedManagedErrorLog.Id.ToString(), actualSendingReport.Id);
         Assert.AreEqual(_expectedException.ToString(), actualSendingReport.StackTrace);
         Assert.IsNotNull(actualSendingReport.Device);
+        Assert.IsNotNull(_expectedManagedErrorLog.AppLaunchTimestamp);
+        Assert.IsNotNull(_expectedManagedErrorLog.Timestamp);
         Assert.AreEqual(_expectedManagedErrorLog.AppLaunchTimestamp.Value.Ticks, actualSendingReport.AppStartTime.Ticks);
         Assert.AreEqual(_expectedManagedErrorLog.Timestamp.Value.Ticks, actualSendingReport.AppErrorTime.Ticks);
         Assert.IsNull(actualSendingReport.AndroidDetails);
@@ -357,15 +359,15 @@ public class CrashesTest
         var expectedFailedToSendException = new System.IO.IOException("broken pipe");
 
         // Subscribe to callbacks.
-        ErrorReport actualSendingReport = null;
+        ErrorReport? actualSendingReport = null;
         var sendingReportCallCount = 0;
         Crashes.SendingErrorReport += (_, e) =>
         {
             actualSendingReport = e.Report;
             sendingReportCallCount++;
         };
-        ErrorReport actualFailedToSentReport = null;
-        System.Exception actualFailedToSendException = null;
+        ErrorReport? actualFailedToSentReport = null;
+        System.Exception? actualFailedToSendException = null;
         var failedToSendReportCallCount = 0;
         Crashes.FailedToSendErrorReport += (_, e) =>
         {
@@ -377,7 +379,7 @@ public class CrashesTest
         // Start Crashes.
         Crashes.SetEnabledAsync(true).Wait();
         Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-        Crashes.Instance.ProcessPendingErrorsTask.Wait();
+        Crashes.Instance.ProcessPendingErrorsTask?.Wait();
 
         // Verify crashes logs have been queued to the channel on start.
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == _expectedManagedErrorLog.Id)), Times.Once());
@@ -388,7 +390,9 @@ public class CrashesTest
         Assert.AreEqual(_expectedManagedErrorLog.Id.ToString(), actualSendingReport.Id);
         Assert.AreEqual(_expectedException.ToString(), actualSendingReport.StackTrace);
         Assert.IsNotNull(actualSendingReport.Device);
+        Assert.IsNotNull(_expectedManagedErrorLog.AppLaunchTimestamp);
         Assert.AreEqual(_expectedManagedErrorLog.AppLaunchTimestamp.Value.Ticks, actualSendingReport.AppStartTime.Ticks);
+        Assert.IsNotNull(_expectedManagedErrorLog.Timestamp);
         Assert.AreEqual(_expectedManagedErrorLog.Timestamp.Value.Ticks, actualSendingReport.AppErrorTime.Ticks);
         Assert.IsNull(actualSendingReport.AndroidDetails);
         Assert.IsNull(actualSendingReport.AppleDetails);
@@ -429,21 +433,21 @@ public class CrashesTest
             .Setup(instance => instance.InstanceGetStoredExceptionFile(_expectedManagedErrorLog.Id)).Returns(default(File));
 
         // Subscribe to callbacks.
-        ErrorReport actualSendingReport = null;
+        ErrorReport? actualSendingReport = null;
         var sendingReportCallCount = 0;
         Crashes.SendingErrorReport += (_, e) =>
         {
             actualSendingReport = e.Report;
             sendingReportCallCount++;
         };
-        ErrorReport actualSentReport = null;
+        ErrorReport? actualSentReport = null;
         var sentReportCallCount = 0;
         Crashes.SentErrorReport += (_, e) =>
         {
             actualSentReport = e.Report;
             sentReportCallCount++;
         };
-        ErrorReport failedToSendReport = null;
+        ErrorReport? failedToSendReport = null;
         var failedToSendReportCallCount = 0;
         Crashes.FailedToSendErrorReport += (_, e) =>
         {
@@ -586,7 +590,7 @@ public class CrashesTest
         Crashes.SetEnabledAsync(true).Wait();
         Crashes.ShouldAwaitUserConfirmation = () => true;
         Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-        Crashes.Instance.ProcessPendingErrorsTask.Wait();
+        Crashes.Instance.ProcessPendingErrorsTask?.Wait();
 
         // Verify the unprocessed managed error log is cleaned up after disabling crashes.
         Assert.AreEqual(Crashes.Instance._unprocessedManagedErrorLogs.Count, 1);
@@ -672,7 +676,7 @@ public class CrashesTest
         // Start Crashes.
         Crashes.SetEnabledAsync(true).Wait();
         Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-        Crashes.Instance.ProcessPendingErrorsTask.Wait();
+        Crashes.Instance.ProcessPendingErrorsTask?.Wait();
 
         // By default there is no value.
         var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue<bool>(Crashes.PrefKeyAlwaysSend);
@@ -689,7 +693,7 @@ public class CrashesTest
         Crashes.SetEnabledAsync(true).Wait();
         AppCenter.Instance.ApplicationSettings.SetValue(Crashes.PrefKeyAlwaysSend, true);
         Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-        Crashes.Instance.ProcessPendingErrorsTask.Wait();
+        Crashes.Instance.ProcessPendingErrorsTask?.Wait();
 
         // Verify logs have been processed and removed.
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == _expectedManagedErrorLog.Id && log.ProcessId == ExpectedProcessId)), Times.Once());
@@ -706,7 +710,7 @@ public class CrashesTest
         // Start Crashes. `ShouldAwaitUserConfirmation` is null.
         Crashes.SetEnabledAsync(true).Wait();
         Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-        Crashes.Instance.ProcessPendingErrorsTask.Wait();
+        Crashes.Instance.ProcessPendingErrorsTask?.Wait();
 
         // Verify logs have been processed and removed.
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == _expectedManagedErrorLog.Id && log.ProcessId == ExpectedProcessId)), Times.Once());
@@ -723,7 +727,7 @@ public class CrashesTest
         Crashes.SetEnabledAsync(true).Wait();
         Crashes.ShouldAwaitUserConfirmation = () => false;
         Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-        Crashes.Instance.ProcessPendingErrorsTask.Wait();
+        Crashes.Instance.ProcessPendingErrorsTask?.Wait();
 
         // Verify the logs have not been processed and have been removed.
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == _expectedManagedErrorLog.Id && log.ProcessId == ExpectedProcessId)), Times.Once());
@@ -740,7 +744,7 @@ public class CrashesTest
         Crashes.SetEnabledAsync(true).Wait();
         Crashes.ShouldAwaitUserConfirmation = () => true;
         Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-        Crashes.Instance.ProcessPendingErrorsTask.Wait();
+        Crashes.Instance.ProcessPendingErrorsTask?.Wait();
 
         // Verify nothing in HandleUserConfirmationAsync has been called.
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == _expectedManagedErrorLog.Id && log.ProcessId == ExpectedProcessId)), Times.Never());
@@ -759,7 +763,7 @@ public class CrashesTest
         // Avoids processing the logs during the ProcessPendingErrorsTask
         Crashes.ShouldAwaitUserConfirmation = () => true;
         Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-        Crashes.Instance.ProcessPendingErrorsTask.Wait();
+        Crashes.Instance.ProcessPendingErrorsTask?.Wait();
         Crashes.NotifyUserConfirmation(UserConfirmation.DontSend);
 
         // Verify the logs have not been processed and have been removed.
@@ -780,7 +784,7 @@ public class CrashesTest
         // Avoids processing the logs during the ProcessPendingErrorsTask
         Crashes.ShouldAwaitUserConfirmation = () => true;
         Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-        Crashes.Instance.ProcessPendingErrorsTask.Wait();
+        Crashes.Instance.ProcessPendingErrorsTask?.Wait();
         Crashes.NotifyUserConfirmation(UserConfirmation.Send);
 
         // Verify logs have been processed and removed.
@@ -803,7 +807,7 @@ public class CrashesTest
         // Avoids processing the logs during the ProcessPendingErrorsTask
         Crashes.ShouldAwaitUserConfirmation = () => true;
         Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-        Crashes.Instance.ProcessPendingErrorsTask.Wait();
+        Crashes.Instance.ProcessPendingErrorsTask?.Wait();
         Crashes.NotifyUserConfirmation(UserConfirmation.AlwaysSend);
 
         // Verify logs have been processed and removed, alwaysSendValue is saved.

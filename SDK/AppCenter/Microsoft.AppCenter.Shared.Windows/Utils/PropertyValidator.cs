@@ -17,7 +17,7 @@ public static class PropertyValidator
     /// <param name="properties">Properties collection to validate.</param>
     /// <param name="logName">Log name.</param>
     /// <returns>Valid properties collection with maximum size of 20.</returns>
-    public static IDictionary<string, string> ValidateProperties(IDictionary<string, string> properties, string logName)
+    public static IDictionary<string, string>? ValidateProperties(IDictionary<string, string>? properties, string logName)
     {
         if (properties == null)
         {

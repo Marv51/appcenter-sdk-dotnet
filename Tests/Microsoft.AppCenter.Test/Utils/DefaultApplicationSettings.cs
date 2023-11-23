@@ -12,20 +12,23 @@ namespace Microsoft.AppCenter.Utils;
 [ExcludeFromCodeCoverage]
 public class DefaultApplicationSettings : IApplicationSettings
 {
-    private static readonly Dictionary<object, object> Settings = new Dictionary<object, object>();
+    private static readonly Dictionary<object, object?> Settings = new Dictionary<object, object?>();
     
-    public T GetValue<T>(string key, T defaultValue)
+    public T? GetValue<T>(string key, T? defaultValue = default(T))
     {
-        object result;
-        var found = Settings.TryGetValue(key, out result);
+        var found = Settings.TryGetValue(key, out var result);
         if (found)
         {
-            return (T) result;
+            if (result is null)
+            {
+                return default;
+            }
+            return (T)result;
         }
         SetValue(key, defaultValue);
         return defaultValue;
     }
-    public void SetValue(string key, object value)
+    public void SetValue(string key, object? value)
     {
         Settings[key] = value;
     }

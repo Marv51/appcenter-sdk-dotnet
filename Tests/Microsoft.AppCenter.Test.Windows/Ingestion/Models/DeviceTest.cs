@@ -29,7 +29,7 @@ public class DeviceTest
     [TestMethod]
     public void TestInstanceConstruction()
     {
-        const string deafultString = default(string);
+        const string? deafultString = default(string);
         var emptyDevice = new Device();
         var device = new Device
         {
@@ -101,7 +101,7 @@ public class DeviceTest
     [TestMethod]
     public void TestValidateThrowsExceptionWhenSdkNameIsNull()
     {
-        var device = new Device(null, SdkVersion, OsName, OsVersion, Locale, TimeZoneOffset, AppVersion, AppBuild, null, null, Model);
+        var device = new Device(null!, SdkVersion, OsName, OsVersion, Locale, TimeZoneOffset, AppVersion, AppBuild, null, null, Model);
         Assert.ThrowsException<ValidationException>(() => device.Validate());
     }
 
@@ -134,7 +134,7 @@ public class DeviceTest
     [TestMethod]
     public void TestValidateThrowsExceptionWhenOsNameIsNull()
     {
-        var device = new Device(SdkName, SdkVersion, null, OsVersion, Locale, TimeZoneOffset, AppVersion, AppBuild, null, null, Model, OemName);
+        var device = new Device(SdkName, SdkVersion, osName: null!, OsVersion, Locale, TimeZoneOffset, AppVersion, AppBuild, wrapperSdkVersion: null, wrapperSdkName: null, Model, OemName);
         Assert.ThrowsException<ValidationException>(() => device.Validate());
     }
 

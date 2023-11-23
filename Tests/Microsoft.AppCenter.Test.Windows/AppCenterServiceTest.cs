@@ -13,10 +13,10 @@ namespace Microsoft.AppCenter.Test.Windows;
 [TestClass]
 public class AppCenterServiceTest
 {
-    private TestAppCenterService _testService;
-    private Mock<IApplicationSettings> _mockSettings;
-    private Mock<IChannelUnit> _mockChannel;
-    private Mock<IChannelGroup> _mockChannelGroup;
+    private TestAppCenterService _testService = null!;
+    private Mock<IApplicationSettings> _mockSettings = null!;
+    private Mock<IChannelUnit> _mockChannel = null!;
+    private Mock<IChannelGroup> _mockChannelGroup = null!;
 
     [TestInitialize]
     public void InitializeAppCenterServiceTest()

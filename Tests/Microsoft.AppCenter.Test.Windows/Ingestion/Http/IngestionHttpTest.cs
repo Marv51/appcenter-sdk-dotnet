@@ -16,7 +16,7 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Http;
 [TestClass]
 public class IngestionHttpTest : HttpIngestionTest
 {
-    private IngestionHttp _httpIngestion;
+    private IngestionHttp _httpIngestion = null!;
     private readonly Mock<IApplicationSettings> _settingsMock = new Mock<IApplicationSettings>();
 
     [TestInitialize]
@@ -63,7 +63,7 @@ public class IngestionHttpTest : HttpIngestionTest
         }
         catch (NetworkIngestionException exc)
         {
-            Assert.AreEqual(exc.InnerException.Message, "SDK is in offline mode.");
+            Assert.AreEqual(exc.InnerException?.Message, "SDK is in offline mode.");
         }
         VerifyAdapterSend(Times.Never());
     }

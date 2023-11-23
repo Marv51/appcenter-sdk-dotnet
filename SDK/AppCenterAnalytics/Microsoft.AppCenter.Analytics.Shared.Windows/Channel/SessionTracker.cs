@@ -107,7 +107,7 @@ internal class SessionTracker : ISessionTracker
         }
     }
 
-    private void HandleEnqueuingLog(object sender, EnqueuingLogEventArgs e)
+    private void HandleEnqueuingLog(object? sender, EnqueuingLogEventArgs e)
     {
         lock (_lockObject)
         {

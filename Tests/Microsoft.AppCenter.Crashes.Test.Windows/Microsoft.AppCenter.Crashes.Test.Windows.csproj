@@ -11,6 +11,7 @@
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <FileVersion>5.0.4.0</FileVersion>
     <InformationalVersion>5.0.4-SNAPSHOT</InformationalVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.WindowsDesktop\Microsoft.AppCenter.Crashes.WindowsDesktop.csproj" />
@@ -18,8 +19,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Castle.Core" Version="5.0.0" />
-    <PackageReference Include="Microsoft.VisualStudio.TestPlatform" Version="14.0.0" />
     <PackageReference Include="Moq" Version="4.18.1" />
+	<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="MSTest.TestFramework" Version="3.1.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.1.1" />
     <PackageReference Include="System.ComponentModel.Composition" Version="8.0.0" />

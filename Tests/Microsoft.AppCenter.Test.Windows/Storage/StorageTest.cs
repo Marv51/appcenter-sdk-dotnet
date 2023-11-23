@@ -17,10 +17,10 @@ namespace Microsoft.AppCenter.Test.Windows.Storage;
 [TestClass]
 public class StorageTest
 {
-    private IStorage _storage;
-    private string _databasePath;
+    private IStorage _storage = null!;
+    private string _databasePath = null!;
 
-    private StorageTestUtils _storageUtils;
+    private StorageTestUtils _storageUtils = null!;
 
     // Const for storage data.
     private const string StorageTestChannelName = "storageTestChannelName";
@@ -52,7 +52,7 @@ public class StorageTest
             _storage.DeleteLogs(StorageTestChannelName);
             _storage.WaitOperationsAsync(TimeSpan.FromSeconds(10)).Wait();
             _storage.Dispose();
-            _storage = null;
+            _storage = null!;
         }
         catch
         {
@@ -169,6 +169,7 @@ public class StorageTest
         _ = PutNLogs(numLogsToAdd);
         var retrievedLogs = new List<Log>();
         var batchId = _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
+        Assert.IsNotNull(batchId);
         _storage.DeleteLogs(StorageTestChannelName, batchId);
         var numLogsRemaining = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
         Assert.AreEqual(numLogsToAdd - retrievedLogs.Count, numLogsRemaining);
@@ -583,7 +584,7 @@ public class StorageTest
         var propsNum = size / 1000 + 1; 
         for (var i = 0; i < propsNum; i++)
         {
-            testLog.Properties.Add($"largeProp{i}", new string('.', size));
+            testLog.Properties?.Add($"largeProp{i}", new string('.', size));
         }
         return testLog;
     }

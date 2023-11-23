@@ -37,7 +37,7 @@ public class State
     /// </summary>
     /// <param name="obj">The object to compare to</param>
     /// <returns>True if they have the same state number, false otherwise</returns>
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         var otherState = obj as State;
         return otherState?._stateNum == _stateNum;

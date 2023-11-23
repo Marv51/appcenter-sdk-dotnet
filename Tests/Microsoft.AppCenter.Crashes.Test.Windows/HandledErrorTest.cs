@@ -23,11 +23,11 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows;
 [TestClass]
 public class HandledErrorTest
 {
-    private string _storagePath;
+    private string _storagePath = null!;
 
-    private IHttpNetworkAdapter _mockNetworkAdapter;
+    private IHttpNetworkAdapter _mockNetworkAdapter = null!;
 
-    private StorageAdapter _storageAdapter;
+    private StorageAdapter _storageAdapter = null!;
 
     [TestInitialize]
     public void InitializeTest()
@@ -50,7 +50,7 @@ public class HandledErrorTest
         {
             // Try to clean up resources but don't fail the test if that throws an error.
             _storageAdapter.Dispose();
-            _storageAdapter = null;
+            _storageAdapter = null!;
             File.Delete(_storagePath);
         }
         catch
@@ -63,7 +63,7 @@ public class HandledErrorTest
     public void TrackErrorWithValidParameters()
     {
         var semaphore = new SemaphoreSlim(0);
-        HandledErrorLog actualLog = null;
+        HandledErrorLog? actualLog = null;
         Mock.Get(_mockNetworkAdapter).Setup(adapter => adapter.SendAsync(
             It.IsAny<string>(),
             It.IsAny<string>(),
@@ -72,7 +72,7 @@ public class HandledErrorTest
             It.IsAny<CancellationToken>()))
             .Callback((string uri, string method, IDictionary<string, string> headers, string content, CancellationToken cancellation) =>
             {
-                actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings).Logs.Single() as HandledErrorLog;
+                actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings)?.Logs?.Single() as HandledErrorLog;
                 semaphore.Release();
             }).ReturnsAsync("");
         var exception = new System.Exception("Something went wrong.");
@@ -82,7 +82,7 @@ public class HandledErrorTest
         // Wait until the http layer sends the log.
         semaphore.Wait(2000);
         Assert.IsNotNull(actualLog);
-        Assert.AreEqual(exception.Message, actualLog.Exception.Message);
+        Assert.AreEqual(exception.Message, actualLog.Exception?.Message);
         CollectionAssert.AreEquivalent(properties, actualLog.Properties as Dictionary<string, string>);
     }
 
@@ -90,8 +90,8 @@ public class HandledErrorTest
     public void TrackErrorWithPropertiesAndAttachments()
     {
         var semaphore = new SemaphoreSlim(0);
-        HandledErrorLog actualLog = null;
-        ErrorAttachmentLog actualErrorAttachmentLog = null;
+        HandledErrorLog? actualLog = null;
+        ErrorAttachmentLog? actualErrorAttachmentLog = null;
         Mock.Get(_mockNetworkAdapter).Setup(adapter => adapter.SendAsync(
             It.IsAny<string>(),
             It.IsAny<string>(),
@@ -100,10 +100,10 @@ public class HandledErrorTest
             It.IsAny<CancellationToken>()))
             .Callback((string uri, string method, IDictionary<string, string> headers, string content, CancellationToken cancellation) =>
             {
-                var log = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings).Logs[0];
-                if (log.GetType() == typeof(ErrorAttachmentLog))
+                var log = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings)?.Logs?[0];
+                if (log is ErrorAttachmentLog errorAttachment)
                 {
-                    actualErrorAttachmentLog = log as ErrorAttachmentLog;
+                    actualErrorAttachmentLog = errorAttachment;
                 }
                 else
                 {
@@ -123,7 +123,7 @@ public class HandledErrorTest
         // Wait until the http layer sends the log.
         semaphore.Wait(2000);
         Assert.IsNotNull(actualLog);
-        Assert.AreEqual(exception.Message, actualLog.Exception.Message);
+        Assert.AreEqual(exception.Message, actualLog.Exception?.Message);
         Assert.IsNotNull(actualErrorAttachmentLog);
         Assert.AreEqual(actualLog.Id, actualErrorAttachmentLog.ErrorId);
         CollectionAssert.AreEquivalent(attachmentLog.Data, actualErrorAttachmentLog.Data);
@@ -202,8 +202,8 @@ public class HandledErrorTest
     public void TrackErrorWithoutPropertiesWithAttachments()
     {
         var semaphore = new SemaphoreSlim(0);
-        HandledErrorLog actualLog = null;
-        ErrorAttachmentLog actualErrorAttachmentLog = null;
+        HandledErrorLog? actualLog = null;
+        ErrorAttachmentLog? actualErrorAttachmentLog = null;
         Mock.Get(_mockNetworkAdapter).Setup(adapter => adapter.SendAsync(
             It.IsAny<string>(),
             It.IsAny<string>(),
@@ -212,10 +212,10 @@ public class HandledErrorTest
             It.IsAny<CancellationToken>()))
             .Callback((string uri, string method, IDictionary<string, string> headers, string content, CancellationToken cancellation) =>
             {
-                var log = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings).Logs[0];
-                if (log.GetType() == typeof(ErrorAttachmentLog))
+                var log = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings)?.Logs?[0];
+                if (log is ErrorAttachmentLog attachmentLog)
                 {
-                    actualErrorAttachmentLog = log as ErrorAttachmentLog;
+                    actualErrorAttachmentLog = attachmentLog;
                 }
                 else
                 {
@@ -234,7 +234,7 @@ public class HandledErrorTest
         // Wait until the http layer sends the log.
         semaphore.Wait(2000);
         Assert.IsNotNull(actualLog);
-        Assert.AreEqual(exception.Message, actualLog.Exception.Message);
+        Assert.AreEqual(exception.Message, actualLog.Exception?.Message);
         Assert.IsNotNull(actualErrorAttachmentLog);
         Assert.AreEqual(actualLog.Id, actualErrorAttachmentLog.ErrorId);
         CollectionAssert.AreEquivalent(attachmentLog.Data, actualErrorAttachmentLog.Data);
@@ -244,7 +244,7 @@ public class HandledErrorTest
     public void TrackErrorWithTooManyProperties()
     {
         var semaphore = new SemaphoreSlim(0);
-        HandledErrorLog actualLog = null;
+        HandledErrorLog? actualLog = null;
         Mock.Get(_mockNetworkAdapter).Setup(adapter => adapter.SendAsync(
             It.IsAny<string>(),
             It.IsAny<string>(),
@@ -253,7 +253,7 @@ public class HandledErrorTest
             It.IsAny<CancellationToken>()))
             .Callback((string uri, string method, IDictionary<string, string> headers, string content, CancellationToken cancellation) =>
             {
-                actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings).Logs.Single() as HandledErrorLog;
+                actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings)?.Logs?.Single() as HandledErrorLog;
                 semaphore.Release();
             }).ReturnsAsync("");
         var exception = new System.Exception("Something went wrong.");
@@ -267,7 +267,7 @@ public class HandledErrorTest
         // Wait until the http layer sends the log.
         semaphore.Wait(2000);
         Assert.IsNotNull(actualLog);
-        Assert.AreEqual(exception.Message, actualLog.Exception.Message);
+        Assert.AreEqual(exception.Message, actualLog.Exception?.Message);
         CollectionAssert.IsSubsetOf(actualLog.Properties as Dictionary<string, string>, properties);
         Assert.AreEqual(PropertyValidator.MaxProperties, actualLog.Properties.Count);
     }
@@ -276,7 +276,7 @@ public class HandledErrorTest
     public void TrackErrorWithoutProperties()
     {
         var semaphore = new SemaphoreSlim(0);
-        HandledErrorLog actualLog = null;
+        HandledErrorLog? actualLog = null;
         Mock.Get(_mockNetworkAdapter).Setup(adapter => adapter.SendAsync(
                 It.IsAny<string>(),
                 It.IsAny<string>(),
@@ -285,7 +285,7 @@ public class HandledErrorTest
                 It.IsAny<CancellationToken>()))
             .Callback((string uri, string method, IDictionary<string, string> headers, string content, CancellationToken cancellation) =>
             {
-                actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings).Logs.Single() as HandledErrorLog;
+                actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings)?.Logs?.Single() as HandledErrorLog;
                 semaphore.Release();
             }).ReturnsAsync("");
         var exception = new System.Exception("Something went wrong.");
@@ -294,7 +294,7 @@ public class HandledErrorTest
         // Wait until the http layer sends the log.
         semaphore.Wait(2000);
         Assert.IsNotNull(actualLog);
-        Assert.AreEqual(exception.Message, actualLog.Exception.Message);
+        Assert.AreEqual(exception.Message, actualLog.Exception?.Message);
         Assert.IsNull(actualLog.Properties);
     }
 
@@ -313,7 +313,7 @@ public class HandledErrorTest
                 Assert.Fail("This callback should not have been invoked.");
                 semaphore.Release();
             }).ReturnsAsync("");
-        Crashes.TrackError(null);
+        Crashes.TrackError(null!);
 
         // Check no log sent.
         semaphore.Wait(2000);
@@ -323,7 +323,7 @@ public class HandledErrorTest
     public void TrackErrorWithInvalidPropertiesAreSkipped()
     {
         var semaphore = new SemaphoreSlim(0);
-        HandledErrorLog actualLog = null;
+        HandledErrorLog? actualLog = null;
         Mock.Get(_mockNetworkAdapter).Setup(adapter => adapter.SendAsync(
                 It.IsAny<string>(),
                 It.IsAny<string>(),
@@ -332,14 +332,14 @@ public class HandledErrorTest
                 It.IsAny<CancellationToken>()))
             .Callback((string uri, string method, IDictionary<string, string> headers, string content, CancellationToken cancellation) =>
             {
-                actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings).Logs.Single() as HandledErrorLog;
+                actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings)?.Logs?.Single() as HandledErrorLog;
                 semaphore.Release();
             }).ReturnsAsync("");
         var exception = new System.Exception("Something went wrong.");
         var properties = new Dictionary<string, string>
         {
             [""] = "testEmptyKeySkipped",
-            ["testNullValueSkipped"] = null,
+            ["testNullValueSkipped"] = null!,
             [new string('k', PropertyValidator.MaxPropertyKeyLength + 1)] = "testKeyTooLong",
             ["testValueTooLong"] = new string('v', PropertyValidator.MaxPropertyValueLength + 1),
             ["normalKey"] = "normalValue"
@@ -349,7 +349,7 @@ public class HandledErrorTest
         // Wait until the http layer sends the log.
         semaphore.Wait(2000);
         Assert.IsNotNull(actualLog);
-        Assert.AreEqual(exception.Message, actualLog.Exception.Message);
+        Assert.AreEqual(exception.Message, actualLog.Exception?.Message);
 
         // Check original dictionary not sent (copy is made).
         Assert.IsNotNull(actualLog.Properties);
@@ -367,7 +367,7 @@ public class HandledErrorTest
     {
         var logCount = 0;
         var semaphore = new SemaphoreSlim(0);
-        HandledErrorLog actualLog = null;
+        HandledErrorLog? actualLog = null;
         Mock.Get(_mockNetworkAdapter).Setup(adapter => adapter.SendAsync(
                 It.IsAny<string>(),
                 It.IsAny<string>(),
@@ -376,7 +376,7 @@ public class HandledErrorTest
                 It.IsAny<CancellationToken>()))
             .Callback((string uri, string method, IDictionary<string, string> headers, string content, CancellationToken cancellation) =>
             {
-                actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings).Logs.Single() as HandledErrorLog;
+                actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings)?.Logs?.Single() as HandledErrorLog;
                 ++logCount;
                 semaphore.Release();
             }).ReturnsAsync("");
@@ -403,8 +403,8 @@ public class HandledErrorTest
         semaphore.Wait(2000);
         Assert.IsNotNull(actualLog);
         Assert.AreEqual(1, logCount);
-        Assert.AreEqual(exception.Message, actualLog.Exception.Message);
-        Assert.IsNull(actualLog.Exception.StackTrace);
+        Assert.AreEqual(exception.Message, actualLog.Exception?.Message);
+        Assert.IsNull(actualLog.Exception?.StackTrace);
         CollectionAssert.AreEquivalent(properties, actualLog.Properties as Dictionary<string, string>);
     }
 
@@ -415,7 +415,7 @@ public class HandledErrorTest
         var dummyUser = "dummyUser";
         UserIdContext.Instance.UserId = dummyUser;
 
-        HandledErrorLog actualLog = null;
+        HandledErrorLog? actualLog = null;
         Mock.Get(_mockNetworkAdapter).Setup(adapter => adapter.SendAsync(
                 It.IsAny<string>(),
                 It.IsAny<string>(),
@@ -424,7 +424,7 @@ public class HandledErrorTest
                 It.IsAny<CancellationToken>()))
             .Callback((string uri, string method, IDictionary<string, string> headers, string content, CancellationToken cancellation) =>
             {
-                actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings).Logs.Single() as HandledErrorLog;
+                actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings)?.Logs?.Single() as HandledErrorLog;
                 semaphore.Release();
             }).ReturnsAsync("");
         var exception = new System.Exception("Something went wrong.");
@@ -449,7 +449,7 @@ public class HandledErrorTest
         mockException.Setup(exception => exception.Message).Returns("Some error message");
 
         // Mock method.
-        HandledErrorLog actualLog = null;
+        HandledErrorLog? actualLog = null;
         Mock.Get(_mockNetworkAdapter).Setup(adapter => adapter.SendAsync(
                 It.IsAny<string>(),
                 It.IsAny<string>(),
@@ -458,7 +458,7 @@ public class HandledErrorTest
                 It.IsAny<CancellationToken>()))
             .Callback((string uri, string method, IDictionary<string, string> headers, string content, CancellationToken cancellation) =>
             {
-                actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings).Logs.Single() as HandledErrorLog;
+                actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings)?.Logs?.Single() as HandledErrorLog;
                 semaphore.Release();
             }).ReturnsAsync("");
 
@@ -467,7 +467,7 @@ public class HandledErrorTest
         // Wait until the http layer sends the log.
         semaphore.Wait(2000);
         Assert.IsNotNull(actualLog);
-        Assert.AreEqual(expectedStacktrace, actualLog.Exception.StackTrace);
+        Assert.AreEqual(expectedStacktrace, actualLog.Exception?.StackTrace);
     }
 
     private ErrorAttachmentLog GetValidErrorAttachmentLog()

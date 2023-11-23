@@ -151,7 +151,7 @@ public class AppCenterTest
         Assert.AreEqual(AppCenter.PlatformGetDataResidencyRegion(), dataResidencyRegion);
 
         // Null data residency region
-        AppCenter.SetDataResidencyRegion(null);
+        AppCenter.SetDataResidencyRegion(null!);
         Assert.IsNull(AppCenter.PlatformGetDataResidencyRegion());
     }
 
@@ -367,9 +367,9 @@ public class AppCenterTest
     [TestMethod]
     public void StartInstanceNullSecretAndCorrectService()
     {
-        string appSecret = null;
+        string? appSecret = null;
         // ReSharper disable once ExpressionIsAlwaysNull
-        AppCenter.Start(appSecret, typeof(MockAppCenterService));
+        AppCenter.Start(appSecret!, typeof(MockAppCenterService));
         MockAppCenterService.Mock.Verify(
             service => service.OnChannelGroupReady(It.IsAny<IChannelGroup>(), It.IsAny<string>()), Times.Never());
     }
@@ -407,7 +407,7 @@ public class AppCenterTest
     [TestMethod]
     public void ConfigureWithNullAppSecret()
     {
-        AppCenter.Configure(null);
+        AppCenter.Configure(null!);
         Assert.IsFalse(AppCenter.Configured);
     }
 
@@ -817,6 +817,7 @@ public class AppCenterTest
         Task.Delay(100).Wait();
 
         _channelMock.Verify(channel => channel.EnqueueAsync(It.Is<StartServiceLog>(log =>
+            log.Services != null &&
             log.Services.Count == 1 &&
             log.Services[0] == MockAppCenterService.Instance.ServiceName)), Times.Once());
     }
@@ -838,6 +839,7 @@ public class AppCenterTest
             .Returns(false).Returns(true);
         AppCenter.SetEnabledAsync(true).RunNotAsync();
         _channelMock.Verify(channel => channel.EnqueueAsync(It.Is<StartServiceLog>(log =>
+            log.Services != null &&
             log.Services.Count == 1 &&
             log.Services[0] == MockAppCenterService.Instance.ServiceName)), Times.Once());
     }
@@ -935,7 +937,7 @@ public class AppCenterTest
     }
 
     /// <summary>
-    /// Verify that dbSize param in SetMaxStorageSize should be greated than max log size.
+    /// Verify that dbSize param in SetMaxStorageSize should be greater than max log size.
     /// </summary>
     [TestMethod]
     public async Task CannotSetMaxStorageSizeBelowMaxLogSize()
@@ -951,11 +953,11 @@ public class AppCenterTest
 
 public class NullInstanceAppCenterService : IAppCenterService
 {
-    public static IAppCenterService Instance => null;
+    public static IAppCenterService Instance => null!;
     public string ServiceName => nameof(NullInstanceAppCenterService);
 
     public bool InstanceEnabled { get; set; }
-    public void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
+    public void OnChannelGroupReady(IChannelGroup channelGroup, string? appSecret)
     {
     }
 }
@@ -967,7 +969,7 @@ public class WrongInstanceTypeAppCenterService : IAppCenterService
     public bool InstanceEnabled { get; set; }
 
 
-    public void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
+    public void OnChannelGroupReady(IChannelGroup channelGroup, string? appSecret)
     {
     }
 }

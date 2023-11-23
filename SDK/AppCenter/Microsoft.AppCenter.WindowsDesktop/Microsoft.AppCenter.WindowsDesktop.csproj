@@ -5,6 +5,7 @@
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageId>Telani.AppCenter</PackageId>
 	<Title>Telani App Center</Title>
+	<Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

@@ -59,7 +59,7 @@ public interface IStorage : IDisposable
     /// <param name="logs">A list to which the retrieved logs will be added</param>
     /// <returns>A batch ID for the set of returned logs; null if no logs are found</returns>
     /// <exception cref="StorageException"/>
-    Task<string> GetLogsAsync(string channelName, int limit, List<Log> logs);
+    Task<string?> GetLogsAsync(string channelName, int limit, List<Log> logs);
 
     /// <summary>
     /// Waits for any running storage operations to complete.

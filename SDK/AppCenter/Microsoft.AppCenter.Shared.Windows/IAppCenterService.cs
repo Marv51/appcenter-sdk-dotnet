@@ -26,5 +26,5 @@ public interface IAppCenterService
     /// <param name="channelGroup">The channel group to which the channel should be added</param>
     /// <param name="appSecret">The app secret of the current application</param>
 
-    void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret);
+    void OnChannelGroupReady(IChannelGroup channelGroup, string? appSecret);
 }

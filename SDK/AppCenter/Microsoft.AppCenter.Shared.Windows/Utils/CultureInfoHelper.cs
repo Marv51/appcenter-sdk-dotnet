@@ -38,7 +38,7 @@ class CultureInfoHelper
         return new CultureInfo(name);
     }
 
-    private static string InvokeGetLocaleInfoEx(string lpLocaleName, uint LCType)
+    private static string? InvokeGetLocaleInfoEx(string lpLocaleName, uint LCType)
     {
         try
         {

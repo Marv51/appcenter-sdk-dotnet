@@ -24,7 +24,7 @@ public class LogContainerTest
 
         Assert.IsNotNull(emptyContainer);
         Assert.IsNotNull(container);
-        CollectionAssert.AreEquivalent(logList, (List<Log>)container.Logs);
+        CollectionAssert.AreEquivalent(logList, (List<Log>?)container.Logs);
     }
 
     /// <summary>
@@ -33,8 +33,8 @@ public class LogContainerTest
     [TestMethod]
     public void TestValidateThrowsExceptionWhenLogsIsNull()
     {
-        var container = new LogContainer(null);
-        Assert.ThrowsException<ValidationException>(() => container.Validate());
+        var container = new LogContainer(null!);
+        Assert.ThrowsException<ValidationException>(container.Validate);
     }
 
     /// <summary>
@@ -45,7 +45,7 @@ public class LogContainerTest
     {
         IList<Log> logList = new List<Log>();
         var container = new LogContainer(logList);
-        Assert.ThrowsException<ValidationException>(() => container.Validate());
+        Assert.ThrowsException<ValidationException>(container.Validate);
     }
 
     /// <summary>

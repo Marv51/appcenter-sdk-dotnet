@@ -33,6 +33,6 @@ public class IngestionExceptionTest
         IngestionException ingException = new IngestionException(internalException);
 
         Assert.AreSame(internalException, ingException.InnerException);
-        Assert.AreEqual(exceptionMessage, ingException.InnerException.Message);
+        Assert.AreEqual(exceptionMessage, ingException.InnerException?.Message);
     }
 }

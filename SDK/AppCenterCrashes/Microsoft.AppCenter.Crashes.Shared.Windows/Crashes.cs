@@ -10,7 +10,10 @@ using Microsoft.AppCenter.Windows.Shared.Utils;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 
 namespace Microsoft.AppCenter.Crashes;
@@ -19,7 +22,7 @@ public partial class Crashes : AppCenterService
 {
     private static readonly object CrashesLock = new object();
 
-    private static volatile Crashes _instanceField;
+    private static volatile Crashes? _instanceField;
 
     private const int MaxAttachmentSize = 7 * 1024 * 1024;
 
@@ -35,6 +38,7 @@ public partial class Crashes : AppCenterService
     /// <summary>
     /// Unique instance.
     /// </summary>
+    [AllowNull]
     public static Crashes Instance
     {
         get
@@ -74,7 +78,7 @@ public partial class Crashes : AppCenterService
         }
     }
 
-    private static void OnUnhandledExceptionOccurred(object sender, UnhandledExceptionOccurredEventArgs args)
+    private static void OnUnhandledExceptionOccurred(object? sender, UnhandledExceptionOccurredEventArgs args)
     {
         var errorLog = ErrorLogHelper.CreateErrorLog(args.Exception);
         ErrorLogHelper.SaveErrorLogFiles(args.Exception, errorLog);
@@ -90,7 +94,7 @@ public partial class Crashes : AppCenterService
         return Instance.InstanceHasReceivedMemoryWarningInLastSessionAsync();
     }
 
-    private static Task<ErrorReport> PlatformGetLastSessionCrashReportAsync()
+    private static Task<ErrorReport?> PlatformGetLastSessionCrashReportAsync()
     {
         return Instance.InstanceGetLastSessionCrashReportAsync();
     }
@@ -100,7 +104,7 @@ public partial class Crashes : AppCenterService
         Instance.InstanceHandlerUserConfirmation(userConfirmation);
     }
 
-    private static void PlatformTrackError(System.Exception exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
+    private static void PlatformTrackError(System.Exception exception, IDictionary<string, string>? properties, ErrorAttachmentLog[] attachments)
     {
         Instance.InstanceTrackError(exception, properties, attachments);
     }
@@ -130,10 +134,10 @@ public partial class Crashes : AppCenterService
     /// <summary>
     /// A task of processing pending error log files.
     /// </summary>
-    internal Task ProcessPendingErrorsTask { get; set; }
+    internal Task? ProcessPendingErrorsTask { get; set; }
 
     // Task to get the last session error report, if one is found.
-    private TaskCompletionSource<ErrorReport> _lastSessionErrorReportTaskSource;
+    private TaskCompletionSource<ErrorReport?>? _lastSessionErrorReportTaskSource;
 
     internal Crashes()
     {
@@ -146,7 +150,7 @@ public partial class Crashes : AppCenterService
     /// </summary>
     /// <param name="channelGroup">Channel group</param>
     /// <param name="appSecret">App secret</param>
-    public override void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
+    public override void OnChannelGroupReady(IChannelGroup channelGroup, string? appSecret)
     {
         lock (_serviceLock)
         {
@@ -154,7 +158,7 @@ public partial class Crashes : AppCenterService
             ApplyEnabledState(InstanceEnabled);
             if (InstanceEnabled)
             {
-                _lastSessionErrorReportTaskSource = new TaskCompletionSource<ErrorReport>();
+                _lastSessionErrorReportTaskSource = new TaskCompletionSource<ErrorReport?>();
                 ProcessPendingErrorsTask = ProcessPendingErrorsAsync();
             }
         }
@@ -216,9 +220,9 @@ public partial class Crashes : AppCenterService
         return await InstanceGetLastSessionCrashReportAsync() != null;
     }
 
-    private Task<ErrorReport> InstanceGetLastSessionCrashReportAsync()
+    private Task<ErrorReport?> InstanceGetLastSessionCrashReportAsync()
     {
-        return _lastSessionErrorReportTaskSource?.Task ?? Task.FromResult<ErrorReport>(null);
+        return _lastSessionErrorReportTaskSource?.Task ?? Task.FromResult<ErrorReport?>(null);
     }
 
     private async Task<bool> InstanceHasReceivedMemoryWarningInLastSessionAsync()
@@ -230,7 +234,7 @@ public partial class Crashes : AppCenterService
     {
         return Task.Run(async () =>
         {
-            ErrorReport lastSessionErrorReport = null;
+            ErrorReport? lastSessionErrorReport = null;
             foreach (var file in ErrorLogHelper.GetErrorLogFiles())
             {
                 AppCenterLog.Debug(LogTag, $"Process pending error file {file.Name}");
@@ -281,7 +285,7 @@ public partial class Crashes : AppCenterService
                     RemoveAllStoredErrorLogFiles(log.Id);
                 }
             }
-            _lastSessionErrorReportTaskSource.SetResult(lastSessionErrorReport);
+            _lastSessionErrorReportTaskSource?.SetResult(lastSessionErrorReport);
             await SendCrashReportsOrAwaitUserConfirmationAsync().ConfigureAwait(false);
         });
     }
@@ -356,6 +360,7 @@ public partial class Crashes : AppCenterService
             foreach (var key in keys)
             {
                 var log = _unprocessedManagedErrorLogs[key];
+                Debug.Assert(Channel is not null);
                 tasks.Add(Channel.EnqueueAsync(log));
                 _unprocessedManagedErrorLogs.Remove(key);
                 ErrorLogHelper.RemoveStoredErrorLogFile(key);
@@ -378,7 +383,7 @@ public partial class Crashes : AppCenterService
         return Task.WhenAll(tasks);
     }
 
-    private void InstanceTrackError(System.Exception exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
+    private void InstanceTrackError(System.Exception exception, IDictionary<string, string>? properties, ErrorAttachmentLog[] attachments)
     {
         lock (_serviceLock)
         {
@@ -391,12 +396,13 @@ public partial class Crashes : AppCenterService
             var errorId = Guid.NewGuid();
             exceptionAndBinaries.Exception.StackTrace = ErrorLogHelper.ObfuscateUserName(exceptionAndBinaries.Exception.StackTrace);
             var log = new HandledErrorLog(exception: exceptionAndBinaries.Exception, binaries: exceptionAndBinaries.Binaries, properties: properties, id: errorId, device: null, userId: UserIdContext.Instance.UserId, dataResidencyRegion: AppCenter.PlatformGetDataResidencyRegion());
+            Debug.Assert(Channel is not null);
             Channel.EnqueueAsync(log);
             SendErrorAttachmentsAsync(errorId, attachments);
         }
     }
 
-    private Task SendErrorAttachmentsAsync(Guid errorId, IEnumerable<ErrorAttachmentLog> attachments)
+    private Task SendErrorAttachmentsAsync(Guid errorId, IEnumerable<ErrorAttachmentLog?> attachments)
     {
         var tasks = new List<Task>();
         foreach (var attachment in attachments)
@@ -416,6 +422,7 @@ public partial class Crashes : AppCenterService
                 }
                 else
                 {
+                    Debug.Assert(Channel is not null);
                     tasks.Add(Channel.EnqueueAsync(attachment));
                 }
             }
@@ -440,7 +447,7 @@ public partial class Crashes : AppCenterService
         return report;
     }
 
-    private void ChannelSendingLog(object sender, SendingLogEventArgs e)
+    private void ChannelSendingLog(object? sender, SendingLogEventArgs e)
     {
         var report = MapLogEventToReportAndDeleteOnLastEvent(e);
         if (report != null)
@@ -449,7 +456,7 @@ public partial class Crashes : AppCenterService
         }
     }
 
-    private void ChannelSentLog(object sender, SentLogEventArgs e)
+    private void ChannelSentLog(object? sender, SentLogEventArgs e)
     {
         var report = MapLogEventToReportAndDeleteOnLastEvent(e);
         if (report != null)
@@ -458,7 +465,7 @@ public partial class Crashes : AppCenterService
         }
     }
 
-    private void ChannelFailedToSendLog(object sender, FailedToSendLogEventArgs e)
+    private void ChannelFailedToSendLog(object? sender, FailedToSendLogEventArgs e)
     {
         var report = MapLogEventToReportAndDeleteOnLastEvent(e);
         if (report != null)
@@ -467,7 +474,7 @@ public partial class Crashes : AppCenterService
         }
     }
 
-    private ErrorReport MapLogEventToReportAndDeleteOnLastEvent(ChannelEventArgs channelEventArgs)
+    private ErrorReport? MapLogEventToReportAndDeleteOnLastEvent(ChannelEventArgs channelEventArgs)
     {
         if (channelEventArgs.Log is ManagedErrorLog log)
         {

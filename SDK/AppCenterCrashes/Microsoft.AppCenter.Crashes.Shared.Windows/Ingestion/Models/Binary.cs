@@ -26,7 +26,7 @@ public partial class Binary
     /// architecture.</param>
     /// <param name="architectureVariantId">CPU architecture
     /// variant.</param>
-    public Binary(string id, string startAddress, string endAddress, string name, string path, string architecture = default(string), long? primaryArchitectureId = default(long?), long? architectureVariantId = default(long?))
+    public Binary(string id, string startAddress, string endAddress, string name, string path, string? architecture = default(string), long? primaryArchitectureId = default(long?), long? architectureVariantId = default(long?))
     {
         Id = id;
         StartAddress = startAddress;
@@ -47,32 +47,32 @@ public partial class Binary
     /// <summary>
     /// </summary>
     [JsonProperty(PropertyName = "id")]
-    public string Id { get; set; }
+    public string? Id { get; set; }
 
     /// <summary>
     /// </summary>
     [JsonProperty(PropertyName = "startAddress")]
-    public string StartAddress { get; set; }
+    public string? StartAddress { get; set; }
 
     /// <summary>
     /// </summary>
     [JsonProperty(PropertyName = "endAddress")]
-    public string EndAddress { get; set; }
+    public string? EndAddress { get; set; }
 
     /// <summary>
     /// </summary>
     [JsonProperty(PropertyName = "name")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     /// <summary>
     /// </summary>
     [JsonProperty(PropertyName = "path")]
-    public string Path { get; set; }
+    public string? Path { get; set; }
 
     /// <summary>
     /// </summary>
     [JsonProperty(PropertyName = "architecture")]
-    public string Architecture { get; set; }
+    public string? Architecture { get; set; }
 
     /// <summary>
     /// Gets or sets CPU primary architecture.

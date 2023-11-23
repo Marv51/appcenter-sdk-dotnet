@@ -19,7 +19,7 @@ internal sealed class IngestionHttp : IIngestion
 
     private const int MaximumCharactersDisplayedForAppSecret = 8;
 
-    private string _baseLogUrl;
+    private string? _baseLogUrl;
 
     private readonly IHttpNetworkAdapter _httpNetwork;
 

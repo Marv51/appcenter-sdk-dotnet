@@ -29,7 +29,7 @@ public class StartServiceLogTest
     {
         var log = new StartServiceLog();
         Assert.IsNull(log.Device);
-        Assert.AreEqual(0, log.Services.Count);
+        Assert.AreEqual(0, log.Services?.Count);
         Assert.IsNull(log.Sid);
         Assert.AreEqual(null, log.Timestamp);
     }
@@ -83,7 +83,7 @@ public class StartServiceLogTest
         var retrievedLog = retrievedLogs[0] as StartServiceLog;
         foreach (var serviceName in addedLog.Services)
         {
-            Assert.IsTrue(retrievedLog.Services.Contains(serviceName));
+            Assert.IsTrue(retrievedLog?.Services?.Contains(serviceName));
         }
     }
 }

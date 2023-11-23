@@ -50,7 +50,7 @@ class TestJsonReader : JsonReader
 [TestClass]
 public class JsonLogConverterTest
 {
-    private LogJsonConverter _converter;
+    private LogJsonConverter _converter = null!;
     private const string TestType = "testType";
 
     [TestInitialize]
@@ -60,23 +60,23 @@ public class JsonLogConverterTest
     }
 
     /// <summary>
-    /// Validate that conveter throws exception for null type
+    /// Validate that converter throws exception for null type
     /// </summary>
     [TestMethod]
     public void ReadJsonThrowExceptionForNullTypeName()
     {
         JObject jObj = new JObject();
-        Assert.ThrowsException<JsonReaderException>(() => _converter.ReadJson(jObj.CreateReader(), typeof(JObject), null, null));
+        Assert.ThrowsException<JsonReaderException>(() => _converter.ReadJson(jObj.CreateReader(), typeof(JObject), null, null!));
     }
 
     /// <summary>
-    /// Validate that conveter throws exception for unexpected type
+    /// Validate that converter throws exception for unexpected type
     /// </summary>
     [TestMethod]
     public void ReadJsonThrowsExceptionForUnexpectedTypeName()
     {
         JObject jObj = CreateJObjectWithType(TestType);
-        Assert.ThrowsException<JsonReaderException>(() => _converter.ReadJson(jObj.CreateReader(), typeof(JObject), null, null));
+        Assert.ThrowsException<JsonReaderException>(() => _converter.ReadJson(jObj.CreateReader(), typeof(JObject), null, null!));
     }
 
     /// <summary>
@@ -87,7 +87,7 @@ public class JsonLogConverterTest
     {
         JObject jObj = CreateJObjectWithType(TestType);
         _converter.AddLogType(TestType, typeof(JObject));
-        var readResult = _converter.ReadJson(jObj.CreateReader(), typeof(JObject), null, null);
+        var readResult = _converter.ReadJson(jObj.CreateReader(), typeof(JObject), null, null!);
         Assert.IsNotNull(readResult);
     }
 

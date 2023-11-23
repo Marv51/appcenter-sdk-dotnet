@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
@@ -52,11 +53,12 @@ public partial class ErrorLogHelper
     /// </summary>
     private readonly static object LockObject = new object();
 
-    private static ErrorLogHelper _instanceField;
+    private static ErrorLogHelper? _instanceField;
 
     /// <summary>
     /// Singleton instance. Should only be accessed from unit tests.
     /// </summary>
+    [AllowNull]
     internal static ErrorLogHelper Instance
     {
         get
@@ -109,28 +111,28 @@ public partial class ErrorLogHelper
     /// </summary>
     /// <param name="errorId">The ID for the error log.</param>
     /// <returns>The error log file or null if it is not found.</returns>
-    public static File GetStoredErrorLogFile(Guid errorId) => Instance.InstanceGetStoredErrorLogFile(errorId);
+    public static File? GetStoredErrorLogFile(Guid errorId) => Instance.InstanceGetStoredErrorLogFile(errorId);
 
     /// <summary>
     /// Gets the exception file with the given ID.
     /// </summary>
     /// <param name="errorId">The ID for the exception.</param>
     /// <returns>The exception file or null if it is not found.</returns>
-    public static File GetStoredExceptionFile(Guid errorId) => Instance.InstanceGetStoredExceptionFile(errorId);
+    public static File? GetStoredExceptionFile(Guid errorId) => Instance.InstanceGetStoredExceptionFile(errorId);
 
     /// <summary>
     /// Reads an error log on disk.
     /// </summary>
     /// <param name="file">The error log file.</param>
     /// <returns>The managed error log instance.</returns>
-    public static ManagedErrorLog ReadErrorLogFile(File file) => Instance.InstanceReadErrorLogFile(file);
+    public static ManagedErrorLog? ReadErrorLogFile(File file) => Instance.InstanceReadErrorLogFile(file);
 
     /// <summary>
     /// Reads an exception on disk.
     /// </summary>
     /// <param name="file">The exception file.</param>
     /// <returns>The exception stack trace.</returns>
-    public static string ReadExceptionFile(File file)
+    public static string? ReadExceptionFile(File file)
     {
         return Instance.InstanceReadExceptionFile(file);
     }
@@ -199,12 +201,12 @@ public partial class ErrorLogHelper
         }
     }
 
-    private File InstanceGetStoredErrorLogFile(Guid errorId)
+    private File? InstanceGetStoredErrorLogFile(Guid errorId)
     {
         return GetStoredFile(errorId, ErrorLogFileExtension);
     }
 
-    public virtual File InstanceGetStoredExceptionFile(Guid errorId)
+    public virtual File? InstanceGetStoredExceptionFile(Guid errorId)
     {
         return GetStoredFile(errorId, ExceptionFileExtension);
     }
@@ -214,12 +216,12 @@ public partial class ErrorLogHelper
     /// </summary>
     /// <param name="file">The file that contains error log.</param>
     /// <returns>An error log instance or null if the file doesn't contain an error log.</returns>
-    public virtual ManagedErrorLog InstanceReadErrorLogFile(File file)
+    public virtual ManagedErrorLog? InstanceReadErrorLogFile(File file)
     {
         try
         {
             var errorLogString = file.ReadAllText();
-            return (ManagedErrorLog)LogSerializer.DeserializeLog(errorLogString);
+            return (ManagedErrorLog?)LogSerializer.DeserializeLog(errorLogString);
         }
         catch (System.Exception e)
         {
@@ -233,7 +235,7 @@ public partial class ErrorLogHelper
     /// </summary>
     /// <param name="file">The file that contains exception.</param>
     /// <returns>An exception stack trace or null if the file cannot be read.</returns>
-    public virtual string InstanceReadExceptionFile(File file)
+    public virtual string? InstanceReadExceptionFile(File file)
     {
         try
         {
@@ -360,7 +362,8 @@ public partial class ErrorLogHelper
     /// </summary>
     /// <param name="errorString">A string containing the username.</param>
     /// <returns>An anonymized string where the real username is replaced by "USER".</returns>
-    internal static string ObfuscateUserName(string errorString)
+    [return: NotNullIfNotNull(nameof(errorString))]
+    internal static string? ObfuscateUserName(string? errorString)
     {
         // Obfuscate user name in stack trace.
         if (string.IsNullOrEmpty(errorString) || string.IsNullOrEmpty(Constants.UserName))
@@ -376,7 +379,7 @@ public partial class ErrorLogHelper
     /// <param name="errorId">The error ID.</param>
     /// <param name="extension">The file extension.</param>
     /// <returns>The file corresponding to the given parameters, or null if not found.</returns>
-    private File GetStoredFile(Guid errorId, string extension)
+    private File? GetStoredFile(Guid errorId, string extension)
     {
         var fileName = $"{errorId}{extension}";
         try

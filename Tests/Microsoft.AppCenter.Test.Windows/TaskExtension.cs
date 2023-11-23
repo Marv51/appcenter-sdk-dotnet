@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Ingestion;
 
@@ -73,6 +74,7 @@ public static class TaskExtension
             }
             else
             {
+                Debug.Assert(serviceCall.Result is not null);
                 source.SetResult(serviceCall.Result);
             }
         });

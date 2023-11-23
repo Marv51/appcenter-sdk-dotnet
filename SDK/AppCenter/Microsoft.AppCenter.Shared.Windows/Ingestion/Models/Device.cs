@@ -93,7 +93,7 @@ public class Device
     /// Cordova etc...). See wrappersdkname to see if this version refers
     /// to Xamarin or ReactNative or other.
     /// </param>
-    public Device(string sdkName, string sdkVersion, string osName, string osVersion, string locale, int timeZoneOffset, string appVersion, string appBuild, string wrapperSdkVersion = default(string), string wrapperSdkName = default(string), string model = default(string), string oemName = default(string), string osBuild = default(string), int? osApiLevel = default(int?), string screenSize = default(string), string carrierName = default(string), string carrierCountry = default(string), string appNamespace = default(string), string liveUpdateReleaseLabel = default(string), string liveUpdateDeploymentKey = default(string), string liveUpdatePackageHash = default(string), string wrapperRuntimeVersion = default(string))
+    public Device(string sdkName, string sdkVersion, string osName, string osVersion, string locale, int timeZoneOffset, string appVersion, string appBuild, string? wrapperSdkVersion = default(string), string? wrapperSdkName = default(string), string? model = default(string), string? oemName = default(string), string? osBuild = default(string), int? osApiLevel = default(int?), string? screenSize = default(string), string? carrierName = default(string), string? carrierCountry = default(string), string? appNamespace = default(string), string? liveUpdateReleaseLabel = default(string), string? liveUpdateDeploymentKey = default(string), string? liveUpdatePackageHash = default(string), string? wrapperRuntimeVersion = default(string))
     {
         SdkName = sdkName;
         SdkVersion = sdkVersion;
@@ -125,7 +125,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "sdkName")]
-    public string SdkName { get; set; }
+    public string? SdkName { get; set; }
 
     /// <summary>
     /// Gets or sets version of the SDK in semver format, e.g. "1.2.0" or
@@ -133,7 +133,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "sdkVersion")]
-    public string SdkVersion { get; set; }
+    public string? SdkVersion { get; set; }
 
     /// <summary>
     /// Gets or sets version of the wrapper SDK in semver format. When the
@@ -143,7 +143,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "wrapperSdkVersion")]
-    public string WrapperSdkVersion { get; set; }
+    public string? WrapperSdkVersion { get; set; }
 
     /// <summary>
     /// Gets or sets name of the wrapper SDK. Consists of the name of the
@@ -152,21 +152,21 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "wrapperSdkName")]
-    public string WrapperSdkName { get; set; }
+    public string? WrapperSdkName { get; set; }
 
     /// <summary>
     /// Gets or sets device model (example: iPad2,3).
     ///
     /// </summary>
     [JsonProperty(PropertyName = "model")]
-    public string Model { get; set; }
+    public string? Model { get; set; }
 
     /// <summary>
     /// Gets or sets device manufacturer (example: HTC).
     ///
     /// </summary>
     [JsonProperty(PropertyName = "oemName")]
-    public string OemName { get; set; }
+    public string? OemName { get; set; }
 
     /// <summary>
     /// Gets or sets OS name (example: iOS). The following OS names are
@@ -174,21 +174,21 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "osName")]
-    public string OsName { get; set; }
+    public string? OsName { get; set; }
 
     /// <summary>
     /// Gets or sets OS version (example: 9.3.0).
     ///
     /// </summary>
     [JsonProperty(PropertyName = "osVersion")]
-    public string OsVersion { get; set; }
+    public string? OsVersion { get; set; }
 
     /// <summary>
     /// Gets or sets OS build code (example: LMY47X).
     ///
     /// </summary>
     [JsonProperty(PropertyName = "osBuild")]
-    public string OsBuild { get; set; }
+    public string? OsBuild { get; set; }
 
     /// <summary>
     /// Gets or sets API level when applicable like in Android (example:
@@ -203,7 +203,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "locale")]
-    public string Locale { get; set; }
+    public string? Locale { get; set; }
 
     /// <summary>
     /// Gets or sets the offset in minutes from UTC for the device time
@@ -219,35 +219,35 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "screenSize")]
-    public string ScreenSize { get; set; }
+    public string? ScreenSize { get; set; }
 
     /// <summary>
     /// Gets or sets application version name, e.g. 1.1.0
     ///
     /// </summary>
     [JsonProperty(PropertyName = "appVersion")]
-    public string AppVersion { get; set; }
+    public string? AppVersion { get; set; }
 
     /// <summary>
     /// Gets or sets carrier name (for mobile devices).
     ///
     /// </summary>
     [JsonProperty(PropertyName = "carrierName")]
-    public string CarrierName { get; set; }
+    public string? CarrierName { get; set; }
 
     /// <summary>
     /// Gets or sets carrier country code (for mobile devices).
     ///
     /// </summary>
     [JsonProperty(PropertyName = "carrierCountry")]
-    public string CarrierCountry { get; set; }
+    public string? CarrierCountry { get; set; }
 
     /// <summary>
     /// Gets or sets the app's build number, e.g. 42.
     ///
     /// </summary>
     [JsonProperty(PropertyName = "appBuild")]
-    public string AppBuild { get; set; }
+    public string? AppBuild { get; set; }
 
     /// <summary>
     /// Gets or sets the bundle identifier, package identifier, or
@@ -256,7 +256,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "appNamespace")]
-    public string AppNamespace { get; set; }
+    public string? AppNamespace { get; set; }
 
     /// <summary>
     /// Gets or sets label that is used to identify application code
@@ -264,7 +264,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "liveUpdateReleaseLabel")]
-    public string LiveUpdateReleaseLabel { get; set; }
+    public string? LiveUpdateReleaseLabel { get; set; }
 
     /// <summary>
     /// Gets or sets identifier of environment that current application
@@ -273,7 +273,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "liveUpdateDeploymentKey")]
-    public string LiveUpdateDeploymentKey { get; set; }
+    public string? LiveUpdateDeploymentKey { get; set; }
 
     /// <summary>
     /// Gets or sets hash of all files (ReactNative or Cordova) deployed to
@@ -282,7 +282,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "liveUpdatePackageHash")]
-    public string LiveUpdatePackageHash { get; set; }
+    public string? LiveUpdatePackageHash { get; set; }
 
     /// <summary>
     /// Gets or sets version of the wrapper technology framework (Xamarin
@@ -292,7 +292,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "wrapperRuntimeVersion")]
-    public string WrapperRuntimeVersion { get; set; }
+    public string? WrapperRuntimeVersion { get; set; }
 
     /// <summary>
     /// Validate the object.

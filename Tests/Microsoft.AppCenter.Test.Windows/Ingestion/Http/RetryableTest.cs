@@ -22,7 +22,7 @@ public class RetryableTest : HttpIngestionTest
         TimeSpan.FromSeconds(1),
         TimeSpan.FromSeconds(1) 
     };
-    private IIngestion _retryableIngestion;
+    private IIngestion _retryableIngestion = null!;
     private readonly Mock<IApplicationSettings> _settingsMock = new Mock<IApplicationSettings>();
 
     [TestInitialize]
@@ -144,6 +144,6 @@ public class RetryableTest : HttpIngestionTest
     [TestMethod]
     public void RetryableIngestionWithNullIntervals()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => new RetryableIngestion(new IngestionHttp(_adapter.Object), null));
+        Assert.ThrowsException<ArgumentNullException>(() => new RetryableIngestion(new IngestionHttp(_adapter.Object), null!));
     }
 }

@@ -20,7 +20,7 @@ internal sealed class NetworkStateIngestion : IngestionDecorator
         _networkStateAdapter.NetworkStatusChanged += OnNetworkStateChange;
     }
 
-    private void OnNetworkStateChange(object sender, EventArgs e)
+    private void OnNetworkStateChange(object? sender, EventArgs e)
     {
         if (!_networkStateAdapter.IsConnected)
         {

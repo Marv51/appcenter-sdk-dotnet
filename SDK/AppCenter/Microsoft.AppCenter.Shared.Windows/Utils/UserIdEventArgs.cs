@@ -13,5 +13,5 @@ public class UserIdUpdatedEventArgs : EventArgs
     /// <summary>
     /// User Id.
     /// </summary>
-    public string UserId { get; internal set; }
+    public string? UserId { get; internal set; }
 }

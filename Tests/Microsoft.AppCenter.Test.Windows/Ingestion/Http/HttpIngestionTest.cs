@@ -15,7 +15,7 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Http;
 
 public class HttpIngestionTest
 {
-    protected Mock<IHttpNetworkAdapter> _adapter;
+    protected Mock<IHttpNetworkAdapter> _adapter = null!;
 
     protected string AppSecret => Guid.NewGuid().ToString();
     protected Guid InstallId => Guid.NewGuid();

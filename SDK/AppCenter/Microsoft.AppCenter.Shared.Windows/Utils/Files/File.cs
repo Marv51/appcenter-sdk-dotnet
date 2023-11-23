@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
 using System.IO;
 
 namespace Microsoft.AppCenter.Utils.Files;
@@ -10,10 +11,12 @@ namespace Microsoft.AppCenter.Utils.Files;
 /// </summary>
 public class File
 {
-    private readonly FileInfo _underlyingFileInfo;
+    private readonly FileInfo _underlyingFileInfo = null!;
 
     /// <summary>
     /// Parameterless constructor needed for testing.
+    /// 
+    /// Careful this constructor will not set _underlyingFileInfo internally, which will almost certainly lead to a <see cref="NullReferenceException"/>.
     /// </summary>
     public File()
     {

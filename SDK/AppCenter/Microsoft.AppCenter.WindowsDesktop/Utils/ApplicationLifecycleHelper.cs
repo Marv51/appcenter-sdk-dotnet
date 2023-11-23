@@ -3,12 +3,13 @@
 
 using Microsoft.AppCenter.Utils;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.AppCenter;
 
 public abstract class ApplicationLifecycleHelper : IApplicationLifecycleHelper
 {
-    private static IApplicationLifecycleHelper _instance = null;
+    private static IApplicationLifecycleHelper? _instance = null;
 
     // Considered to be suspended until can verify that the application has started.
     protected static bool _suspended = true;
@@ -21,10 +22,11 @@ public abstract class ApplicationLifecycleHelper : IApplicationLifecycleHelper
     /// </summary>
     public bool IsSuspended => _suspended;
 
-    public event EventHandler ApplicationSuspended;
-    public event EventHandler ApplicationResuming;
-    public event EventHandler<UnhandledExceptionOccurredEventArgs> UnhandledExceptionOccurred;
+    public event EventHandler? ApplicationSuspended;
+    public event EventHandler? ApplicationResuming;
+    public event EventHandler<UnhandledExceptionOccurredEventArgs>? UnhandledExceptionOccurred;
 
+    [AllowNull]
     public static IApplicationLifecycleHelper Instance
     {
         get
@@ -72,7 +74,7 @@ public abstract class ApplicationLifecycleHelper : IApplicationLifecycleHelper
         ApplicationSuspended?.Invoke(this, EventArgs.Empty);
     }
 
-    protected void InvokeUnhandledExceptionOccurred(object sender, UnhandledExceptionOccurredEventArgs args)
+    protected void InvokeUnhandledExceptionOccurred(object? sender, UnhandledExceptionOccurredEventArgs args)
     {
         UnhandledExceptionOccurred?.Invoke(sender, args);
     }

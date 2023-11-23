@@ -12,6 +12,6 @@ namespace Microsoft.AppCenter.Crashes.Windows.Utils;
 /// </summary>
 internal class ErrorExceptionAndBinaries
 {
-    public ModelException Exception;
-    public IList<Binary> Binaries;
+    public required ModelException Exception;
+    public IList<Binary>? Binaries;
 }

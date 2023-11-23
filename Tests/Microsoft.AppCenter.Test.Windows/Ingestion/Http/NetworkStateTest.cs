@@ -18,8 +18,8 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Http;
 [TestClass]
 public class NetworkStateTest : HttpIngestionTest
 {
-    private NetworkStateAdapter _networkState;
-    private NetworkStateIngestion _networkStateIngestion;
+    private NetworkStateAdapter _networkState = null!;
+    private NetworkStateIngestion _networkStateIngestion = null!;
     private readonly Mock<IApplicationSettings> _settingsMock = new Mock<IApplicationSettings>();
 
     [TestInitialize]

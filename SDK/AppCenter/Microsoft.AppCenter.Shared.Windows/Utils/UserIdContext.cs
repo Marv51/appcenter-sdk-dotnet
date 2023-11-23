@@ -12,8 +12,8 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils;
 public class UserIdContext
 {
     private static readonly object UserIdLock = new object();
-    private static UserIdContext _instanceField;
-    private string _userId;
+    private static UserIdContext? _instanceField;
+    private string? _userId;
 
     private readonly object UserIdContextLock = new object();
 
@@ -30,7 +30,7 @@ public class UserIdContext
     /// <summary>
     /// Event handler to subscribe to the user id update.
     /// </summary>
-    public static event EventHandler<UserIdUpdatedEventArgs> UserIdUpdated;
+    public static event EventHandler<UserIdUpdatedEventArgs>? UserIdUpdated;
 
     /// <summary>
     /// Unique instance.
@@ -56,7 +56,7 @@ public class UserIdContext
     /// <summary>
     /// Current user identifier.
     /// </summary>
-    public string UserId
+    public string? UserId
     {
         get
         {
@@ -67,7 +67,7 @@ public class UserIdContext
         }
         set
         {
-            EventHandler<UserIdUpdatedEventArgs> callback = null;
+            EventHandler<UserIdUpdatedEventArgs>? callback = null;
             lock (UserIdContextLock)
             {
                 if (_userId != value)

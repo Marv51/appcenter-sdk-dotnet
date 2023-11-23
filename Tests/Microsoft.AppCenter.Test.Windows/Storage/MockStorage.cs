@@ -64,7 +64,7 @@ public class MockStorage : IStorage
         }
     }
 
-    public Task<string> GetLogsAsync(string channelName, int limit, List<Log> logs)
+    public Task<string?> GetLogsAsync(string channelName, int limit, List<Log> logs)
     {
         lock (this)
         {
@@ -75,13 +75,13 @@ public class MockStorage : IStorage
                 .Take(limit).ToList();
             if (batch.Count == 0)
             {
-                return TaskExtension.GetCompletedTask<string>(null);
+                return TaskExtension.GetCompletedTask<string?>(null);
             }
             _pending.Add(batchId, batch);
             logs?.Clear();
             logs?.AddRange(batch);
-            AppCenterLog.Debug(AppCenterLog.LogTag, $"Storage.GetLogsAsync for channelName={channelName}: batchId={batchId} with logs={string.Join(",", logs)}");
-            return TaskExtension.GetCompletedTask(batchId);
+            AppCenterLog.Debug(AppCenterLog.LogTag, $"Storage.GetLogsAsync for channelName={channelName}: batchId={batchId} with logs={string.Join(",", logs ?? [])}");
+            return TaskExtension.GetCompletedTask((string?)batchId);
         }
     }
 

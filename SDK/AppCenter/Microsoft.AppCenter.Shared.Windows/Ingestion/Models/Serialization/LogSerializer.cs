@@ -39,7 +39,7 @@ public static class LogSerializer
         return JsonConvert.SerializeObject(log, SerializationSettings);
     }
 
-    public static Log DeserializeLog(string json)
+    public static Log? DeserializeLog(string json)
     {
         return JsonConvert.DeserializeObject<Log>(json, SerializationSettings);
     }

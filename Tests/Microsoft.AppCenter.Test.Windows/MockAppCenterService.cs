@@ -8,7 +8,7 @@ namespace Microsoft.AppCenter.Test;
 
 public class MockAppCenterService : IAppCenterService
 {
-    private static MockAppCenterService _instanceField;
+    private static MockAppCenterService? _instanceField;
     private readonly Mock<IAppCenterService> _mock;
 
     public string ServiceName => nameof(MockAppCenterService);
@@ -31,7 +31,7 @@ public class MockAppCenterService : IAppCenterService
         set { _mock.Object.InstanceEnabled = value; }
     }
 
-    public void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
+    public void OnChannelGroupReady(IChannelGroup channelGroup, string? appSecret)
     {
         _mock.Object.OnChannelGroupReady(channelGroup, appSecret);
     }

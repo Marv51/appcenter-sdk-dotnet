@@ -22,11 +22,11 @@ interface IManagmentClassFactory
 
 class ManagmentClassFactory : IManagmentClassFactory
 {
-    // The shared instance of ManagmentClassFactory.
-    private static ManagmentClassFactory _instanceField;
+    // The shared instance of ManagementClassFactory.
+    private static ManagmentClassFactory? _instanceField;
 
     /// <summary>
-    /// Gets or sets the shared instance of ManagmentClassFactory. Should never return null.
+    /// Gets or sets the shared instance of ManagementClassFactory. Should never return null.
     /// </summary>
     internal static ManagmentClassFactory Instance 
     {

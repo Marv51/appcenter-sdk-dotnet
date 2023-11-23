@@ -17,9 +17,9 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows;
 [TestClass]
 public class SessionTrackerTest
 {
-    private Mock<IChannelUnit> _mockChannel;
-    private Mock<IChannelGroup> _mockChannelGroup;
-    private SessionTracker _sessionTracker;
+    private Mock<IChannelUnit> _mockChannel = null!;
+    private Mock<IChannelGroup> _mockChannelGroup = null!;
+    private SessionTracker _sessionTracker = null!;
 
     [TestInitialize]
     public void InitializeSessionTrackerTest()

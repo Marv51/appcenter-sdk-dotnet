@@ -18,18 +18,18 @@ public interface IApplicationLifecycleHelper
     /// <summary>
     /// Occurs when the application has just been suspended
     /// </summary>
-    event EventHandler ApplicationSuspended;
+    event EventHandler? ApplicationSuspended;
 
     /// <summary>
     /// Occurs when the application is about to resume.
     /// Note that in UWP, this corresponds to CoreApplication.LeavingBackground for builds 14393 and up,
     /// but to CoreApplication.Resuming for builds under 14393.
     /// </summary>
-    event EventHandler ApplicationResuming;
+    event EventHandler? ApplicationResuming;
 
     /// <summary>
     /// Occurs when an unhandled exception is fired
     /// </summary>
     /// <remarks>This is used to set up the shutdown logic in the event of a crash.</remarks>
-    event EventHandler<UnhandledExceptionOccurredEventArgs> UnhandledExceptionOccurred;
+    event EventHandler<UnhandledExceptionOccurredEventArgs>? UnhandledExceptionOccurred;
 }

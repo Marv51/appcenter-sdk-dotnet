@@ -5,6 +5,7 @@
 	<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <UseWindowsForms>true</UseWindowsForms>
 	<SignAssembly>False</SignAssembly>
+	<Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics.Shared\**\*.cs" />

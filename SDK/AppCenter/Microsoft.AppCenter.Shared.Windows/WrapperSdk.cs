@@ -9,20 +9,20 @@ public partial class WrapperSdk
 
     public string WrapperSdkName { get; private set; }
 
-    public string WrapperRuntimeVersion { get; private set; }
+    public string? WrapperRuntimeVersion { get; private set; }
 
-    public string LiveUpdateReleaseLabel { get; private set; }
+    public string? LiveUpdateReleaseLabel { get; private set; }
 
-    public string LiveUpdateDeploymentKey { get; private set; }
+    public string? LiveUpdateDeploymentKey { get; private set; }
 
-    public string LiveUpdatePackageHash { get; private set; }
+    public string? LiveUpdatePackageHash { get; private set; }
 
     public WrapperSdk(string wrapperSdkName,
                       string wrapperSdkVersion,
-                      string wrapperRuntimeVersion = null,
-                      string liveUpdateReleaseLabel = null,
-                      string liveUpdateDeploymentKey = null,
-                      string liveUpdatePackageHash = null)
+                      string? wrapperRuntimeVersion = null,
+                      string? liveUpdateReleaseLabel = null,
+                      string? liveUpdateDeploymentKey = null,
+                      string? liveUpdatePackageHash = null)
     {
         WrapperSdkName = wrapperSdkName;
         WrapperSdkVersion = wrapperSdkVersion;

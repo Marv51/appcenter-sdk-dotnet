@@ -14,7 +14,7 @@ public partial class ErrorAttachmentLog
     /// <returns>Error attachment or <c>null</c> if null text is passed.</returns>
     /// <param name="text">Text to attach to the error report.</param>
     /// <param name="fileName">File name to use on reports.</param>
-    public static ErrorAttachmentLog AttachmentWithText(string text, string fileName)
+    public static ErrorAttachmentLog? AttachmentWithText(string text, string fileName)
     {
         return PlatformAttachmentWithText(text, fileName);
     }
@@ -26,7 +26,7 @@ public partial class ErrorAttachmentLog
     /// <param name="data">Binary data.</param>
     /// <param name="fileName">File name to use on reports.</param>
     /// <param name="contentType">Data MIME type.</param>
-    public static ErrorAttachmentLog AttachmentWithBinary(byte[] data, string fileName, string contentType)
+    public static ErrorAttachmentLog? AttachmentWithBinary(byte[] data, string fileName, string contentType)
     {
         return PlatformAttachmentWithBinary(data, fileName, contentType);
     }

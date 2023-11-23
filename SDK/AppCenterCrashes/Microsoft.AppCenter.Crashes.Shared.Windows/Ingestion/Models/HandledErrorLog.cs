@@ -47,7 +47,7 @@ public partial class HandledErrorLog : LogWithProperties
     /// </param>
     /// <param name="id">Unique identifier for this Error.
     /// </param>
-    public HandledErrorLog(Microsoft.AppCenter.Ingestion.Models.Device device, Exception exception, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string userId = default(string), string dataResidencyRegion = default(string), IDictionary<string, string> properties = default(IDictionary<string, string>), System.Guid? id = default(System.Guid?), IList<Binary> binaries = default(IList<Binary>))
+    public HandledErrorLog(Microsoft.AppCenter.Ingestion.Models.Device? device, Exception exception, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string? userId = default(string), string? dataResidencyRegion = default(string), IDictionary<string, string>? properties = default(IDictionary<string, string>), System.Guid? id = default(System.Guid?), IList<Binary>? binaries = default(IList<Binary>))
         : base(device, timestamp, sid, userId, dataResidencyRegion, properties)
     {
         Id = id;
@@ -71,12 +71,12 @@ public partial class HandledErrorLog : LogWithProperties
     /// <summary>
     /// </summary>
     [JsonProperty(PropertyName = "binaries")]
-    public IList<Binary> Binaries { get; set; }
+    public IList<Binary>? Binaries { get; set; }
 
     /// <summary>
     /// </summary>
     [JsonProperty(PropertyName = "exception")]
-    public Exception Exception { get; set; }
+    public Exception? Exception { get; set; }
 
     /// <summary>
     /// Validate the object.

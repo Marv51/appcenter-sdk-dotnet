@@ -33,7 +33,7 @@ public partial class StackFrame
     /// element.</param>
     /// <param name="fileName">The name of the file containing the
     /// execution point represented by this stack trace element.</param>
-    public StackFrame(string address = default(string), string code = default(string), string className = default(string), string methodName = default(string), int? lineNumber = default(int?), string fileName = default(string))
+    public StackFrame(string? address = default(string), string? code = default(string), string? className = default(string), string? methodName = default(string), int? lineNumber = default(int?), string? fileName = default(string))
     {
         Address = address;
         Code = code;
@@ -53,27 +53,27 @@ public partial class StackFrame
     /// Gets or sets frame address.
     /// </summary>
     [JsonProperty(PropertyName = "address")]
-    public string Address { get; set; }
+    public string? Address { get; set; }
 
     /// <summary>
     /// Gets or sets symbolized code line
     /// </summary>
     [JsonProperty(PropertyName = "code")]
-    public string Code { get; set; }
+    public string? Code { get; set; }
 
     /// <summary>
     /// Gets or sets the fully qualified name of the Class containing the
     /// execution point represented by this stack trace element.
     /// </summary>
     [JsonProperty(PropertyName = "className")]
-    public string ClassName { get; set; }
+    public string? ClassName { get; set; }
 
     /// <summary>
     /// Gets or sets the name of the method containing the execution point
     /// represented by this stack trace element.
     /// </summary>
     [JsonProperty(PropertyName = "methodName")]
-    public string MethodName { get; set; }
+    public string? MethodName { get; set; }
 
     /// <summary>
     /// Gets or sets the line number of the source line containing the
@@ -87,5 +87,5 @@ public partial class StackFrame
     /// represented by this stack trace element.
     /// </summary>
     [JsonProperty(PropertyName = "fileName")]
-    public string FileName { get; set; }
+    public string? FileName { get; set; }
 }

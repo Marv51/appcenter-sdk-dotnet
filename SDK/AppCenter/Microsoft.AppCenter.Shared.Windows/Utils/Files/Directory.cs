@@ -12,10 +12,12 @@ namespace Microsoft.AppCenter.Utils.Files;
 /// </summary>
 public class Directory
 {
-    private readonly DirectoryInfo _underlyingDirectoryInfo;
+    private readonly DirectoryInfo _underlyingDirectoryInfo = null!;
 
     /// <summary>
     /// Parameterless constructor needed for testing.
+    /// 
+    /// Warning this constructor does not initialize class correctly.
     /// </summary>
     public Directory()
     {

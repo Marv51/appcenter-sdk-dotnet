@@ -28,22 +28,22 @@ public sealed class ChannelGroup : IChannelGroup, IAppSecretHolder
 
     public string AppSecret { get; internal set; }
 
-    public event EventHandler<EnqueuingLogEventArgs> EnqueuingLog;
+    public event EventHandler<EnqueuingLogEventArgs>? EnqueuingLog;
 
-    public event EventHandler<FilteringLogEventArgs> FilteringLog;
+    public event EventHandler<FilteringLogEventArgs>? FilteringLog;
 
-    public event EventHandler<SendingLogEventArgs> SendingLog;
+    public event EventHandler<SendingLogEventArgs>? SendingLog;
 
-    public event EventHandler<SentLogEventArgs> SentLog;
+    public event EventHandler<SentLogEventArgs>? SentLog;
 
-    public event EventHandler<FailedToSendLogEventArgs> FailedToSendLog;
+    public event EventHandler<FailedToSendLogEventArgs>? FailedToSendLog;
 
     public ChannelGroup(string appSecret)
         : this(appSecret, null, null)
     {
     }
 
-    public ChannelGroup(string appSecret, IHttpNetworkAdapter httpNetwork, INetworkStateAdapter networkState)
+    public ChannelGroup(string appSecret, IHttpNetworkAdapter? httpNetwork, INetworkStateAdapter? networkState)
         : this(DefaultIngestion(httpNetwork, networkState), DefaultStorage(), appSecret)
     {
     }
@@ -162,7 +162,7 @@ public sealed class ChannelGroup : IChannelGroup, IAppSecretHolder
         }
     }
 
-    private static IIngestion DefaultIngestion(IHttpNetworkAdapter httpNetwork = null, INetworkStateAdapter networkState = null)
+    private static IIngestion DefaultIngestion(IHttpNetworkAdapter? httpNetwork = null, INetworkStateAdapter? networkState = null)
     {
         if (httpNetwork == null)
         {
@@ -180,27 +180,27 @@ public sealed class ChannelGroup : IChannelGroup, IAppSecretHolder
         return new Storage.Storage();
     }
 
-    private void AnyChannelEnqueuingLog(object sender, EnqueuingLogEventArgs e)
+    private void AnyChannelEnqueuingLog(object? sender, EnqueuingLogEventArgs e)
     {
         EnqueuingLog?.Invoke(sender, e);
     }
 
-    private void AnyChannelFilteringLog(object sender, FilteringLogEventArgs e)
+    private void AnyChannelFilteringLog(object? sender, FilteringLogEventArgs e)
     {
         FilteringLog?.Invoke(sender, e);
     }
 
-    private void AnyChannelSendingLog(object sender, SendingLogEventArgs e)
+    private void AnyChannelSendingLog(object? sender, SendingLogEventArgs e)
     {
         SendingLog?.Invoke(sender, e);
     }
 
-    private void AnyChannelSentLog(object sender, SentLogEventArgs e)
+    private void AnyChannelSentLog(object? sender, SentLogEventArgs e)
     {
         SentLog?.Invoke(sender, e);
     }
 
-    private void AnyChannelFailedToSendLog(object sender, FailedToSendLogEventArgs e)
+    private void AnyChannelFailedToSendLog(object? sender, FailedToSendLogEventArgs e)
     {
         FailedToSendLog?.Invoke(sender, e);
     }

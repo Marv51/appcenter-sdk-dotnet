@@ -58,7 +58,7 @@ public partial class ManagedErrorLog : AbstractErrorLog
     /// <param name="architecture">CPU architecture.</param>
     /// <param name="buildId">Unique ID for a Xamarin build or another
     /// similar technology.</param>
-    public ManagedErrorLog(Microsoft.AppCenter.Ingestion.Models.Device device, System.Guid id, int processId, string processName, bool fatal, Exception exception, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string userId = default(string), string dataResidencyRegion = default(string), int? parentProcessId = default(int?), string parentProcessName = default(string), long? errorThreadId = default(long?), string errorThreadName = default(string), System.DateTime? appLaunchTimestamp = default(System.DateTime?), string architecture = default(string), IList<Binary> binaries = default(IList<Binary>), string buildId = default(string))
+    public ManagedErrorLog(Microsoft.AppCenter.Ingestion.Models.Device device, System.Guid id, int processId, string processName, bool fatal, Exception exception, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string? userId = default(string), string? dataResidencyRegion = default(string), int? parentProcessId = default(int?), string? parentProcessName = default(string), long? errorThreadId = default(long?), string? errorThreadName = default(string), System.DateTime? appLaunchTimestamp = default(System.DateTime?), string? architecture = default(string), IList<Binary>? binaries = default(IList<Binary>), string? buildId = default(string))
         : base(device, id, processId, processName, fatal, timestamp, sid, userId, dataResidencyRegion, parentProcessId, parentProcessName, errorThreadId, errorThreadName, appLaunchTimestamp, architecture)
     {
         Binaries = binaries;
@@ -75,19 +75,19 @@ public partial class ManagedErrorLog : AbstractErrorLog
     /// <summary>
     /// </summary>
     [JsonProperty(PropertyName = "binaries")]
-    public IList<Binary> Binaries { get; set; }
+    public IList<Binary>? Binaries { get; set; }
 
     /// <summary>
     /// Gets or sets unique ID for a Xamarin build or another similar
     /// technology.
     /// </summary>
     [JsonProperty(PropertyName = "buildId")]
-    public string BuildId { get; set; }
+    public string? BuildId { get; set; }
 
     /// <summary>
     /// </summary>
     [JsonProperty(PropertyName = "exception")]
-    public Exception Exception { get; set; }
+    public Exception? Exception { get; set; }
 
     /// <summary>
     /// Validate the object.

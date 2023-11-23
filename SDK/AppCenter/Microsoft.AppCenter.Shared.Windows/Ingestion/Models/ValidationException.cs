@@ -31,7 +31,7 @@ public class ValidationException : IngestionException
     /// <param name="rule">The rule to create a string for</param>
     /// <param name="extraValue">An extra detail to include with the rule.</param>
     /// <returns>A string describing the rule</returns>
-    private static string GetRuleString(Rule rule, string extraValue)
+    private static string GetRuleString(Rule rule, string? extraValue)
     {
         switch (rule)
         {
@@ -62,7 +62,7 @@ public class ValidationException : IngestionException
     /// <param name="validationRule">The rule that was broken</param>
     /// <param name="propertyName">The name of the property that broke the rule</param>
     /// <returns></returns>
-    private static string GetErrorString(Rule validationRule, string propertyName, object detail)
+    private static string GetErrorString(Rule validationRule, string propertyName, object? detail)
     {
         return $"Validation failed due to property '{propertyName}': {GetRuleString(validationRule, detail?.ToString())}";
     }
@@ -80,7 +80,7 @@ public class ValidationException : IngestionException
     /// </summary>
     /// <param name="validationRule">The rule that was broken</param>
     /// <param name="propertyName">The name of the property that broke the rule</param>
-    public ValidationException(Rule validationRule, string propertyName, object detail = null) : base(GetErrorString(validationRule, propertyName, detail))
+    public ValidationException(Rule validationRule, string propertyName, object? detail = null) : base(GetErrorString(validationRule, propertyName, detail))
     {
     }
 }
