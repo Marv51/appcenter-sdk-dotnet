@@ -7,7 +7,14 @@
     <Nullable>enable</Nullable>
 	<PublishTrimmed>true</PublishTrimmed>
     <InvariantGlobalization>true</InvariantGlobalization>
+	<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+	  <PublishAot>true</PublishAot>
   </PropertyGroup>
+
+	<PropertyGroup>
+		<IlcGenerateMstatFile>true</IlcGenerateMstatFile>
+		<IlcGenerateDgmlFile>true</IlcGenerateDgmlFile>
+	</PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics.WindowsDesktop\Microsoft.AppCenter.Analytics.WindowsDesktop.csproj" />
