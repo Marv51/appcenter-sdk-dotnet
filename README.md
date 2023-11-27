@@ -1,8 +1,19 @@
-[![GitHub Release](https://img.shields.io/github/release/microsoft/appcenter-sdk-dotnet.svg)](https://github.com/microsoft/appcenter-sdk-dotnet/releases/latest)
-[![NuGet](https://img.shields.io/nuget/v/Microsoft.AppCenter.svg)](https://www.nuget.org/packages/Microsoft.AppCenter/)
-[![license](https://img.shields.io/badge/license-MIT%20License-yellow.svg)](https://github.com/microsoft/appcenter-sdk-dotnet/blob/master/license.txt)
+# This is an unofficial Fork of the Visual Studio App Center SDK for .NET
 
-# Visual Studio App Center SDK for .NET
+The goal of this fork is to create a Visual Studio App Center SDK for .NET that is more suitable for modern WinUI apps on Windows.
+
+Wish list:
+ - [x] Remove UWP dependencies (microsoft/appcenter-sdk-dotnet#1759)
+ - [x] Use simple WinRT-Settings api for WinUI projects (microsoft/appcenter-sdk-dotnet#1758)
+ - [x] Enable Nullability
+ - [x] Target modern dotnet
+ - [x] Fix easy trimming warnings
+ - [ ] Move from Newtonsoft to System.Text.JSON
+ - [ ] Fix remaining trimming warnings
+ 
+
+---
+
 
 App Center is your continuous integration, delivery and learning solution for iOS, Android, and Windows apps.
 Get faster release cycles, higher-quality apps, and the insights to build what users want.
