@@ -21,7 +21,7 @@ public partial class AppCenter
     const string AppSecretKeyName = "appsecret";
     const string SecretsPattern = @"([^;=]+)=([^;]+)(?:;\s*)?";
 
-    static readonly Regex _secretsRegex = new Regex(SecretsPattern);
+    static readonly Regex _secretsRegex = SecretRegex();
 
     // Gets the first instance of an app sceret and/or target token corresponding to the given platform name, or returns the string 
     // as-is if no identifier can be found. Logs a message if no identifiers can be found.
@@ -262,4 +262,7 @@ public partial class AppCenter
     {
         PlatformUnsetInstance();
     }
+
+    [GeneratedRegex(SecretsPattern)]
+    private static partial Regex SecretRegex();
 }
