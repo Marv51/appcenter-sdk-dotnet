@@ -237,9 +237,9 @@
           "Microsoft.AspNetCore.StaticFiles": "[2.2.0, )",
           "Microsoft.Windows.SDK.BuildTools": "[10.0.25936-preview, )",
           "Microsoft.WindowsAppSDK": "[1.4.231115000, )",
-          "Telani.AppCenter": "[1.0.0, )",
-          "Telani.AppCenter.Analytics": "[1.0.0, )",
-          "Telani.AppCenter.Crashes": "[1.0.0, )"
+          "Telani.AppCenter": "[1.0.1, )",
+          "Telani.AppCenter.Analytics": "[1.0.1, )",
+          "Telani.AppCenter.Crashes": "[1.0.1, )"
         }
       },
       "Telani.AppCenter": {
@@ -253,13 +253,13 @@
       "Telani.AppCenter.Analytics": {
         "type": "Project",
         "dependencies": {
-          "Telani.AppCenter": "[1.0.0, )"
+          "Telani.AppCenter": "[1.0.1, )"
         }
       },
       "Telani.AppCenter.Crashes": {
         "type": "Project",
         "dependencies": {
-          "Telani.AppCenter": "[1.0.0, )"
+          "Telani.AppCenter": "[1.0.1, )"
         }
       }
     },
