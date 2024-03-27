@@ -189,12 +189,30 @@ public class DeviceInformationHelper : AbstractDeviceInformationHelper
         }
     }
 
+    private static bool IsRunningPackaged()
+    {
+        uint packNameLength = 0;
+        var result = global::Windows.Win32.PInvoke.GetCurrentPackageFullName(ref packNameLength, null);
+        if (result != global::Windows.Win32.Foundation.WIN32_ERROR.ERROR_INSUFFICIENT_BUFFER)
+        {
+            if (result == global::Windows.Win32.Foundation.WIN32_ERROR.APPMODEL_ERROR_NO_PACKAGE)
+            {
+                return false;
+            }
+            else
+            {
+                throw new InvalidOperationException("Could not determine if library is running packaged or not.");
+            }
+        }
+        return true;
+    }
+
     private static string? DeploymentVersion
     {
         get
         {
 #if WINDOWS10_0_17763_0_OR_GREATER
-            if (WindowsHelper.IsRunningAsUwp || WindowsHelper.IsRunningAsWinUI)
+            if (IsRunningPackaged())
             {
                 try
                 {

@@ -4,7 +4,7 @@
     <Copyright>Microsoft Corp. All rights reserved.</Copyright>
     <Company>Microsoft Corporation</Company>
     <!-- Current version. -->
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <FileVersion>1.0.0.0</FileVersion>
     <!-- Used in runtime to ensure versions match. Prevents loading in some cases, so don't set it as release version. -->
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
