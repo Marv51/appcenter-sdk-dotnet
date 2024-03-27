@@ -30,6 +30,7 @@ public class LogContainer
     /// Gets or sets the list of logs
     /// </summary>
     [JsonProperty(PropertyName = "logs")]
+    [System.Text.Json.Serialization.JsonPropertyName("logs")]
     public IList<Log>? Logs { get; set; }
 
     /// <summary>

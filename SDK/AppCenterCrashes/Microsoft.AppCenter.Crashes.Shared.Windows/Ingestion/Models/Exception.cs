@@ -54,12 +54,14 @@ public partial class Exception
     /// Gets or sets exception type.
     /// </summary>
     [JsonProperty(PropertyName = "type")]
+    [System.Text.Json.Serialization.JsonPropertyName("type")]
     public string? Type { get; set; }
 
     /// <summary>
     /// Gets or sets exception reason.
     /// </summary>
     [JsonProperty(PropertyName = "message")]
+    [System.Text.Json.Serialization.JsonPropertyName("message")]
     public string? Message { get; set; }
 
     /// <summary>
@@ -67,18 +69,21 @@ public partial class Exception
     /// either missing or unreliable.
     /// </summary>
     [JsonProperty(PropertyName = "stackTrace")]
+    [System.Text.Json.Serialization.JsonPropertyName("stackTrace")]
     public string? StackTrace { get; set; }
 
     /// <summary>
     /// Gets or sets stack frames. Optional.
     /// </summary>
     [JsonProperty(PropertyName = "frames")]
+    [System.Text.Json.Serialization.JsonPropertyName("frames")]
     public IList<StackFrame>? Frames { get; set; }
 
     /// <summary>
     /// Gets or sets inner exceptions of this exception.
     /// </summary>
     [JsonProperty(PropertyName = "innerExceptions")]
+    [System.Text.Json.Serialization.JsonPropertyName("innerExceptions")]
     public IList<Exception>? InnerExceptions { get; set; }
 
     /// <summary>
@@ -88,6 +93,7 @@ public partial class Exception
     ///
     /// </summary>
     [JsonProperty(PropertyName = "wrapperSdkName")]
+    [System.Text.Json.Serialization.JsonPropertyName("wrapperSdkName")]
     public string? WrapperSdkName { get; set; }
 
     /// <summary>

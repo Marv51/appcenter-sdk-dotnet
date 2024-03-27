@@ -3,6 +3,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using System.Text.Json.Serialization;
 using Microsoft.AppCenter.Ingestion.Models;
 using Newtonsoft.Json;
 
@@ -12,6 +13,7 @@ namespace Microsoft.AppCenter.Crashes;
 /// Error attachment log.
 /// </summary>
 [JsonObject(JsonIdentifier)]
+[JsonDerivedType(typeof(Log), typeDiscriminator: "errorAttachment")]
 public partial class ErrorAttachmentLog : Log
 {
     internal const string JsonIdentifier = "errorAttachment";
@@ -46,30 +48,35 @@ public partial class ErrorAttachmentLog : Log
     /// Gets or sets error attachment identifier.
     /// </summary>
     [JsonProperty(PropertyName = "id")]
+    [System.Text.Json.Serialization.JsonPropertyName("id")]
     public System.Guid Id { get; set; }
 
     /// <summary>
     /// Gets or sets error log identifier to attach this log to.
     /// </summary>
     [JsonProperty(PropertyName = "errorId")]
+    [System.Text.Json.Serialization.JsonPropertyName("errorId")]
     public System.Guid ErrorId { get; set; }
 
     /// <summary>
     /// Gets or sets content type (text/plain for text).
     /// </summary>
     [JsonProperty(PropertyName = "contentType")]
+    [System.Text.Json.Serialization.JsonPropertyName("contentType")]
     public string? ContentType { get; set; }
 
     /// <summary>
     /// Gets or sets file name.
     /// </summary>
     [JsonProperty(PropertyName = "fileName")]
+    [System.Text.Json.Serialization.JsonPropertyName("fileName")]
     public string? FileName { get; set; }
 
     /// <summary>
     /// Gets or sets data encoded as base 64.
     /// </summary>
     [JsonProperty(PropertyName = "data")]
+    [System.Text.Json.Serialization.JsonPropertyName("data")]
     public byte[]? Data { get; set; }
 
     /// <summary>

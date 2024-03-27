@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Ingestion.Models;
@@ -113,8 +114,13 @@ internal sealed class IngestionHttp : IIngestion
     {
         var logContainer = new LogContainer(logs);
 
+        var new_requestContent = STJLogSerializer.Serialize(logContainer);
+
         // Serialize request.
         var requestContent = LogSerializer.Serialize(logContainer);
+
+        Debug.Assert(requestContent == new_requestContent);
+
         return requestContent;
     }
 

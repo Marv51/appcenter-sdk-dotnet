@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -85,7 +86,9 @@ internal sealed class Storage : IStorage
     {
         return AddTaskToQueue(() =>
         {
-            var logJsonString = LogSerializer.Serialize(log);
+            var logOldJsonString = LogSerializer.Serialize(log);
+            var logJsonString = STJLogSerializer.Serialize(log);
+            //Debug.Assert(logJsonString == logOldJsonString);
             var maxSize = _storageAdapter.GetMaxStorageSize();
             var logSize = Encoding.UTF8.GetBytes(logJsonString).Length;
             if (maxSize < 0)
@@ -256,7 +259,7 @@ internal sealed class Storage : IStorage
             {
                 try
                 {
-                    var log = LogSerializer.DeserializeLog(entry.Log);
+                    var log = STJLogSerializer.DeserializeLog(entry.Log);
                     if (log is not null)
                     {
                         retrievedLogs.Add(log);

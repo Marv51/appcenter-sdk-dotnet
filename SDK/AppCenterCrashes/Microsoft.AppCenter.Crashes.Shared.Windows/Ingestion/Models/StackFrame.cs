@@ -53,12 +53,14 @@ public partial class StackFrame
     /// Gets or sets frame address.
     /// </summary>
     [JsonProperty(PropertyName = "address")]
+    [System.Text.Json.Serialization.JsonPropertyName("address")]
     public string? Address { get; set; }
 
     /// <summary>
     /// Gets or sets symbolized code line
     /// </summary>
     [JsonProperty(PropertyName = "code")]
+    [System.Text.Json.Serialization.JsonPropertyName("code")]
     public string? Code { get; set; }
 
     /// <summary>
@@ -66,6 +68,7 @@ public partial class StackFrame
     /// execution point represented by this stack trace element.
     /// </summary>
     [JsonProperty(PropertyName = "className")]
+    [System.Text.Json.Serialization.JsonPropertyName("className")]
     public string? ClassName { get; set; }
 
     /// <summary>
@@ -73,6 +76,7 @@ public partial class StackFrame
     /// represented by this stack trace element.
     /// </summary>
     [JsonProperty(PropertyName = "methodName")]
+    [System.Text.Json.Serialization.JsonPropertyName("methodName")]
     public string? MethodName { get; set; }
 
     /// <summary>
@@ -80,6 +84,7 @@ public partial class StackFrame
     /// execution point represented by this stack trace element.
     /// </summary>
     [JsonProperty(PropertyName = "lineNumber")]
+    [System.Text.Json.Serialization.JsonPropertyName("lineNumber")]
     public int? LineNumber { get; set; }
 
     /// <summary>
@@ -87,5 +92,6 @@ public partial class StackFrame
     /// represented by this stack trace element.
     /// </summary>
     [JsonProperty(PropertyName = "fileName")]
+    [System.Text.Json.Serialization.JsonPropertyName("fileName")]
     public string? FileName { get; set; }
 }

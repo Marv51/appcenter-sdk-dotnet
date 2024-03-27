@@ -42,7 +42,7 @@ public class SessionTrackerTest
     public void EnableManualSessionTracker()
     {
         // Mock channel.
-        Log actualLog = null;
+        Log? actualLog = null;
         _mockChannel.Setup(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>())).Callback<Log>(log => actualLog = log);
 
         // Enable manual session tracker.
@@ -56,6 +56,7 @@ public class SessionTrackerTest
         // Start session and check that session was sent.
         _sessionTracker.StartSession();
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsNotNull<StartSessionLog>()), Times.Once());
+        Assert.IsNotNull(actualLog);
         Assert.IsNotNull(actualLog.Sid);
         Assert.IsNotNull(SessionContext.SessionId);
         Assert.AreEqual(SessionContext.SessionId, actualLog.Sid);
@@ -79,12 +80,13 @@ public class SessionTrackerTest
     public void StartSessionWhenSessionIsTrackedAutomatically()
     {
         // Mock channel.
-        Log actualLog = null;
+        Log? actualLog = null;
         _mockChannel.Setup(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>())).Callback<Log>(log => actualLog = log);
 
         // Verify that logs was sent with automatic session generation.
         _sessionTracker.Resume();
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsNotNull<StartSessionLog>()), Times.Once);
+        Assert.IsNotNull(actualLog);
         Assert.IsNotNull(actualLog.Sid);
         Assert.IsNotNull(SessionContext.SessionId);
         Assert.AreEqual(SessionContext.SessionId, actualLog.Sid);
@@ -105,10 +107,11 @@ public class SessionTrackerTest
     [TestMethod]
     public void ResumeFirstTime()
     {
-        Log actualLog = null;
+        Log? actualLog = null;
         _mockChannel.Setup(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>())).Callback<Log>(log => actualLog = log);
         _sessionTracker.Resume();
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsNotNull<StartSessionLog>()), Times.Once());
+        Assert.IsNotNull(actualLog);
         Assert.IsNotNull(actualLog.Sid);
     }
 
@@ -118,7 +121,7 @@ public class SessionTrackerTest
     [TestMethod]
     public void ResumeAfterTimeout()
     {
-        Log actualLog = null;
+        Log? actualLog = null;
         _mockChannel.Setup(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>())).Callback<Log>(log => actualLog = log);
 
         _sessionTracker.Resume();
@@ -130,7 +133,9 @@ public class SessionTrackerTest
         var secondLog = actualLog;
 
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsNotNull<StartSessionLog>()), Times.Exactly(2));
+        Assert.IsNotNull(firstLog);
         Assert.IsNotNull(firstLog.Sid);
+        Assert.IsNotNull(secondLog);
         Assert.IsNotNull(secondLog.Sid);
         Assert.AreNotEqual(firstLog.Sid, secondLog.Sid);
     }
@@ -141,7 +146,7 @@ public class SessionTrackerTest
     [TestMethod]
     public void ResumeAfterTimeoutAndSendEvent()
     {
-        Log actualLog = null;
+        Log? actualLog = null;
         _mockChannel.Setup(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>())).Callback<Log>(log => actualLog = log);
 
         _sessionTracker.Resume();
@@ -159,7 +164,9 @@ public class SessionTrackerTest
             new EnqueuingLogEventArgs(eventLog));
 
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsNotNull<StartSessionLog>()), Times.Exactly(2));
+        Assert.IsNotNull(firstSessionLog);
         Assert.IsNotNull(firstSessionLog.Sid);
+        Assert.IsNotNull(secondSessionLog);
         Assert.IsNotNull(secondSessionLog.Sid);
         Assert.AreNotEqual(firstSessionLog.Sid, secondSessionLog.Sid);
         Assert.AreEqual(secondSessionLog.Sid, eventLog.Sid);
@@ -330,11 +337,12 @@ public class SessionTrackerTest
     public void VerifySessionChangesOnDisableThenEnable()
     {
         // Do a first session.
-        Log actualLog = null;
+        Log? actualLog = null;
         _mockChannel.Setup(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>())).Callback<Log>(log => actualLog = log);
         _sessionTracker.Resume();
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsNotNull<StartSessionLog>()), Times.Once());
         var firstLog = actualLog;
+        Assert.IsNotNull(actualLog);
         Assert.IsNotNull(actualLog.Sid);
         Assert.AreEqual(SessionContext.SessionId, actualLog.Sid);
 
@@ -350,6 +358,7 @@ public class SessionTrackerTest
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsNotNull<StartSessionLog>()), Times.Exactly(2));
         var secondLog = actualLog;
         Assert.IsNotNull(secondLog.Sid);
+        Assert.IsNotNull(firstLog);
         Assert.AreNotEqual(firstLog.Sid, secondLog.Sid);
     }
 }

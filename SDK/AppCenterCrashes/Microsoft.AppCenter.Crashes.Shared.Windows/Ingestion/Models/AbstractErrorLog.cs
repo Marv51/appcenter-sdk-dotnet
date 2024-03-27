@@ -70,42 +70,49 @@ public class AbstractErrorLog : Log
     /// Gets or sets error identifier.
     /// </summary>
     [JsonProperty(PropertyName = "id")]
+    [System.Text.Json.Serialization.JsonPropertyName("id")]
     public System.Guid Id { get; set; }
 
     /// <summary>
     /// Gets or sets process identifier.
     /// </summary>
     [JsonProperty(PropertyName = "processId")]
+    [System.Text.Json.Serialization.JsonPropertyName("processId")]
     public int ProcessId { get; set; }
 
     /// <summary>
     /// Gets or sets process name.
     /// </summary>
     [JsonProperty(PropertyName = "processName")]
+    [System.Text.Json.Serialization.JsonPropertyName("processName")]
     public string? ProcessName { get; set; }
 
     /// <summary>
     /// Gets or sets parent's process identifier.
     /// </summary>
     [JsonProperty(PropertyName = "parentProcessId")]
+    [System.Text.Json.Serialization.JsonPropertyName("parentProcessId")]
     public int? ParentProcessId { get; set; }
 
     /// <summary>
     /// Gets or sets parent's process name.
     /// </summary>
     [JsonProperty(PropertyName = "parentProcessName")]
+    [System.Text.Json.Serialization.JsonPropertyName("parentProcessName")]
     public string? ParentProcessName { get; set; }
 
     /// <summary>
     /// Gets or sets error thread identifier.
     /// </summary>
     [JsonProperty(PropertyName = "errorThreadId")]
+    [System.Text.Json.Serialization.JsonPropertyName("errorThreadId")]
     public long? ErrorThreadId { get; set; }
 
     /// <summary>
     /// Gets or sets error thread name.
     /// </summary>
     [JsonProperty(PropertyName = "errorThreadName")]
+    [System.Text.Json.Serialization.JsonPropertyName("errorThreadName")]
     public string? ErrorThreadName { get; set; }
 
     /// <summary>
@@ -114,6 +121,7 @@ public class AbstractErrorLog : Log
     /// the error occurred and the app was launched.
     /// </summary>
     [JsonProperty(PropertyName = "fatal")]
+    [System.Text.Json.Serialization.JsonPropertyName("fatal")]
     public bool Fatal { get; set; }
 
     /// <summary>
@@ -122,12 +130,14 @@ public class AbstractErrorLog : Log
     ///
     /// </summary>
     [JsonProperty(PropertyName = "appLaunchTimestamp")]
+    [System.Text.Json.Serialization.JsonPropertyName("appLaunchTimestamp")]
     public System.DateTime? AppLaunchTimestamp { get; set; }
 
     /// <summary>
     /// Gets or sets CPU architecture.
     /// </summary>
     [JsonProperty(PropertyName = "architecture")]
+    [System.Text.Json.Serialization.JsonPropertyName("architecture")]
     public string? Architecture { get; set; }
 
     /// <summary>

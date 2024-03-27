@@ -125,6 +125,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "sdkName")]
+    [System.Text.Json.Serialization.JsonPropertyName("sdkName")]
     public string? SdkName { get; set; }
 
     /// <summary>
@@ -133,6 +134,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "sdkVersion")]
+    [System.Text.Json.Serialization.JsonPropertyName("sdkVersion")]
     public string? SdkVersion { get; set; }
 
     /// <summary>
@@ -143,6 +145,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "wrapperSdkVersion")]
+    [System.Text.Json.Serialization.JsonPropertyName("wrapperSdkVersion")]
     public string? WrapperSdkVersion { get; set; }
 
     /// <summary>
@@ -152,6 +155,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "wrapperSdkName")]
+    [System.Text.Json.Serialization.JsonPropertyName("wrapperSdkName")]
     public string? WrapperSdkName { get; set; }
 
     /// <summary>
@@ -159,6 +163,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "model")]
+    [System.Text.Json.Serialization.JsonPropertyName("model")]
     public string? Model { get; set; }
 
     /// <summary>
@@ -166,6 +171,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "oemName")]
+    [System.Text.Json.Serialization.JsonPropertyName("oemName")]
     public string? OemName { get; set; }
 
     /// <summary>
@@ -174,6 +180,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "osName")]
+    [System.Text.Json.Serialization.JsonPropertyName("osName")]
     public string? OsName { get; set; }
 
     /// <summary>
@@ -181,6 +188,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "osVersion")]
+    [System.Text.Json.Serialization.JsonPropertyName("osVersion")]
     public string? OsVersion { get; set; }
 
     /// <summary>
@@ -188,6 +196,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "osBuild")]
+    [System.Text.Json.Serialization.JsonPropertyName("osBuild")]
     public string? OsBuild { get; set; }
 
     /// <summary>
@@ -196,6 +205,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "osApiLevel")]
+    [System.Text.Json.Serialization.JsonPropertyName("osApiLevel")]
     public int? OsApiLevel { get; set; }
 
     /// <summary>
@@ -203,6 +213,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "locale")]
+    [System.Text.Json.Serialization.JsonPropertyName("locale")]
     public string? Locale { get; set; }
 
     /// <summary>
@@ -211,6 +222,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "timeZoneOffset")]
+    [System.Text.Json.Serialization.JsonPropertyName("timeZoneOffset")]
     public int TimeZoneOffset { get; set; }
 
     /// <summary>
@@ -219,6 +231,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "screenSize")]
+    [System.Text.Json.Serialization.JsonPropertyName("screenSize")]
     public string? ScreenSize { get; set; }
 
     /// <summary>
@@ -226,6 +239,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "appVersion")]
+    [System.Text.Json.Serialization.JsonPropertyName("appVersion")]
     public string? AppVersion { get; set; }
 
     /// <summary>
@@ -233,6 +247,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "carrierName")]
+    [System.Text.Json.Serialization.JsonPropertyName("carrierName")]
     public string? CarrierName { get; set; }
 
     /// <summary>
@@ -240,6 +255,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "carrierCountry")]
+    [System.Text.Json.Serialization.JsonPropertyName("carrierCountry")]
     public string? CarrierCountry { get; set; }
 
     /// <summary>
@@ -247,6 +263,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "appBuild")]
+    [System.Text.Json.Serialization.JsonPropertyName("appBuild")]
     public string? AppBuild { get; set; }
 
     /// <summary>
@@ -256,6 +273,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "appNamespace")]
+    [System.Text.Json.Serialization.JsonPropertyName("appNamespace")]
     public string? AppNamespace { get; set; }
 
     /// <summary>
@@ -264,6 +282,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "liveUpdateReleaseLabel")]
+    [System.Text.Json.Serialization.JsonPropertyName("liveUpdateReleaseLabel")]
     public string? LiveUpdateReleaseLabel { get; set; }
 
     /// <summary>
@@ -273,6 +292,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "liveUpdateDeploymentKey")]
+    [System.Text.Json.Serialization.JsonPropertyName("liveUpdateDeploymentKey")]
     public string? LiveUpdateDeploymentKey { get; set; }
 
     /// <summary>
@@ -282,6 +302,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "liveUpdatePackageHash")]
+    [System.Text.Json.Serialization.JsonPropertyName("liveUpdatePackageHash")]
     public string? LiveUpdatePackageHash { get; set; }
 
     /// <summary>
@@ -292,6 +313,7 @@ public class Device
     ///
     /// </summary>
     [JsonProperty(PropertyName = "wrapperRuntimeVersion")]
+    [System.Text.Json.Serialization.JsonPropertyName("wrapperRuntimeVersion")]
     public string? WrapperRuntimeVersion { get; set; }
 
     /// <summary>

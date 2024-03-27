@@ -42,7 +42,7 @@ public class AnalyticsTest
     [TestMethod]
     public void InstanceIsNotNull()
     {
-        Analytics.Instance = null;
+        Analytics.Instance = null!;
 
         Assert.IsNotNull(Analytics.Instance);
     }
@@ -221,14 +221,14 @@ public class AnalyticsTest
         _mockSessionTracker.Verify(tracker => tracker.EnableManualSessionTracker(), Times.Once());
 
         // Event name is null or empty
-        Analytics.TrackEvent(null);
+        Analytics.TrackEvent(null!);
         Analytics.TrackEvent("");
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<EventLog>()), Times.Never());
 
         // Event name exceeds max length
         Analytics.TrackEvent(new string('?', 257));
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<EventLog>(log =>
-            log.Name.Length == 256)), Times.Once());
+            log.Name != null && log.Name.Length == 256)), Times.Once());
 
         // Without properties
         _mockChannel.Invocations.Clear();
@@ -245,11 +245,11 @@ public class AnalyticsTest
         _mockChannel.Invocations.Clear();
         Analytics.TrackEvent("test", new Dictionary<string, string> { { new string('?', 126), "test" } });
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<EventLog>(log =>
-            log.Properties.First().Key.Length == 125)), Times.Once());
+            log.Properties != null && log.Properties.First().Key.Length == 125)), Times.Once());
         
         // Property value is null
         _mockChannel.Invocations.Clear();
-        Analytics.TrackEvent("test", new Dictionary<string, string> { { "test", null } });
+        Analytics.TrackEvent("test", new Dictionary<string, string> { { "test", null! } });
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<EventLog>(log =>
             log.Properties == null || log.Properties.Count == 0)), Times.Once());
 
@@ -257,7 +257,7 @@ public class AnalyticsTest
         _mockChannel.Invocations.Clear();
         Analytics.TrackEvent("test", new Dictionary<string, string> { { "test", new string('?', 126) } });
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<EventLog>(log =>
-            log.Properties.First().Value.Length == 125)), Times.Once());
+            log.Properties != null && log.Properties.First().Value.Length == 125)), Times.Once());
 
         // Properties size exceeds maximum
         _mockChannel.Invocations.Clear();
@@ -268,7 +268,7 @@ public class AnalyticsTest
         }
         Analytics.TrackEvent("test", manyProperties);
         _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<EventLog>(log =>
-            log.Properties.Count == 20)), Times.Once());
+            log.Properties != null && log.Properties.Count == 20)), Times.Once());
     }
 
     /// <summary>

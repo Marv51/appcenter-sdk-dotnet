@@ -221,7 +221,7 @@ public partial class ErrorLogHelper
         try
         {
             var errorLogString = file.ReadAllText();
-            return (ManagedErrorLog?)LogSerializer.DeserializeLog(errorLogString);
+            return (ManagedErrorLog?)STJLogSerializer.DeserializeLog(errorLogString);
         }
         catch (System.Exception e)
         {
@@ -269,7 +269,7 @@ public partial class ErrorLogHelper
         try
         {
             // Serialize main log file.
-            var errorLogString = ObfuscateUserName(LogSerializer.Serialize(errorLog));
+            var errorLogString = ObfuscateUserName(STJLogSerializer.Serialize(errorLog));
             var errorLogFileName = errorLog.Id + ErrorLogFileExtension;
             AppCenterLog.Debug(Crashes.LogTag, "Saving uncaught exception.");
             var directory = InstanceGetErrorStorageDirectory();

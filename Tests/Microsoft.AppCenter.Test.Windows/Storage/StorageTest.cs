@@ -349,7 +349,7 @@ public class StorageTest
         {
             var exception = new StorageCorruptedException("Mock exception");
             var testLog = TestLog.CreateTestLog();
-            var testLogString = LogSerializer.Serialize(testLog);
+            var testLogString = STJLogSerializer.Serialize(testLog);
             var testLogSize = Encoding.UTF8.GetBytes(testLogString).Length;
             Mock.Get(mockStorageAdapter).Setup(adapter => adapter.GetMaxStorageSize()).Returns(testLogSize + 1);
             Mock.Get(mockStorageAdapter).Setup(adapter => adapter.Insert(TableName, It.IsAny<string[]>(), It.IsAny<List<object[]>>())).Throws(exception);
@@ -548,7 +548,7 @@ public class StorageTest
         }
         catch (StorageException e)
         {
-            var logJsonString = LogSerializer.Serialize(largeLog);
+            var logJsonString = STJLogSerializer.Serialize(largeLog);
             var logSize = Encoding.UTF8.GetBytes(logJsonString).Length;
             Assert.AreEqual(e.Message, $"Log is too large ({logSize} bytes) to store in database. Current maximum database size is {capacity} bytes.");
         }
@@ -592,7 +592,7 @@ public class StorageTest
     private async Task FillDatabaseWithLogs(int storageCapacity)
     {
         var log = TestLog.CreateTestLog();
-        var logJsonString = LogSerializer.Serialize(log);
+        var logJsonString = STJLogSerializer.Serialize(log);
         var logSize = Encoding.UTF8.GetBytes(logJsonString).Length;
         var logsCount = storageCapacity / logSize;
         var logs = PutNLogs(logsCount - 1);

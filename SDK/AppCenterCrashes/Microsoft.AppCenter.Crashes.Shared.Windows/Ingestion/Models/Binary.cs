@@ -47,43 +47,51 @@ public partial class Binary
     /// <summary>
     /// </summary>
     [JsonProperty(PropertyName = "id")]
+    [System.Text.Json.Serialization.JsonPropertyName("id")]
     public string? Id { get; set; }
 
     /// <summary>
     /// </summary>
     [JsonProperty(PropertyName = "startAddress")]
+    [System.Text.Json.Serialization.JsonPropertyName("startAddress")]
     public string? StartAddress { get; set; }
 
     /// <summary>
     /// </summary>
     [JsonProperty(PropertyName = "endAddress")]
+    [System.Text.Json.Serialization.JsonPropertyName("endAddress")]
     public string? EndAddress { get; set; }
 
     /// <summary>
     /// </summary>
     [JsonProperty(PropertyName = "name")]
+    [System.Text.Json.Serialization.JsonPropertyName("name")]
     public string? Name { get; set; }
 
     /// <summary>
     /// </summary>
     [JsonProperty(PropertyName = "path")]
+    [System.Text.Json.Serialization.JsonPropertyName("path")]
     public string? Path { get; set; }
 
     /// <summary>
     /// </summary>
     [JsonProperty(PropertyName = "architecture")]
+    [System.Text.Json.Serialization.JsonPropertyName("architecture")]
     public string? Architecture { get; set; }
 
     /// <summary>
     /// Gets or sets CPU primary architecture.
     /// </summary>
     [JsonProperty(PropertyName = "primaryArchitectureId")]
+    [System.Text.Json.Serialization.JsonPropertyName("primaryArchitectureId")]
     public long? PrimaryArchitectureId { get; set; }
 
     /// <summary>
     /// Gets or sets CPU architecture variant.
     /// </summary>
     [JsonProperty(PropertyName = "architectureVariantId")]
+    [System.Text.Json.Serialization.JsonPropertyName("architectureVariantId")]
     public long? ArchitectureVariantId { get; set; }
 
     /// <summary>

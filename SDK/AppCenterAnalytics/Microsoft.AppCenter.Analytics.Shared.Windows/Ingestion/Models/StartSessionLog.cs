@@ -4,6 +4,7 @@
 using System;
 using Newtonsoft.Json;
 using Microsoft.AppCenter.Ingestion.Models;
+using System.Text.Json.Serialization;
 
 namespace Microsoft.AppCenter.Analytics.Ingestion.Models;
 
@@ -14,6 +15,7 @@ using Device = Microsoft.AppCenter.Ingestion.Models.Device;
 /// service).
 /// </summary>
 [JsonObject(JsonIdentifier)]
+[JsonDerivedType(typeof(Log), typeDiscriminator: "startSession")]
 public partial class StartSessionLog : Log
 {
     internal static StartSessionLog Empty = new StartSessionLog();

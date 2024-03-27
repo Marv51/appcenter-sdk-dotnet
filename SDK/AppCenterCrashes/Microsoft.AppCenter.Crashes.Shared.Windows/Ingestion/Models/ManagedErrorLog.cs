@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using Microsoft.AppCenter.Ingestion.Models;
 using Newtonsoft.Json;
 
@@ -11,6 +12,7 @@ namespace Microsoft.AppCenter.Crashes.Ingestion.Models;
 /// Error log for managed platforms (such as Android Dalvik/ART).
 /// </summary>
 [JsonObject(JsonIdentifier)]
+[JsonDerivedType(typeof(Log), typeDiscriminator: "managedError")]
 public partial class ManagedErrorLog : AbstractErrorLog
 {
     internal const string JsonIdentifier = "managedError";
@@ -75,6 +77,7 @@ public partial class ManagedErrorLog : AbstractErrorLog
     /// <summary>
     /// </summary>
     [JsonProperty(PropertyName = "binaries")]
+    [System.Text.Json.Serialization.JsonPropertyName("binaries")]
     public IList<Binary>? Binaries { get; set; }
 
     /// <summary>
@@ -82,11 +85,13 @@ public partial class ManagedErrorLog : AbstractErrorLog
     /// technology.
     /// </summary>
     [JsonProperty(PropertyName = "buildId")]
+    [System.Text.Json.Serialization.JsonPropertyName("buildId")]
     public string? BuildId { get; set; }
 
     /// <summary>
     /// </summary>
     [JsonProperty(PropertyName = "exception")]
+    [System.Text.Json.Serialization.JsonPropertyName("exception")]
     public Exception? Exception { get; set; }
 
     /// <summary>

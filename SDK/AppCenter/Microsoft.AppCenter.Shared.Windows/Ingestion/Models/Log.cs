@@ -4,7 +4,10 @@
 namespace Microsoft.AppCenter.Ingestion.Models;
 
 using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
+[JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
+[JsonDerivedType(typeof(StartServiceLog), typeDiscriminator: "startService")]
 public partial class Log
 {
     /// <summary>
@@ -54,6 +57,7 @@ public partial class Log
     ///
     /// </summary>
     [JsonProperty(PropertyName = "timestamp")]
+    [System.Text.Json.Serialization.JsonPropertyName("timestamp")]
     public System.DateTime? Timestamp { get; set; }
 
     /// <summary>
@@ -67,6 +71,7 @@ public partial class Log
     ///
     /// </summary>
     [JsonProperty(PropertyName = "sid")]
+    [System.Text.Json.Serialization.JsonPropertyName("sid")]
     public System.Guid? Sid { get; set; }
 
     /// <summary>
@@ -74,11 +79,13 @@ public partial class Log
     ///
     /// </summary>
     [JsonProperty(PropertyName = "userId")]
+    [System.Text.Json.Serialization.JsonPropertyName("userId")]
     public string? UserId { get; set; }
 
     /// <summary>
     /// </summary>
     [JsonProperty(PropertyName = "device")]
+    [System.Text.Json.Serialization.JsonPropertyName("device")]
     public Device? Device { get; set; }
 
     /// <summary>
@@ -86,6 +93,7 @@ public partial class Log
     ///
     /// </summary>
     [JsonProperty(PropertyName = "dataResidencyRegion")]
+    [System.Text.Json.Serialization.JsonPropertyName("dataResidencyRegion")]
     public string? DataResidencyRegion { get; set; }
 
     /// <summary>

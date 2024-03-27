@@ -47,14 +47,14 @@ public class TestLog : LogWithProperties
             return false;
         }
 
-        var thisSerialized = LogSerializer.Serialize(this);
-        var thatSerialized = LogSerializer.Serialize(that);
+        var thisSerialized = STJLogSerializer.Serialize(this);
+        var thatSerialized = STJLogSerializer.Serialize(that);
         return thisSerialized == thatSerialized;
     }
 
     public override int GetHashCode()
     {
-        return LogSerializer.Serialize(this).GetHashCode();
+        return STJLogSerializer.Serialize(this).GetHashCode();
     }
 
     public override string ToString()

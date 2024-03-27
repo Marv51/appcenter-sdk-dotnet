@@ -6,11 +6,13 @@ namespace Microsoft.AppCenter.Analytics.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 /// <summary>
 /// Page view log (as in screens or activities).
 /// </summary>
 [Newtonsoft.Json.JsonObject(JsonIdentifier)]
+[JsonDerivedType(typeof(Log), typeDiscriminator: "page")]
 public partial class PageLog : LogWithProperties
 {
     internal const string JsonIdentifier = "page";
@@ -61,6 +63,7 @@ public partial class PageLog : LogWithProperties
     /// Gets or sets name of the page.
     ///
     /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("name")]
     [JsonProperty(PropertyName = "name")]
     public string? Name { get; set; }
 

@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 
 namespace Microsoft.AppCenter.Ingestion.Models;
@@ -50,6 +51,7 @@ public class StartServiceLog : Log
     /// Gets or sets the list of services of the MobileCenter Start API
     /// call.
     /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("services")]
     [JsonProperty(PropertyName = "services")]
     public IList<string>? Services { get; set; }
 

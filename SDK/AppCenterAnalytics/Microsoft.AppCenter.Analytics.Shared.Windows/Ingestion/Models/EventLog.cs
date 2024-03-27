@@ -6,11 +6,13 @@ namespace Microsoft.AppCenter.Analytics.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 /// <summary>
 /// Event log.
 /// </summary>
 [Newtonsoft.Json.JsonObject(JsonIdentifier)]
+[JsonDerivedType(typeof(Log), typeDiscriminator: "event")]
 public partial class EventLog : LogWithProperties
 {
     internal const string JsonIdentifier = "event";
@@ -64,6 +66,7 @@ public partial class EventLog : LogWithProperties
     /// Gets or sets unique identifier for this event.
     ///
     /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("id")]
     [JsonProperty(PropertyName = "id")]
     public System.Guid Id { get; set; }
 
@@ -71,6 +74,7 @@ public partial class EventLog : LogWithProperties
     /// Gets or sets name of the event.
     ///
     /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("name")]
     [JsonProperty(PropertyName = "name")]
     public string? Name { get; set; }
 

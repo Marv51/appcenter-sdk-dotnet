@@ -40,10 +40,10 @@ public class PageLogTest
     [TestMethod]
     public void TestValidateThrowsExceptionWhenNameIsNull()
     {
-        const string NullName = null;
+        const string? NullName = null;
         var mockDevice = new Mock<Device>();
 
-        PageLog log = new PageLog(mockDevice.Object, NullName, Timestamp);
+        PageLog log = new PageLog(mockDevice.Object, NullName!, Timestamp);
         Assert.ThrowsException<ValidationException>(() => log.Validate());
     }
 }

@@ -52,6 +52,7 @@ public partial class LogWithProperties : Log
     /// Gets or sets additional key/value pair parameters.
     ///
     /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("properties")]
     [JsonProperty(PropertyName = "properties")]
     public IDictionary<string, string>? Properties { get; set; }
 
