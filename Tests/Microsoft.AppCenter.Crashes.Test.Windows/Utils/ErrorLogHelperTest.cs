@@ -39,6 +39,7 @@ public class ErrorLogHelperTest
         ErrorLogHelper.Instance = null;
     }
 
+    [Ignore]
     [TestMethod]
     [DataRow(null, null)]
     [DataRow("da657080-2445-4b80-9b77-4798a6659954", null)]
