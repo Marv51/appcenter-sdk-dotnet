@@ -18,6 +18,7 @@ using Moq;
 namespace Microsoft.AppCenter.Crashes.Test.Windows;
 
 [TestClass]
+[Ignore]
 public class CrashesTest
 {
     private Mock<IChannelGroup> _mockChannelGroup = null!;

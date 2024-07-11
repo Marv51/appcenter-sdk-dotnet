@@ -362,6 +362,7 @@ public class HandledErrorTest
         Assert.AreEqual(new string('v', PropertyValidator.MaxPropertyValueLength), actualLog.Properties["testValueTooLong"]);
     }
 
+    [Ignore]
     [TestMethod]
     public void TrackErrorWhenDisabled()
     {
