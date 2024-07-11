@@ -28,7 +28,7 @@ public class ApplicationLifecycleHelper : IApplicationLifecycleHelper
     {
         // Need to notify DeviceInformationHelper to refresh display cache here too because there is no guarantee that 
         // it will automatically happen beforehand
-        DeviceInformationHelper.RefreshDisplayCache();
+        DeviceInformationHelperForTests.RefreshDisplayCache();
         IsSuspended = false;
         ApplicationResuming?.Invoke(null, new EventArgs());
     }

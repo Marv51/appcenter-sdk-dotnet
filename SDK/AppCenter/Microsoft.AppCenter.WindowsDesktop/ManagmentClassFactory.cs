@@ -5,7 +5,7 @@ using System.Management;
 
 namespace Microsoft.AppCenter;
 
-interface IManagmentClassFactory
+internal interface IManagmentClassFactory
 {
     /// <summary>
     /// Get object of class Win32_ComputerSystem.
@@ -20,7 +20,7 @@ interface IManagmentClassFactory
     ManagementClass GetOperatingSystemClass();
 }
 
-class ManagmentClassFactory : IManagmentClassFactory
+internal class ManagmentClassFactory : IManagmentClassFactory
 {
     // The shared instance of ManagementClassFactory.
     private static ManagmentClassFactory? _instanceField;

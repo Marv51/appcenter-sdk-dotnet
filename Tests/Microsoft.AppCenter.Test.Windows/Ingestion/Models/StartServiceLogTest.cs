@@ -56,12 +56,12 @@ public class StartServiceLogTest
     [TestMethod]
     public void SaveStartServiceLog()
     {
-        Constants.AppCenterDatabasePath = "temp.db";
-        if (System.IO.File.Exists(Constants.AppCenterDatabasePath))
+        ConstantsForTests.AppCenterDatabasePath = "temp.db";
+        if (System.IO.File.Exists(ConstantsForTests.AppCenterDatabasePath))
         {
             try
             {
-                System.IO.File.Delete(Constants.AppCenterDatabasePath);
+                System.IO.File.Delete(ConstantsForTests.AppCenterDatabasePath);
             }
             catch
             {

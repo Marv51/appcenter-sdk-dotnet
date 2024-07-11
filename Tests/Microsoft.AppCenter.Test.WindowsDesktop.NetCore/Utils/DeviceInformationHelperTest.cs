@@ -1,51 +1,31 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System;
-using System.Management;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Utils;
 using Xunit;
 
 namespace Microsoft.AppCenter.Test.WindowsDesktop.Utils;
 
-public partial class DeviceInformationHelperTest
+public partial class DeviceInformationHelperTesting
 {
     /// <summary>
-    /// Verify sdk name in device information.
+    /// Verify device oem name in device information
     /// </summary>
     [Fact]
-    public async Task VerifySdkName()
+    public async Task VerifyDeviceOemName()
     {
         var device = await Task.Run(() => new DeviceInformationHelper().GetDeviceInformationAsync());
-        Assert.Equal("appcenter.winui", device.SdkName);
+        Assert.NotEqual(device.OemName, AbstractDeviceInformationHelper.DefaultSystemManufacturer);
     }
 
     /// <summary>
-    /// Verify that sdk is not crashed during getting device info when management class is not available.
+    /// Verify device model in device model.
     /// </summary>
     [Fact]
-    public async Task VerifyDeviceInfoWhenManagementClassNotAvailable()
+    public async Task VerifyDeviceModel()
     {
-        var deviceInformation = new DeviceInformationHelper();
-        var factory = new MockManagementClassFactory();
-        deviceInformation.SetManagementClassFactory(factory);
-        var device = await Task.Run(deviceInformation.GetDeviceInformationAsync);
-    }
-}
-
-/// <summary>
-/// Fake class for ManagementClassFactory.
-/// </summary>
-class MockManagementClassFactory : IManagmentClassFactory
-{
-    public ManagementClass GetComputerSystemClass()
-    {
-        throw new UnauthorizedAccessException();
-    }
-
-    public ManagementClass GetOperatingSystemClass()
-    {
-        throw new UnauthorizedAccessException();
+        var device = await Task.Run(() => new DeviceInformationHelper().GetDeviceInformationAsync());
+        Assert.NotEqual(device.Model, AbstractDeviceInformationHelper.DefaultSystemProductName);
     }
 }

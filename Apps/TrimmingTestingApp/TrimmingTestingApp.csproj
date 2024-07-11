@@ -17,11 +17,9 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics.WindowsDesktop\Microsoft.AppCenter.Analytics.WindowsDesktop.csproj" />
 	  <TrimmerRootAssembly Include="Microsoft.AppCenter.Analytics" />
-	  <ProjectReference Include="..\..\SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.WindowsDesktop\Microsoft.AppCenter.Crashes.WindowsDesktop.csproj" />
 	  <TrimmerRootAssembly Include="Microsoft.AppCenter.Crashes" />
-		<ProjectReference Include="..\..\SDK\AppCenter\Microsoft.AppCenter.WindowsDesktop\Microsoft.AppCenter.WindowsDesktop.csproj" />
+	  <ProjectReference Include="..\..\SDK\AppCenter\Microsoft.AppCenter.WindowsDesktop\Microsoft.AppCenter.WindowsDesktop.csproj" />
 	  <TrimmerRootAssembly Include="Microsoft.AppCenter" />
   </ItemGroup>
 

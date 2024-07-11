@@ -17,7 +17,7 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows;
 public class AnalyticsTest
 {
     private Mock<ISessionTracker> _mockSessionTracker;
-    private ApplicationLifecycleHelper _applicationLifecycleHelper;
+    private ApplicationLifecycleHelperForTests _applicationLifecycleHelper;
     private Mock<IChannelGroup> _mockChannelGroup;
     private Mock<IChannelUnit> _mockChannel;
 
@@ -26,7 +26,7 @@ public class AnalyticsTest
     {
         var factory = new SessionTrackerFactory();
         _mockSessionTracker = factory.ReturningSessionTrackerMock;
-        _applicationLifecycleHelper = new ApplicationLifecycleHelper();
+        _applicationLifecycleHelper = new ApplicationLifecycleHelperForTests();
         _mockChannelGroup = new Mock<IChannelGroup>();
         _mockChannel = new Mock<IChannelUnit>();
         _mockChannelGroup.Setup(

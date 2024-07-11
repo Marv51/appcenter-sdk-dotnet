@@ -107,10 +107,23 @@
           "SQLitePCLRaw.core": "2.1.6"
         }
       },
+      "System.CodeDom": {
+        "type": "Transitive",
+        "resolved": "8.0.0",
+        "contentHash": "WTlRjL6KWIMr/pAaq3rYqh0TJlzpouaQ/W1eelssHgtlwHAH25jXTkUphTYx9HaIIf7XA6qs/0+YhtLEQRkJ+Q=="
+      },
       "System.Diagnostics.EventLog": {
         "type": "Transitive",
         "resolved": "6.0.0",
         "contentHash": "lcyUiXTsETK2ALsZrX+nWuHSIQeazhqPphLfaRxzdGaG93+0kELqpgEHtwWOlQe7+jSFnKwaCAgL4kjeZCQJnw=="
+      },
+      "System.Management": {
+        "type": "Transitive",
+        "resolved": "8.0.0",
+        "contentHash": "jrK22i5LRzxZCfGb+tGmke2VH7oE0DvcDlJ1HAKYU8cPmD8XnpUT0bYn2Gy98GEhGjtfbR/sxKTVb+dE770pfA==",
+        "dependencies": {
+          "System.CodeDom": "8.0.0"
+        }
       },
       "System.Memory": {
         "type": "Transitive",
@@ -131,7 +144,16 @@
         "type": "Project",
         "dependencies": {
           "Newtonsoft.Json": "[13.0.3, )",
-          "SQLitePCLRaw.bundle_green": "[2.1.6, )"
+          "SQLitePCLRaw.bundle_green": "[2.1.6, )",
+          "Telani.AppCenter": "[1.0.0, )"
+        }
+      },
+      "Telani.AppCenter": {
+        "type": "Project",
+        "dependencies": {
+          "Newtonsoft.Json": "[13.0.3, )",
+          "SQLitePCLRaw.bundle_green": "[2.1.6, )",
+          "System.Management": "[8.0.0, )"
         }
       }
     }

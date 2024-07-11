@@ -23,7 +23,6 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.AppCenter.Analytics.Test\Microsoft.AppCenter.Analytics.Test.csproj" />
     <ProjectReference Include="..\Microsoft.AppCenter.Test\Microsoft.AppCenter.Test.csproj" />
   </ItemGroup>
 </Project>

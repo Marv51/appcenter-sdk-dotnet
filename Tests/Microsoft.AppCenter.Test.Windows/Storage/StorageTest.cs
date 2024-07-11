@@ -35,8 +35,8 @@ public class StorageTest
     {
         _databasePath = $"{Guid.NewGuid()}.db";
         _storageUtils = new StorageTestUtils(_databasePath);
-        Microsoft.AppCenter.Utils.Constants.AppCenterDatabasePath = _databasePath;
-        Microsoft.AppCenter.Utils.Constants.AppCenterFilesDirectoryPath = Environment.CurrentDirectory;
+        Microsoft.AppCenter.Utils.ConstantsForTests.AppCenterDatabasePath = _databasePath;
+        Microsoft.AppCenter.Utils.ConstantsForTests.AppCenterFilesDirectoryPath = Environment.CurrentDirectory;
         _storage = new Microsoft.AppCenter.Storage.Storage();
         _storage.DeleteLogs(StorageTestChannelName);
         _storage.WaitOperationsAsync(TimeSpan.FromSeconds(10)).Wait();
@@ -45,8 +45,8 @@ public class StorageTest
     [TestCleanup]
     public void TestCleanup()
     {
-        Microsoft.AppCenter.Utils.Constants.AppCenterDatabasePath = "";
-        Microsoft.AppCenter.Utils.Constants.AppCenterFilesDirectoryPath = "";
+        Microsoft.AppCenter.Utils.ConstantsForTests.AppCenterDatabasePath = "";
+        Microsoft.AppCenter.Utils.ConstantsForTests.AppCenterFilesDirectoryPath = "";
         try
         {
             _storage.DeleteLogs(StorageTestChannelName);

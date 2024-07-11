@@ -38,9 +38,6 @@
     <ProjectReference Include="..\Microsoft.AppCenter.Test\Microsoft.AppCenter.Test.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="PropertyValidatorTest.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
 

@@ -746,7 +746,8 @@ public class AppCenterTest
     [TestMethod]
     public void ConfigureAppCenterWithEmptyAppSecretEmptyResult()
     {
-        var secrets = $"{AppCenter.PlatformIdentifier}=";
+        var appCenterPlatformIdentifier = "core-test";
+        var secrets = $"{appCenterPlatformIdentifier}=";
         AppCenter.Configure(secrets);
 
         Assert.IsFalse(AppCenter.Configured);

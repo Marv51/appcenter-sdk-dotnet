@@ -1,6 +1,6 @@
 Visual Studio App Center SDK for .NET
 
-Copyright (c) Microsoft Corporation
+Copyright (c) Microsoft Corporation with modifications from Marvin Rühe
 
 All rights reserved. 
 
